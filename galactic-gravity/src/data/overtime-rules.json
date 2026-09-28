@@ -1,0 +1,2882 @@
+{
+  "federal_baseline": {
+    "rule": "1.5x the regular rate for hours over 40 in a workweek for covered nonexempt employees (29 U.S.C. 207(a)(1)); no federal daily overtime, weekend/holiday premium or double time.",
+    "workweek": "Fixed, regularly recurring period of 168 hours (seven consecutive 24-hour periods)."
+  },
+  "engines": {
+    "weekly_flsa": "Overtime hours = max(0, total weekly hours - weekly_threshold_hours); pay at multiplier x regular rate. Used by 46 states (all except AK, CA, CO, NV).",
+    "california": "Daily 8/12, weekly 40, seventh-consecutive-day 8-hour rule, double time, no pyramiding (see report section 4).",
+    "colorado": "Greater-of of weekly >40, daily >12 and (when shift times are known) 12 consecutive hours; 1.5x only.",
+    "alaska": "Daily >8 plus weekly >40 where the weekly count excludes hours already paid as daily overtime.",
+    "nevada": "If regular rate < 1.5 x state minimum wage: greater-of daily >8 and weekly >40; otherwise weekly only."
+  },
+  "states": [
+    {
+      "state": "Alabama",
+      "abbr": "AL",
+      "slug": "alabama",
+      "law_category": "flsa_baseline_no_independent_state_ot_rule",
+      "governing_law": "Federal FLSA governs; no state overtime statute identified.",
+      "general_rule": {
+        "summary": ">40 hrs/workweek (FLSA; no state OT law)",
+        "weekly_threshold_hours": 40,
+        "overtime_multiplier": 1.5,
+        "applies_to": "Typical nonexempt private-sector employee; exempt status, public-sector, CBA and special-industry rules are not assumed."
+      },
+      "daily_rule": {
+        "exists": false,
+        "details": "No state or federal daily overtime rule.",
+        "applies_generally": false
+      },
+      "weekly_rule": {
+        "exists": true,
+        "threshold_hours": 40,
+        "multiplier": 1.5,
+        "details": "Federal FLSA weekly rule: 1.5x the regular rate for hours over 40 in the fixed 7-day workweek.",
+        "table_text": ">40 hrs"
+      },
+      "double_time_rule": {
+        "exists": false,
+        "details": "No state or federal double-time requirement."
+      },
+      "seventh_day_rule": {
+        "exists": false,
+        "details": "No seventh-day premium requirement."
+      },
+      "other_rules": [],
+      "mvp_rule": {
+        "engine": "weekly_flsa",
+        "params": {
+          "weekly_threshold_hours": 40,
+          "multiplier": 1.5
+        },
+        "optional_modules": [],
+        "logic": "Weekly only: overtime hours = max(0, total hours worked in the fixed 7-day workweek - 40); overtime pay = overtime hours x regular hourly rate x 1.5. No daily overtime, no double time, no weekend/holiday premium."
+      },
+      "seo": {
+        "page_title": "Alabama Overtime Calculator (2026) - Overtime Pay Rules",
+        "h1": "Alabama Overtime Calculator",
+        "primary_keyword": "alabama overtime calculator",
+        "secondary_keywords": [
+          "alabama overtime laws",
+          "alabama overtime pay rules 2026",
+          "how is overtime calculated in alabama",
+          "alabama overtime pay calculator"
+        ],
+        "unique_rule_sentence": "Alabama has no state overtime law, so the federal FLSA rule (1.5x pay after 40 hours in a workweek) applies to covered nonexempt workers.",
+        "url_path": "/overtime-calculator/alabama"
+      }
+    },
+    {
+      "state": "Alaska",
+      "abbr": "AK",
+      "slug": "alaska",
+      "law_category": "state_daily_or_unusual_general_rules",
+      "governing_law": "State law is more protective than FLSA (adds a daily trigger); FLSA weekly rule also applies to FLSA-covered employees exempt from state OT.",
+      "general_rule": {
+        "summary": ">8 hrs/day and >40 hrs/week",
+        "weekly_threshold_hours": 40,
+        "overtime_multiplier": 1.5,
+        "applies_to": "Typical nonexempt private-sector employee; exempt status, public-sector, CBA and special-industry rules are not assumed."
+      },
+      "daily_rule": {
+        "exists": true,
+        "details": "1.5x for hours over 8 in a workday (AS 23.10.060(b)).",
+        "applies_generally": true
+      },
+      "weekly_rule": {
+        "exists": true,
+        "threshold_hours": 40,
+        "multiplier": 1.5,
+        "details": "1.5x the regular rate for hours over 40 in the workweek (in addition to the daily rules above).",
+        "table_text": ">40 hrs/week at 1.5x (daily OT hours not counted again)"
+      },
+      "double_time_rule": {
+        "exists": false,
+        "details": "No double-time requirement."
+      },
+      "seventh_day_rule": {
+        "exists": false,
+        "details": "No seventh-day premium requirement."
+      },
+      "other_rules": [
+        "No stacking: hours worked over 8 in a day are excluded when counting whether the employee exceeded 40 hours in the week, because they are separately paid as daily overtime (AS 23.10.060(b))."
+      ],
+      "mvp_rule": {
+        "engine": "alaska",
+        "params": {
+          "daily_ot_after_hours": 8,
+          "weekly_ot_after_hours": 40,
+          "multiplier": 1.5,
+          "weekly_count_excludes_daily_ot_hours": true
+        },
+        "optional_modules": [],
+        "logic": "Enter hours for each day. daily_OT = sum over days of max(0, hours_day - 8). weekly_regular_hours = sum over days of min(hours_day, 8). weekly_OT = max(0, weekly_regular_hours - 40). OT hours = daily_OT + weekly_OT, each paid at 1.5x. Assume employer has 4+ employees and no approved flexible work plan; show a caveat."
+      },
+      "seo": {
+        "page_title": "Alaska Overtime Calculator (2026) - Overtime Pay Rules",
+        "h1": "Alaska Overtime Calculator",
+        "primary_keyword": "alaska overtime calculator",
+        "secondary_keywords": [
+          "alaska daily overtime",
+          "alaska 8 hour overtime rule",
+          "alaska overtime laws",
+          "alaska overtime pay rules 2026",
+          "how is overtime calculated in alaska"
+        ],
+        "unique_rule_sentence": "Alaska requires 1.5x pay after 8 hours in a day as well as after 40 hours in a week, and hours already paid as daily overtime are not counted again toward the weekly total.",
+        "url_path": "/overtime-calculator/alaska"
+      }
+    },
+    {
+      "state": "Arizona",
+      "abbr": "AZ",
+      "slug": "arizona",
+      "law_category": "flsa_baseline_no_independent_state_ot_rule",
+      "governing_law": "Federal FLSA governs; no state overtime statute identified.",
+      "general_rule": {
+        "summary": ">40 hrs/workweek (FLSA; no state OT law)",
+        "weekly_threshold_hours": 40,
+        "overtime_multiplier": 1.5,
+        "applies_to": "Typical nonexempt private-sector employee; exempt status, public-sector, CBA and special-industry rules are not assumed."
+      },
+      "daily_rule": {
+        "exists": false,
+        "details": "No state or federal daily overtime rule.",
+        "applies_generally": false
+      },
+      "weekly_rule": {
+        "exists": true,
+        "threshold_hours": 40,
+        "multiplier": 1.5,
+        "details": "Federal FLSA weekly rule: 1.5x the regular rate for hours over 40 in the fixed 7-day workweek.",
+        "table_text": ">40 hrs"
+      },
+      "double_time_rule": {
+        "exists": false,
+        "details": "No state or federal double-time requirement."
+      },
+      "seventh_day_rule": {
+        "exists": false,
+        "details": "No seventh-day premium requirement."
+      },
+      "other_rules": [],
+      "mvp_rule": {
+        "engine": "weekly_flsa",
+        "params": {
+          "weekly_threshold_hours": 40,
+          "multiplier": 1.5
+        },
+        "optional_modules": [],
+        "logic": "Weekly only: overtime hours = max(0, total hours worked in the fixed 7-day workweek - 40); overtime pay = overtime hours x regular hourly rate x 1.5. No daily overtime, no double time, no weekend/holiday premium."
+      },
+      "seo": {
+        "page_title": "Arizona Overtime Calculator (2026) - Overtime Pay Rules",
+        "h1": "Arizona Overtime Calculator",
+        "primary_keyword": "arizona overtime calculator",
+        "secondary_keywords": [
+          "arizona overtime laws",
+          "arizona overtime pay rules 2026",
+          "how is overtime calculated in arizona",
+          "arizona overtime pay calculator"
+        ],
+        "unique_rule_sentence": "Arizona has no state overtime law, so the federal FLSA rule (1.5x pay after 40 hours in a workweek) applies to covered nonexempt workers.",
+        "url_path": "/overtime-calculator/arizona"
+      }
+    },
+    {
+      "state": "Arkansas",
+      "abbr": "AR",
+      "slug": "arkansas",
+      "law_category": "state_weekly_40_rule_no_general_daily_ot",
+      "governing_law": "State law and federal FLSA both use 40 hours/week at 1.5x for the typical covered nonexempt employee; the more protective applies.",
+      "general_rule": {
+        "summary": ">40 hrs/workweek (state law)",
+        "weekly_threshold_hours": 40,
+        "overtime_multiplier": 1.5,
+        "applies_to": "Typical nonexempt private-sector employee; exempt status, public-sector, CBA and special-industry rules are not assumed."
+      },
+      "daily_rule": {
+        "exists": false,
+        "details": "No general daily overtime rule.",
+        "applies_generally": false
+      },
+      "weekly_rule": {
+        "exists": true,
+        "threshold_hours": 40,
+        "multiplier": 1.5,
+        "details": "1.5x the regular rate for hours over 40 in the workweek (state law; same threshold as FLSA).",
+        "table_text": ">40 hrs"
+      },
+      "double_time_rule": {
+        "exists": false,
+        "details": "No general double-time requirement."
+      },
+      "seventh_day_rule": {
+        "exists": false,
+        "details": "No general seventh-day premium requirement."
+      },
+      "other_rules": [],
+      "mvp_rule": {
+        "engine": "weekly_flsa",
+        "params": {
+          "weekly_threshold_hours": 40,
+          "multiplier": 1.5
+        },
+        "optional_modules": [],
+        "logic": "Weekly only: overtime hours = max(0, total hours worked in the fixed 7-day workweek - 40); overtime pay = overtime hours x regular hourly rate x 1.5. No daily overtime, no double time, no weekend/holiday premium."
+      },
+      "seo": {
+        "page_title": "Arkansas Overtime Calculator (2026) - Overtime Pay Rules",
+        "h1": "Arkansas Overtime Calculator",
+        "primary_keyword": "arkansas overtime calculator",
+        "secondary_keywords": [
+          "arkansas overtime laws",
+          "arkansas overtime pay rules 2026",
+          "how is overtime calculated in arkansas",
+          "arkansas overtime pay calculator"
+        ],
+        "unique_rule_sentence": "Arkansas requires 1.5x pay after 40 hours a week for employers with four or more employees, matching the federal rule.",
+        "url_path": "/overtime-calculator/arkansas"
+      }
+    },
+    {
+      "state": "California",
+      "abbr": "CA",
+      "slug": "california",
+      "law_category": "state_daily_or_unusual_general_rules",
+      "governing_law": "State law governs (more protective than FLSA); FLSA weekly rule is subsumed.",
+      "general_rule": {
+        "summary": ">8 hrs/day, >40 hrs/week, and first 8 hrs on 7th consecutive workday",
+        "weekly_threshold_hours": 40,
+        "overtime_multiplier": 1.5,
+        "applies_to": "Typical nonexempt private-sector employee; exempt status, public-sector, CBA and special-industry rules are not assumed."
+      },
+      "daily_rule": {
+        "exists": true,
+        "details": "1.5x for work over 8 hours in a workday up to and including 12 hours; 2x beyond 12 hours (Lab. Code 510(a)).",
+        "applies_generally": true
+      },
+      "weekly_rule": {
+        "exists": true,
+        "threshold_hours": 40,
+        "multiplier": 1.5,
+        "details": "1.5x the regular rate for hours over 40 in the workweek (in addition to the daily rules above).",
+        "table_text": ">40 hrs/week at 1.5x (excluding hours already paid daily OT/DT)"
+      },
+      "double_time_rule": {
+        "exists": true,
+        "details": "2x regular rate for hours over 12 in a workday and for hours over 8 on the seventh consecutive day of work in a workweek."
+      },
+      "seventh_day_rule": {
+        "exists": true,
+        "details": "First 8 hours on the seventh consecutive day of work in a workweek: 1.5x; over 8 hours that day: 2x."
+      },
+      "other_rules": [
+        "No pyramiding: the statute does not require combining more than one overtime rate for the same hour (Lab. Code 510(a)); DLSE example: five 10-hour days = 10 overtime hours, not 20.",
+        "Workweek = fixed 7 consecutive days (168 hours) chosen by the employer; overtime is counted on hours actually worked (paid leave not counted)."
+      ],
+      "mvp_rule": {
+        "engine": "california",
+        "params": {
+          "daily_ot_after_hours": 8,
+          "daily_dt_after_hours": 12,
+          "weekly_ot_after_hours": 40,
+          "seventh_day": {
+            "ot_first_hours": 8,
+            "dt_after_hours": 8
+          },
+          "no_pyramiding": true,
+          "daily_premium_hours_excluded_from_weekly_count": true
+        },
+        "optional_modules": [],
+        "logic": "Enter hours for each of the 7 days of the workweek (in order). If hours are entered on all 7 days, day 7 is the 'seventh consecutive workday'. For days 1-6: reg = min(h,8); OT15 = min(max(h-8,0),4); DT = max(h-12,0). Day 7 (only if all 7 days worked): OT15 = min(h,8); DT = max(h-8,0). weekly_reg_hours = sum of reg for days 1-6; weekly_OT = max(0, weekly_reg_hours - 40) (paid 1.5x, removed from straight time). Pay = rate x (straight + 1.5 x (OT15 + weekly_OT) + 2 x DT). Ignore alternative workweek schedules (show caveat)."
+      },
+      "seo": {
+        "page_title": "California Overtime Calculator (2026) - Overtime Pay Rules",
+        "h1": "California Overtime Calculator",
+        "primary_keyword": "california overtime calculator",
+        "secondary_keywords": [
+          "california double time calculator",
+          "california daily overtime calculator",
+          "california seventh day overtime",
+          "california overtime laws",
+          "california overtime pay rules 2026"
+        ],
+        "unique_rule_sentence": "California pays 1.5x after 8 hours in a day or 40 hours in a week, and double time after 12 hours in a day (and after 8 hours on the seventh consecutive workday).",
+        "url_path": "/overtime-calculator/california"
+      }
+    },
+    {
+      "state": "Colorado",
+      "abbr": "CO",
+      "slug": "colorado",
+      "law_category": "state_daily_or_unusual_general_rules",
+      "governing_law": "State law (COMPS Order) governs; more protective than FLSA.",
+      "general_rule": {
+        "summary": ">40 hrs/week, >12 hrs/day, or >12 consecutive hours (whichever pays more)",
+        "weekly_threshold_hours": 40,
+        "overtime_multiplier": 1.5,
+        "applies_to": "Typical nonexempt private-sector employee; exempt status, public-sector, CBA and special-industry rules are not assumed."
+      },
+      "daily_rule": {
+        "exists": true,
+        "details": "1.5x for hours over 12 in a workday and for hours over 12 consecutive hours regardless of when the workday starts or ends (COMPS Rule 4).",
+        "applies_generally": true
+      },
+      "weekly_rule": {
+        "exists": true,
+        "threshold_hours": 40,
+        "multiplier": 1.5,
+        "details": "1.5x the regular rate for hours over 40 in the workweek (in addition to the daily rules above).",
+        "table_text": ">40 hrs/week at 1.5x"
+      },
+      "double_time_rule": {
+        "exists": false,
+        "details": "Colorado does not require double time."
+      },
+      "seventh_day_rule": {
+        "exists": false,
+        "details": "No seventh-day premium requirement."
+      },
+      "other_rules": [
+        "Overtime is computed by whichever method (weekly 40, daily 12, or 12 consecutive hours) results in the greatest pay - hours are not paid twice.",
+        "Employers may not give compensatory time off instead of overtime pay and may not average overtime and non-overtime weeks or days (CDLE 2026 poster).",
+        "COMPS Order covers all private-sector work unless exempted; the pre-2020 four-industry limit no longer applies (CDLE INFO #1)."
+      ],
+      "mvp_rule": {
+        "engine": "colorado",
+        "params": {
+          "weekly_ot_after_hours": 40,
+          "daily_ot_after_hours": 12,
+          "consecutive_ot_after_hours": 12,
+          "method": "greater_of",
+          "multiplier": 1.5
+        },
+        "optional_modules": [],
+        "logic": "Enter hours per day. weekly_OT = max(0, total - 40). daily_OT = sum over days of max(0, hours_day - 12). OT hours = max(weekly_OT, daily_OT) (greater-of; no double counting), paid at 1.5x. If any shift runs more than 12 consecutive hours across midnight or with short breaks, ask for shift start/end times and add the consecutive-hours calculation to the greater-of set."
+      },
+      "seo": {
+        "page_title": "Colorado Overtime Calculator (2026) - Overtime Pay Rules",
+        "h1": "Colorado Overtime Calculator",
+        "primary_keyword": "colorado overtime calculator",
+        "secondary_keywords": [
+          "colorado 12 hour overtime",
+          "colorado daily overtime calculator",
+          "colorado overtime laws",
+          "colorado overtime pay rules 2026",
+          "how is overtime calculated in colorado"
+        ],
+        "unique_rule_sentence": "Colorado requires 1.5x pay after 40 hours a week, 12 hours in a day, or 12 consecutive hours - whichever produces the higher pay.",
+        "url_path": "/overtime-calculator/colorado"
+      }
+    },
+    {
+      "state": "Connecticut",
+      "abbr": "CT",
+      "slug": "connecticut",
+      "law_category": "state_weekly_40_rule_no_general_daily_ot",
+      "governing_law": "State law and federal FLSA both use 40 hours/week at 1.5x for the typical covered nonexempt employee; the more protective applies.",
+      "general_rule": {
+        "summary": ">40 hrs/workweek (state law)",
+        "weekly_threshold_hours": 40,
+        "overtime_multiplier": 1.5,
+        "applies_to": "Typical nonexempt private-sector employee; exempt status, public-sector, CBA and special-industry rules are not assumed."
+      },
+      "daily_rule": {
+        "exists": false,
+        "details": "No general daily overtime rule.",
+        "applies_generally": false
+      },
+      "weekly_rule": {
+        "exists": true,
+        "threshold_hours": 40,
+        "multiplier": 1.5,
+        "details": "1.5x the regular rate for hours over 40 in the workweek (state law; same threshold as FLSA).",
+        "table_text": ">40 hrs"
+      },
+      "double_time_rule": {
+        "exists": false,
+        "details": "No general double-time requirement."
+      },
+      "seventh_day_rule": {
+        "exists": true,
+        "details": "In restaurants and hotel restaurants, work on the 7th consecutive day requires premium pay at time and one-half the minimum rate (DOL table; state wage order)."
+      },
+      "other_rules": [],
+      "mvp_rule": {
+        "engine": "weekly_flsa",
+        "params": {
+          "weekly_threshold_hours": 40,
+          "multiplier": 1.5
+        },
+        "optional_modules": [
+          "ct_restaurant_seventh_day"
+        ],
+        "logic": "Weekly only: overtime hours = max(0, total hours worked in the fixed 7-day workweek - 40); overtime pay = overtime hours x regular hourly rate x 1.5. No daily overtime, no double time, no weekend/holiday premium."
+      },
+      "seo": {
+        "page_title": "Connecticut Overtime Calculator (2026) - Overtime Pay Rules",
+        "h1": "Connecticut Overtime Calculator",
+        "primary_keyword": "connecticut overtime calculator",
+        "secondary_keywords": [
+          "connecticut restaurant seventh day overtime",
+          "connecticut overtime laws",
+          "connecticut overtime pay rules 2026",
+          "how is overtime calculated in connecticut",
+          "connecticut overtime pay calculator"
+        ],
+        "unique_rule_sentence": "Connecticut requires 1.5x pay after 40 hours a week, and restaurant and hotel-restaurant workers also receive a premium for the seventh consecutive day of work.",
+        "url_path": "/overtime-calculator/connecticut"
+      }
+    },
+    {
+      "state": "Delaware",
+      "abbr": "DE",
+      "slug": "delaware",
+      "law_category": "flsa_baseline_no_independent_state_ot_rule",
+      "governing_law": "Federal FLSA governs; no state overtime statute identified.",
+      "general_rule": {
+        "summary": ">40 hrs/workweek (FLSA; no state OT law)",
+        "weekly_threshold_hours": 40,
+        "overtime_multiplier": 1.5,
+        "applies_to": "Typical nonexempt private-sector employee; exempt status, public-sector, CBA and special-industry rules are not assumed."
+      },
+      "daily_rule": {
+        "exists": false,
+        "details": "No state or federal daily overtime rule.",
+        "applies_generally": false
+      },
+      "weekly_rule": {
+        "exists": true,
+        "threshold_hours": 40,
+        "multiplier": 1.5,
+        "details": "Federal FLSA weekly rule: 1.5x the regular rate for hours over 40 in the fixed 7-day workweek.",
+        "table_text": ">40 hrs"
+      },
+      "double_time_rule": {
+        "exists": false,
+        "details": "No state or federal double-time requirement."
+      },
+      "seventh_day_rule": {
+        "exists": false,
+        "details": "No seventh-day premium requirement."
+      },
+      "other_rules": [],
+      "mvp_rule": {
+        "engine": "weekly_flsa",
+        "params": {
+          "weekly_threshold_hours": 40,
+          "multiplier": 1.5
+        },
+        "optional_modules": [],
+        "logic": "Weekly only: overtime hours = max(0, total hours worked in the fixed 7-day workweek - 40); overtime pay = overtime hours x regular hourly rate x 1.5. No daily overtime, no double time, no weekend/holiday premium."
+      },
+      "seo": {
+        "page_title": "Delaware Overtime Calculator (2026) - Overtime Pay Rules",
+        "h1": "Delaware Overtime Calculator",
+        "primary_keyword": "delaware overtime calculator",
+        "secondary_keywords": [
+          "delaware overtime laws",
+          "delaware overtime pay rules 2026",
+          "how is overtime calculated in delaware",
+          "delaware overtime pay calculator"
+        ],
+        "unique_rule_sentence": "Delaware has no state overtime law, so the federal FLSA rule (1.5x pay after 40 hours in a workweek) applies to covered nonexempt workers.",
+        "url_path": "/overtime-calculator/delaware"
+      }
+    },
+    {
+      "state": "Florida",
+      "abbr": "FL",
+      "slug": "florida",
+      "law_category": "flsa_baseline_no_independent_state_ot_rule",
+      "governing_law": "Federal FLSA governs; no state overtime statute identified.",
+      "general_rule": {
+        "summary": ">40 hrs/workweek (FLSA; no state OT law)",
+        "weekly_threshold_hours": 40,
+        "overtime_multiplier": 1.5,
+        "applies_to": "Typical nonexempt private-sector employee; exempt status, public-sector, CBA and special-industry rules are not assumed."
+      },
+      "daily_rule": {
+        "exists": false,
+        "details": "No state or federal daily overtime rule.",
+        "applies_generally": false
+      },
+      "weekly_rule": {
+        "exists": true,
+        "threshold_hours": 40,
+        "multiplier": 1.5,
+        "details": "Federal FLSA weekly rule: 1.5x the regular rate for hours over 40 in the fixed 7-day workweek.",
+        "table_text": ">40 hrs"
+      },
+      "double_time_rule": {
+        "exists": false,
+        "details": "No state or federal double-time requirement."
+      },
+      "seventh_day_rule": {
+        "exists": false,
+        "details": "No seventh-day premium requirement."
+      },
+      "other_rules": [],
+      "mvp_rule": {
+        "engine": "weekly_flsa",
+        "params": {
+          "weekly_threshold_hours": 40,
+          "multiplier": 1.5
+        },
+        "optional_modules": [],
+        "logic": "Weekly only: overtime hours = max(0, total hours worked in the fixed 7-day workweek - 40); overtime pay = overtime hours x regular hourly rate x 1.5. No daily overtime, no double time, no weekend/holiday premium."
+      },
+      "seo": {
+        "page_title": "Florida Overtime Calculator (2026) - Overtime Pay Rules",
+        "h1": "Florida Overtime Calculator",
+        "primary_keyword": "florida overtime calculator",
+        "secondary_keywords": [
+          "florida overtime laws",
+          "florida overtime pay rules 2026",
+          "how is overtime calculated in florida",
+          "florida overtime pay calculator"
+        ],
+        "unique_rule_sentence": "Florida has no state overtime law, so the federal FLSA rule (1.5x pay after 40 hours in a workweek) applies to covered nonexempt workers.",
+        "url_path": "/overtime-calculator/florida"
+      }
+    },
+    {
+      "state": "Georgia",
+      "abbr": "GA",
+      "slug": "georgia",
+      "law_category": "flsa_baseline_no_independent_state_ot_rule",
+      "governing_law": "Federal FLSA governs; no state overtime statute identified.",
+      "general_rule": {
+        "summary": ">40 hrs/workweek (FLSA; no state OT law)",
+        "weekly_threshold_hours": 40,
+        "overtime_multiplier": 1.5,
+        "applies_to": "Typical nonexempt private-sector employee; exempt status, public-sector, CBA and special-industry rules are not assumed."
+      },
+      "daily_rule": {
+        "exists": false,
+        "details": "No state or federal daily overtime rule.",
+        "applies_generally": false
+      },
+      "weekly_rule": {
+        "exists": true,
+        "threshold_hours": 40,
+        "multiplier": 1.5,
+        "details": "Federal FLSA weekly rule: 1.5x the regular rate for hours over 40 in the fixed 7-day workweek.",
+        "table_text": ">40 hrs"
+      },
+      "double_time_rule": {
+        "exists": false,
+        "details": "No state or federal double-time requirement."
+      },
+      "seventh_day_rule": {
+        "exists": false,
+        "details": "No seventh-day premium requirement."
+      },
+      "other_rules": [],
+      "mvp_rule": {
+        "engine": "weekly_flsa",
+        "params": {
+          "weekly_threshold_hours": 40,
+          "multiplier": 1.5
+        },
+        "optional_modules": [],
+        "logic": "Weekly only: overtime hours = max(0, total hours worked in the fixed 7-day workweek - 40); overtime pay = overtime hours x regular hourly rate x 1.5. No daily overtime, no double time, no weekend/holiday premium."
+      },
+      "seo": {
+        "page_title": "Georgia Overtime Calculator (2026) - Overtime Pay Rules",
+        "h1": "Georgia Overtime Calculator",
+        "primary_keyword": "georgia overtime calculator",
+        "secondary_keywords": [
+          "georgia overtime laws",
+          "georgia overtime pay rules 2026",
+          "how is overtime calculated in georgia",
+          "georgia overtime pay calculator"
+        ],
+        "unique_rule_sentence": "Georgia has no state overtime law, so the federal FLSA rule (1.5x pay after 40 hours in a workweek) applies to covered nonexempt workers.",
+        "url_path": "/overtime-calculator/georgia"
+      }
+    },
+    {
+      "state": "Hawaii",
+      "abbr": "HI",
+      "slug": "hawaii",
+      "law_category": "state_weekly_40_rule_no_general_daily_ot",
+      "governing_law": "State law and federal FLSA both use 40 hours/week at 1.5x for the typical covered nonexempt employee; the more protective applies.",
+      "general_rule": {
+        "summary": ">40 hrs/workweek (state law)",
+        "weekly_threshold_hours": 40,
+        "overtime_multiplier": 1.5,
+        "applies_to": "Typical nonexempt private-sector employee; exempt status, public-sector, CBA and special-industry rules are not assumed."
+      },
+      "daily_rule": {
+        "exists": false,
+        "details": "No general daily overtime rule.",
+        "applies_generally": false
+      },
+      "weekly_rule": {
+        "exists": true,
+        "threshold_hours": 40,
+        "multiplier": 1.5,
+        "details": "1.5x the regular rate for hours over 40 in the workweek (state law; same threshold as FLSA).",
+        "table_text": ">40 hrs"
+      },
+      "double_time_rule": {
+        "exists": false,
+        "details": "No general double-time requirement."
+      },
+      "seventh_day_rule": {
+        "exists": false,
+        "details": "No general seventh-day premium requirement."
+      },
+      "other_rules": [],
+      "mvp_rule": {
+        "engine": "weekly_flsa",
+        "params": {
+          "weekly_threshold_hours": 40,
+          "multiplier": 1.5
+        },
+        "optional_modules": [],
+        "logic": "Weekly only: overtime hours = max(0, total hours worked in the fixed 7-day workweek - 40); overtime pay = overtime hours x regular hourly rate x 1.5. No daily overtime, no double time, no weekend/holiday premium."
+      },
+      "seo": {
+        "page_title": "Hawaii Overtime Calculator (2026) - Overtime Pay Rules",
+        "h1": "Hawaii Overtime Calculator",
+        "primary_keyword": "hawaii overtime calculator",
+        "secondary_keywords": [
+          "hawaii overtime exemption $4,000 month",
+          "hawaii overtime laws",
+          "hawaii overtime pay rules 2026",
+          "how is overtime calculated in hawaii",
+          "hawaii overtime pay calculator"
+        ],
+        "unique_rule_sentence": "Hawaii requires 1.5x pay after 40 hours a week, and workers guaranteed at least $4,000 a month in compensation are exempt from state overtime.",
+        "url_path": "/overtime-calculator/hawaii"
+      }
+    },
+    {
+      "state": "Idaho",
+      "abbr": "ID",
+      "slug": "idaho",
+      "law_category": "flsa_baseline_no_independent_state_ot_rule",
+      "governing_law": "Federal FLSA governs; no state overtime statute identified.",
+      "general_rule": {
+        "summary": ">40 hrs/workweek (FLSA; no state OT law)",
+        "weekly_threshold_hours": 40,
+        "overtime_multiplier": 1.5,
+        "applies_to": "Typical nonexempt private-sector employee; exempt status, public-sector, CBA and special-industry rules are not assumed."
+      },
+      "daily_rule": {
+        "exists": false,
+        "details": "No state or federal daily overtime rule.",
+        "applies_generally": false
+      },
+      "weekly_rule": {
+        "exists": true,
+        "threshold_hours": 40,
+        "multiplier": 1.5,
+        "details": "Federal FLSA weekly rule: 1.5x the regular rate for hours over 40 in the fixed 7-day workweek.",
+        "table_text": ">40 hrs"
+      },
+      "double_time_rule": {
+        "exists": false,
+        "details": "No state or federal double-time requirement."
+      },
+      "seventh_day_rule": {
+        "exists": false,
+        "details": "No seventh-day premium requirement."
+      },
+      "other_rules": [],
+      "mvp_rule": {
+        "engine": "weekly_flsa",
+        "params": {
+          "weekly_threshold_hours": 40,
+          "multiplier": 1.5
+        },
+        "optional_modules": [],
+        "logic": "Weekly only: overtime hours = max(0, total hours worked in the fixed 7-day workweek - 40); overtime pay = overtime hours x regular hourly rate x 1.5. No daily overtime, no double time, no weekend/holiday premium."
+      },
+      "seo": {
+        "page_title": "Idaho Overtime Calculator (2026) - Overtime Pay Rules",
+        "h1": "Idaho Overtime Calculator",
+        "primary_keyword": "idaho overtime calculator",
+        "secondary_keywords": [
+          "idaho overtime laws",
+          "idaho overtime pay rules 2026",
+          "how is overtime calculated in idaho",
+          "idaho overtime pay calculator"
+        ],
+        "unique_rule_sentence": "Idaho has no state overtime law, so the federal FLSA rule (1.5x pay after 40 hours in a workweek) applies to covered nonexempt workers.",
+        "url_path": "/overtime-calculator/idaho"
+      }
+    },
+    {
+      "state": "Illinois",
+      "abbr": "IL",
+      "slug": "illinois",
+      "law_category": "state_weekly_40_rule_no_general_daily_ot",
+      "governing_law": "State law and federal FLSA both use 40 hours/week at 1.5x for the typical covered nonexempt employee; the more protective applies.",
+      "general_rule": {
+        "summary": ">40 hrs/workweek (state law)",
+        "weekly_threshold_hours": 40,
+        "overtime_multiplier": 1.5,
+        "applies_to": "Typical nonexempt private-sector employee; exempt status, public-sector, CBA and special-industry rules are not assumed."
+      },
+      "daily_rule": {
+        "exists": false,
+        "details": "No general daily overtime rule.",
+        "applies_generally": false
+      },
+      "weekly_rule": {
+        "exists": true,
+        "threshold_hours": 40,
+        "multiplier": 1.5,
+        "details": "1.5x the regular rate for hours over 40 in the workweek (state law; same threshold as FLSA).",
+        "table_text": ">40 hrs"
+      },
+      "double_time_rule": {
+        "exists": false,
+        "details": "No general double-time requirement."
+      },
+      "seventh_day_rule": {
+        "exists": false,
+        "details": "No general seventh-day premium requirement."
+      },
+      "other_rules": [],
+      "mvp_rule": {
+        "engine": "weekly_flsa",
+        "params": {
+          "weekly_threshold_hours": 40,
+          "multiplier": 1.5
+        },
+        "optional_modules": [],
+        "logic": "Weekly only: overtime hours = max(0, total hours worked in the fixed 7-day workweek - 40); overtime pay = overtime hours x regular hourly rate x 1.5. No daily overtime, no double time, no weekend/holiday premium."
+      },
+      "seo": {
+        "page_title": "Illinois Overtime Calculator (2026) - Overtime Pay Rules",
+        "h1": "Illinois Overtime Calculator",
+        "primary_keyword": "illinois overtime calculator",
+        "secondary_keywords": [
+          "illinois overtime laws",
+          "illinois overtime pay rules 2026",
+          "how is overtime calculated in illinois",
+          "illinois overtime pay calculator"
+        ],
+        "unique_rule_sentence": "Illinois requires 1.5x pay after 40 hours a week for employers with four or more employees.",
+        "url_path": "/overtime-calculator/illinois"
+      }
+    },
+    {
+      "state": "Indiana",
+      "abbr": "IN",
+      "slug": "indiana",
+      "law_category": "state_weekly_40_rule_no_general_daily_ot",
+      "governing_law": "State law and federal FLSA both use 40 hours/week at 1.5x for the typical covered nonexempt employee; the more protective applies.",
+      "general_rule": {
+        "summary": ">40 hrs/workweek (state law)",
+        "weekly_threshold_hours": 40,
+        "overtime_multiplier": 1.5,
+        "applies_to": "Typical nonexempt private-sector employee; exempt status, public-sector, CBA and special-industry rules are not assumed."
+      },
+      "daily_rule": {
+        "exists": false,
+        "details": "No general daily overtime rule.",
+        "applies_generally": false
+      },
+      "weekly_rule": {
+        "exists": true,
+        "threshold_hours": 40,
+        "multiplier": 1.5,
+        "details": "1.5x the regular rate for hours over 40 in the workweek (state law; same threshold as FLSA).",
+        "table_text": ">40 hrs"
+      },
+      "double_time_rule": {
+        "exists": false,
+        "details": "No general double-time requirement."
+      },
+      "seventh_day_rule": {
+        "exists": false,
+        "details": "No general seventh-day premium requirement."
+      },
+      "other_rules": [],
+      "mvp_rule": {
+        "engine": "weekly_flsa",
+        "params": {
+          "weekly_threshold_hours": 40,
+          "multiplier": 1.5
+        },
+        "optional_modules": [],
+        "logic": "Weekly only: overtime hours = max(0, total hours worked in the fixed 7-day workweek - 40); overtime pay = overtime hours x regular hourly rate x 1.5. No daily overtime, no double time, no weekend/holiday premium."
+      },
+      "seo": {
+        "page_title": "Indiana Overtime Calculator (2026) - Overtime Pay Rules",
+        "h1": "Indiana Overtime Calculator",
+        "primary_keyword": "indiana overtime calculator",
+        "secondary_keywords": [
+          "indiana overtime laws",
+          "indiana overtime pay rules 2026",
+          "how is overtime calculated in indiana",
+          "indiana overtime pay calculator"
+        ],
+        "unique_rule_sentence": "Indiana requires 1.5x pay after 40 hours a week for employers with two or more employees.",
+        "url_path": "/overtime-calculator/indiana"
+      }
+    },
+    {
+      "state": "Iowa",
+      "abbr": "IA",
+      "slug": "iowa",
+      "law_category": "flsa_baseline_no_independent_state_ot_rule",
+      "governing_law": "Federal FLSA governs; no state overtime statute identified.",
+      "general_rule": {
+        "summary": ">40 hrs/workweek (FLSA; no state OT law)",
+        "weekly_threshold_hours": 40,
+        "overtime_multiplier": 1.5,
+        "applies_to": "Typical nonexempt private-sector employee; exempt status, public-sector, CBA and special-industry rules are not assumed."
+      },
+      "daily_rule": {
+        "exists": false,
+        "details": "No state or federal daily overtime rule.",
+        "applies_generally": false
+      },
+      "weekly_rule": {
+        "exists": true,
+        "threshold_hours": 40,
+        "multiplier": 1.5,
+        "details": "Federal FLSA weekly rule: 1.5x the regular rate for hours over 40 in the fixed 7-day workweek.",
+        "table_text": ">40 hrs"
+      },
+      "double_time_rule": {
+        "exists": false,
+        "details": "No state or federal double-time requirement."
+      },
+      "seventh_day_rule": {
+        "exists": false,
+        "details": "No seventh-day premium requirement."
+      },
+      "other_rules": [],
+      "mvp_rule": {
+        "engine": "weekly_flsa",
+        "params": {
+          "weekly_threshold_hours": 40,
+          "multiplier": 1.5
+        },
+        "optional_modules": [],
+        "logic": "Weekly only: overtime hours = max(0, total hours worked in the fixed 7-day workweek - 40); overtime pay = overtime hours x regular hourly rate x 1.5. No daily overtime, no double time, no weekend/holiday premium."
+      },
+      "seo": {
+        "page_title": "Iowa Overtime Calculator (2026) - Overtime Pay Rules",
+        "h1": "Iowa Overtime Calculator",
+        "primary_keyword": "iowa overtime calculator",
+        "secondary_keywords": [
+          "iowa overtime laws",
+          "iowa overtime pay rules 2026",
+          "how is overtime calculated in iowa",
+          "iowa overtime pay calculator"
+        ],
+        "unique_rule_sentence": "Iowa has no state overtime law, so the federal FLSA rule (1.5x pay after 40 hours in a workweek) applies to covered nonexempt workers.",
+        "url_path": "/overtime-calculator/iowa"
+      }
+    },
+    {
+      "state": "Kansas",
+      "abbr": "KS",
+      "slug": "kansas",
+      "law_category": "state_threshold_higher_than_40_but_flsa_governs_typical_case",
+      "governing_law": "Federal FLSA governs the typical case; Kansas state overtime (46 hrs) applies only where the employer/employee is not FLSA-covered (K.S.A. 44-1202(d), 44-1204(c)(1); Brown v. Ford Storage).",
+      "general_rule": {
+        "summary": ">40 hrs (FLSA - typical covered employer); >46 hrs (K.S.A. 44-1204, only employers/employees NOT covered by FLSA)",
+        "weekly_threshold_hours": 40,
+        "overtime_multiplier": 1.5,
+        "applies_to": "Typical nonexempt private-sector employee; exempt status, public-sector, CBA and special-industry rules are not assumed."
+      },
+      "daily_rule": {
+        "exists": false,
+        "details": "No daily overtime rule.",
+        "applies_generally": false
+      },
+      "weekly_rule": {
+        "exists": true,
+        "threshold_hours": 40,
+        "multiplier": 1.5,
+        "details": "Federal FLSA weekly rule (40 hrs) governs the typical case; state statute threshold (46) applies only where FLSA does not.",
+        "table_text": ">40 hrs (FLSA); >46 hrs (state, non-FLSA-covered only)"
+      },
+      "double_time_rule": {
+        "exists": false,
+        "details": "No double-time requirement."
+      },
+      "seventh_day_rule": {
+        "exists": false,
+        "details": "No seventh-day premium requirement."
+      },
+      "other_rules": [],
+      "mvp_rule": {
+        "engine": "weekly_flsa",
+        "params": {
+          "weekly_threshold_hours": 40,
+          "multiplier": 1.5,
+          "state_only_alternate_threshold_hours": 46
+        },
+        "optional_modules": [],
+        "logic": "Weekly FLSA rule (40 hours, 1.5x). Display a note: Kansas state law sets 46 hours but applies only to employers/employees not covered by the FLSA; most workers use 40."
+      },
+      "seo": {
+        "page_title": "Kansas Overtime Calculator (2026) - Overtime Pay Rules",
+        "h1": "Kansas Overtime Calculator",
+        "primary_keyword": "kansas overtime calculator",
+        "secondary_keywords": [
+          "kansas 46 hour overtime",
+          "kansas overtime laws",
+          "kansas overtime pay rules 2026",
+          "how is overtime calculated in kansas",
+          "kansas overtime pay calculator"
+        ],
+        "unique_rule_sentence": "Kansas' state overtime trigger is 46 hours, but it applies only to employers not covered by the FLSA - most Kansas workers use the federal 40-hour rule.",
+        "url_path": "/overtime-calculator/kansas"
+      }
+    },
+    {
+      "state": "Kentucky",
+      "abbr": "KY",
+      "slug": "kentucky",
+      "law_category": "state_weekly_40_rule_no_general_daily_ot",
+      "governing_law": "State law and federal FLSA both use 40 hours/week at 1.5x for the typical covered nonexempt employee; the more protective applies.",
+      "general_rule": {
+        "summary": ">40 hrs/workweek; plus 7th-day rule",
+        "weekly_threshold_hours": 40,
+        "overtime_multiplier": 1.5,
+        "applies_to": "Typical nonexempt private-sector employee; exempt status, public-sector, CBA and special-industry rules are not assumed."
+      },
+      "daily_rule": {
+        "exists": false,
+        "details": "No general daily overtime rule.",
+        "applies_generally": false
+      },
+      "weekly_rule": {
+        "exists": true,
+        "threshold_hours": 40,
+        "multiplier": 1.5,
+        "details": "1.5x the regular rate for hours over 40 in the workweek (state law; same threshold as FLSA).",
+        "table_text": ">40 hrs at 1.5x"
+      },
+      "double_time_rule": {
+        "exists": false,
+        "details": "No general double-time requirement."
+      },
+      "seventh_day_rule": {
+        "exists": true,
+        "details": "Employer who permits an employee to work seven days in one workweek pays time and a half for the time worked on the seventh day; does not apply where the employee is not permitted to work more than 40 hours in the workweek (KRS 337.050; Labor Cabinet poster; DOL table)."
+      },
+      "other_rules": [
+        "Per a secondary summary of 803 KAR 1:060, any overtime paid for the seventh day may be credited toward overtime due after 40 hours (no pyramiding)."
+      ],
+      "mvp_rule": {
+        "engine": "weekly_flsa",
+        "params": {
+          "weekly_threshold_hours": 40,
+          "multiplier": 1.5
+        },
+        "optional_modules": [
+          "ky_seventh_day"
+        ],
+        "logic": "Default: weekly FLSA/state rule (OT hrs = max(0, total - 40) x 1.5). Optional KY module: if the user worked all 7 days of the workweek AND total hours > 40, OT hours = max(weekly_OT, hours_on_7th_day) (seventh-day overtime credited toward weekly overtime). If total <= 40, no seventh-day premium (per statute text)."
+      },
+      "seo": {
+        "page_title": "Kentucky Overtime Calculator (2026) - Overtime Pay Rules",
+        "h1": "Kentucky Overtime Calculator",
+        "primary_keyword": "kentucky overtime calculator",
+        "secondary_keywords": [
+          "kentucky seventh day overtime",
+          "kentucky overtime laws",
+          "kentucky overtime pay rules 2026",
+          "how is overtime calculated in kentucky",
+          "kentucky overtime pay calculator"
+        ],
+        "unique_rule_sentence": "Kentucky requires 1.5x pay after 40 hours a week, plus time-and-a-half for hours worked on the seventh day of the workweek in covered situations.",
+        "url_path": "/overtime-calculator/kentucky"
+      }
+    },
+    {
+      "state": "Louisiana",
+      "abbr": "LA",
+      "slug": "louisiana",
+      "law_category": "flsa_baseline_no_independent_state_ot_rule",
+      "governing_law": "Federal FLSA governs; no state overtime statute identified.",
+      "general_rule": {
+        "summary": ">40 hrs/workweek (FLSA; no state OT law)",
+        "weekly_threshold_hours": 40,
+        "overtime_multiplier": 1.5,
+        "applies_to": "Typical nonexempt private-sector employee; exempt status, public-sector, CBA and special-industry rules are not assumed."
+      },
+      "daily_rule": {
+        "exists": false,
+        "details": "No state or federal daily overtime rule.",
+        "applies_generally": false
+      },
+      "weekly_rule": {
+        "exists": true,
+        "threshold_hours": 40,
+        "multiplier": 1.5,
+        "details": "Federal FLSA weekly rule: 1.5x the regular rate for hours over 40 in the fixed 7-day workweek.",
+        "table_text": ">40 hrs"
+      },
+      "double_time_rule": {
+        "exists": false,
+        "details": "No state or federal double-time requirement."
+      },
+      "seventh_day_rule": {
+        "exists": false,
+        "details": "No seventh-day premium requirement."
+      },
+      "other_rules": [],
+      "mvp_rule": {
+        "engine": "weekly_flsa",
+        "params": {
+          "weekly_threshold_hours": 40,
+          "multiplier": 1.5
+        },
+        "optional_modules": [],
+        "logic": "Weekly only: overtime hours = max(0, total hours worked in the fixed 7-day workweek - 40); overtime pay = overtime hours x regular hourly rate x 1.5. No daily overtime, no double time, no weekend/holiday premium."
+      },
+      "seo": {
+        "page_title": "Louisiana Overtime Calculator (2026) - Overtime Pay Rules",
+        "h1": "Louisiana Overtime Calculator",
+        "primary_keyword": "louisiana overtime calculator",
+        "secondary_keywords": [
+          "louisiana overtime laws",
+          "louisiana overtime pay rules 2026",
+          "how is overtime calculated in louisiana",
+          "louisiana overtime pay calculator"
+        ],
+        "unique_rule_sentence": "Louisiana has no state overtime law, so the federal FLSA rule (1.5x pay after 40 hours in a workweek) applies to covered nonexempt workers.",
+        "url_path": "/overtime-calculator/louisiana"
+      }
+    },
+    {
+      "state": "Maine",
+      "abbr": "ME",
+      "slug": "maine",
+      "law_category": "state_weekly_40_rule_no_general_daily_ot",
+      "governing_law": "State law and federal FLSA both use 40 hours/week at 1.5x for the typical covered nonexempt employee; the more protective applies.",
+      "general_rule": {
+        "summary": ">40 hrs/workweek (state law)",
+        "weekly_threshold_hours": 40,
+        "overtime_multiplier": 1.5,
+        "applies_to": "Typical nonexempt private-sector employee; exempt status, public-sector, CBA and special-industry rules are not assumed."
+      },
+      "daily_rule": {
+        "exists": false,
+        "details": "No general daily overtime rule.",
+        "applies_generally": false
+      },
+      "weekly_rule": {
+        "exists": true,
+        "threshold_hours": 40,
+        "multiplier": 1.5,
+        "details": "1.5x the regular rate for hours over 40 in the workweek (state law; same threshold as FLSA).",
+        "table_text": ">40 hrs"
+      },
+      "double_time_rule": {
+        "exists": false,
+        "details": "No general double-time requirement."
+      },
+      "seventh_day_rule": {
+        "exists": false,
+        "details": "No general seventh-day premium requirement."
+      },
+      "other_rules": [],
+      "mvp_rule": {
+        "engine": "weekly_flsa",
+        "params": {
+          "weekly_threshold_hours": 40,
+          "multiplier": 1.5
+        },
+        "optional_modules": [],
+        "logic": "Weekly only: overtime hours = max(0, total hours worked in the fixed 7-day workweek - 40); overtime pay = overtime hours x regular hourly rate x 1.5. No daily overtime, no double time, no weekend/holiday premium."
+      },
+      "seo": {
+        "page_title": "Maine Overtime Calculator (2026) - Overtime Pay Rules",
+        "h1": "Maine Overtime Calculator",
+        "primary_keyword": "maine overtime calculator",
+        "secondary_keywords": [
+          "maine overtime laws",
+          "maine overtime pay rules 2026",
+          "how is overtime calculated in maine",
+          "maine overtime pay calculator"
+        ],
+        "unique_rule_sentence": "Maine requires 1.5x pay after 40 hours in a workweek.",
+        "url_path": "/overtime-calculator/maine"
+      }
+    },
+    {
+      "state": "Maryland",
+      "abbr": "MD",
+      "slug": "maryland",
+      "law_category": "state_weekly_40_rule_no_general_daily_ot",
+      "governing_law": "State law and federal FLSA both use 40 hours/week at 1.5x for the typical covered nonexempt employee; the more protective applies.",
+      "general_rule": {
+        "summary": ">40 hrs/workweek (state law)",
+        "weekly_threshold_hours": 40,
+        "overtime_multiplier": 1.5,
+        "applies_to": "Typical nonexempt private-sector employee; exempt status, public-sector, CBA and special-industry rules are not assumed."
+      },
+      "daily_rule": {
+        "exists": false,
+        "details": "No general daily overtime rule.",
+        "applies_generally": false
+      },
+      "weekly_rule": {
+        "exists": true,
+        "threshold_hours": 40,
+        "multiplier": 1.5,
+        "details": "1.5x the regular rate for hours over 40 in the workweek (state law; same threshold as FLSA).",
+        "table_text": ">40 hrs"
+      },
+      "double_time_rule": {
+        "exists": false,
+        "details": "No general double-time requirement."
+      },
+      "seventh_day_rule": {
+        "exists": false,
+        "details": "No general seventh-day premium requirement."
+      },
+      "other_rules": [],
+      "mvp_rule": {
+        "engine": "weekly_flsa",
+        "params": {
+          "weekly_threshold_hours": 40,
+          "multiplier": 1.5
+        },
+        "optional_modules": [],
+        "logic": "Weekly only: overtime hours = max(0, total hours worked in the fixed 7-day workweek - 40); overtime pay = overtime hours x regular hourly rate x 1.5. No daily overtime, no double time, no weekend/holiday premium."
+      },
+      "seo": {
+        "page_title": "Maryland Overtime Calculator (2026) - Overtime Pay Rules",
+        "h1": "Maryland Overtime Calculator",
+        "primary_keyword": "maryland overtime calculator",
+        "secondary_keywords": [
+          "maryland overtime laws",
+          "maryland overtime pay rules 2026",
+          "how is overtime calculated in maryland",
+          "maryland overtime pay calculator"
+        ],
+        "unique_rule_sentence": "Maryland requires 1.5x pay after 40 hours a week; some farm workers receive overtime only after 60 hours.",
+        "url_path": "/overtime-calculator/maryland"
+      }
+    },
+    {
+      "state": "Massachusetts",
+      "abbr": "MA",
+      "slug": "massachusetts",
+      "law_category": "state_weekly_40_rule_no_general_daily_ot",
+      "governing_law": "State law and federal FLSA both use 40 hours/week at 1.5x for the typical covered nonexempt employee; the more protective applies.",
+      "general_rule": {
+        "summary": ">40 hrs/workweek (state law)",
+        "weekly_threshold_hours": 40,
+        "overtime_multiplier": 1.5,
+        "applies_to": "Typical nonexempt private-sector employee; exempt status, public-sector, CBA and special-industry rules are not assumed."
+      },
+      "daily_rule": {
+        "exists": false,
+        "details": "No general daily overtime rule.",
+        "applies_generally": false
+      },
+      "weekly_rule": {
+        "exists": true,
+        "threshold_hours": 40,
+        "multiplier": 1.5,
+        "details": "1.5x the regular rate for hours over 40 in the workweek (state law; same threshold as FLSA).",
+        "table_text": ">40 hrs"
+      },
+      "double_time_rule": {
+        "exists": false,
+        "details": "No general double-time requirement."
+      },
+      "seventh_day_rule": {
+        "exists": false,
+        "details": "No general seventh-day premium requirement."
+      },
+      "other_rules": [],
+      "mvp_rule": {
+        "engine": "weekly_flsa",
+        "params": {
+          "weekly_threshold_hours": 40,
+          "multiplier": 1.5
+        },
+        "optional_modules": [],
+        "logic": "Weekly only: overtime hours = max(0, total hours worked in the fixed 7-day workweek - 40); overtime pay = overtime hours x regular hourly rate x 1.5. No daily overtime, no double time, no weekend/holiday premium."
+      },
+      "seo": {
+        "page_title": "Massachusetts Overtime Calculator (2026) - Overtime Pay Rules",
+        "h1": "Massachusetts Overtime Calculator",
+        "primary_keyword": "massachusetts overtime calculator",
+        "secondary_keywords": [
+          "massachusetts overtime laws",
+          "massachusetts overtime pay rules 2026",
+          "how is overtime calculated in massachusetts",
+          "massachusetts overtime pay calculator"
+        ],
+        "unique_rule_sentence": "Massachusetts requires 1.5x pay after 40 hours a week; the old Sunday and holiday premium pay requirement for retail ended in 2023.",
+        "url_path": "/overtime-calculator/massachusetts"
+      }
+    },
+    {
+      "state": "Michigan",
+      "abbr": "MI",
+      "slug": "michigan",
+      "law_category": "state_weekly_40_rule_no_general_daily_ot",
+      "governing_law": "State law and federal FLSA both use 40 hours/week at 1.5x for the typical covered nonexempt employee; the more protective applies.",
+      "general_rule": {
+        "summary": ">40 hrs/workweek (state law)",
+        "weekly_threshold_hours": 40,
+        "overtime_multiplier": 1.5,
+        "applies_to": "Typical nonexempt private-sector employee; exempt status, public-sector, CBA and special-industry rules are not assumed."
+      },
+      "daily_rule": {
+        "exists": false,
+        "details": "No general daily overtime rule.",
+        "applies_generally": false
+      },
+      "weekly_rule": {
+        "exists": true,
+        "threshold_hours": 40,
+        "multiplier": 1.5,
+        "details": "1.5x the regular rate for hours over 40 in the workweek (state law; same threshold as FLSA).",
+        "table_text": ">40 hrs"
+      },
+      "double_time_rule": {
+        "exists": false,
+        "details": "No general double-time requirement."
+      },
+      "seventh_day_rule": {
+        "exists": false,
+        "details": "No general seventh-day premium requirement."
+      },
+      "other_rules": [],
+      "mvp_rule": {
+        "engine": "weekly_flsa",
+        "params": {
+          "weekly_threshold_hours": 40,
+          "multiplier": 1.5
+        },
+        "optional_modules": [],
+        "logic": "Weekly only: overtime hours = max(0, total hours worked in the fixed 7-day workweek - 40); overtime pay = overtime hours x regular hourly rate x 1.5. No daily overtime, no double time, no weekend/holiday premium."
+      },
+      "seo": {
+        "page_title": "Michigan Overtime Calculator (2026) - Overtime Pay Rules",
+        "h1": "Michigan Overtime Calculator",
+        "primary_keyword": "michigan overtime calculator",
+        "secondary_keywords": [
+          "michigan overtime laws",
+          "michigan overtime pay rules 2026",
+          "how is overtime calculated in michigan",
+          "michigan overtime pay calculator"
+        ],
+        "unique_rule_sentence": "Michigan requires 1.5x pay after 40 hours a week for employers with two or more employees.",
+        "url_path": "/overtime-calculator/michigan"
+      }
+    },
+    {
+      "state": "Minnesota",
+      "abbr": "MN",
+      "slug": "minnesota",
+      "law_category": "state_threshold_higher_than_40_but_flsa_governs_typical_case",
+      "governing_law": "Federal FLSA (40 hours) governs most employers; the state statute sets 48 hours for all employers and matters mainly where FLSA does not cover the worker.",
+      "general_rule": {
+        "summary": ">40 hrs (FLSA - covered employers); >48 hrs (Minn. Stat. 177.25 state law)",
+        "weekly_threshold_hours": 40,
+        "overtime_multiplier": 1.5,
+        "applies_to": "Typical nonexempt private-sector employee; exempt status, public-sector, CBA and special-industry rules are not assumed."
+      },
+      "daily_rule": {
+        "exists": false,
+        "details": "No daily overtime rule.",
+        "applies_generally": false
+      },
+      "weekly_rule": {
+        "exists": true,
+        "threshold_hours": 40,
+        "multiplier": 1.5,
+        "details": "Federal FLSA weekly rule (40 hrs) governs the typical case; state statute threshold (48) applies only where FLSA does not.",
+        "table_text": ">40 hrs (FLSA); >48 hrs (state)"
+      },
+      "double_time_rule": {
+        "exists": false,
+        "details": "No double-time requirement."
+      },
+      "seventh_day_rule": {
+        "exists": false,
+        "details": "No seventh-day premium requirement."
+      },
+      "other_rules": [],
+      "mvp_rule": {
+        "engine": "weekly_flsa",
+        "params": {
+          "weekly_threshold_hours": 40,
+          "multiplier": 1.5,
+          "state_only_alternate_threshold_hours": 48
+        },
+        "optional_modules": [],
+        "logic": "Weekly FLSA rule (40 hours, 1.5x). Display a note: Minnesota's own statute uses 48 hours but the federal 40-hour rule governs most employers; agricultural and some small-employer workers may be under the 48-hour rule."
+      },
+      "seo": {
+        "page_title": "Minnesota Overtime Calculator (2026) - Overtime Pay Rules",
+        "h1": "Minnesota Overtime Calculator",
+        "primary_keyword": "minnesota overtime calculator",
+        "secondary_keywords": [
+          "minnesota 48 hour overtime",
+          "minnesota overtime laws",
+          "minnesota overtime pay rules 2026",
+          "how is overtime calculated in minnesota",
+          "minnesota overtime pay calculator"
+        ],
+        "unique_rule_sentence": "Minnesota's state overtime threshold is 48 hours, but the federal 40-hour rule governs most employers.",
+        "url_path": "/overtime-calculator/minnesota"
+      }
+    },
+    {
+      "state": "Mississippi",
+      "abbr": "MS",
+      "slug": "mississippi",
+      "law_category": "flsa_baseline_no_independent_state_ot_rule",
+      "governing_law": "Federal FLSA governs; no state overtime statute identified.",
+      "general_rule": {
+        "summary": ">40 hrs/workweek (FLSA; no state OT law)",
+        "weekly_threshold_hours": 40,
+        "overtime_multiplier": 1.5,
+        "applies_to": "Typical nonexempt private-sector employee; exempt status, public-sector, CBA and special-industry rules are not assumed."
+      },
+      "daily_rule": {
+        "exists": false,
+        "details": "No state or federal daily overtime rule.",
+        "applies_generally": false
+      },
+      "weekly_rule": {
+        "exists": true,
+        "threshold_hours": 40,
+        "multiplier": 1.5,
+        "details": "Federal FLSA weekly rule: 1.5x the regular rate for hours over 40 in the fixed 7-day workweek.",
+        "table_text": ">40 hrs"
+      },
+      "double_time_rule": {
+        "exists": false,
+        "details": "No state or federal double-time requirement."
+      },
+      "seventh_day_rule": {
+        "exists": false,
+        "details": "No seventh-day premium requirement."
+      },
+      "other_rules": [],
+      "mvp_rule": {
+        "engine": "weekly_flsa",
+        "params": {
+          "weekly_threshold_hours": 40,
+          "multiplier": 1.5
+        },
+        "optional_modules": [],
+        "logic": "Weekly only: overtime hours = max(0, total hours worked in the fixed 7-day workweek - 40); overtime pay = overtime hours x regular hourly rate x 1.5. No daily overtime, no double time, no weekend/holiday premium."
+      },
+      "seo": {
+        "page_title": "Mississippi Overtime Calculator (2026) - Overtime Pay Rules",
+        "h1": "Mississippi Overtime Calculator",
+        "primary_keyword": "mississippi overtime calculator",
+        "secondary_keywords": [
+          "mississippi overtime laws",
+          "mississippi overtime pay rules 2026",
+          "how is overtime calculated in mississippi",
+          "mississippi overtime pay calculator"
+        ],
+        "unique_rule_sentence": "Mississippi has no state overtime law, so the federal FLSA rule (1.5x pay after 40 hours in a workweek) applies to covered nonexempt workers.",
+        "url_path": "/overtime-calculator/mississippi"
+      }
+    },
+    {
+      "state": "Missouri",
+      "abbr": "MO",
+      "slug": "missouri",
+      "law_category": "state_weekly_40_rule_no_general_daily_ot",
+      "governing_law": "Federal FLSA governs the typical FLSA-covered employer; Missouri's state weekly-40 rule covers employers outside FLSA coverage.",
+      "general_rule": {
+        "summary": ">40 hrs/workweek (state law)",
+        "weekly_threshold_hours": 40,
+        "overtime_multiplier": 1.5,
+        "applies_to": "Typical nonexempt private-sector employee; exempt status, public-sector, CBA and special-industry rules are not assumed."
+      },
+      "daily_rule": {
+        "exists": false,
+        "details": "No general daily overtime rule.",
+        "applies_generally": false
+      },
+      "weekly_rule": {
+        "exists": true,
+        "threshold_hours": 40,
+        "multiplier": 1.5,
+        "details": "1.5x the regular rate for hours over 40 in the workweek (state law; same threshold as FLSA).",
+        "table_text": ">40 hrs"
+      },
+      "double_time_rule": {
+        "exists": false,
+        "details": "No general double-time requirement."
+      },
+      "seventh_day_rule": {
+        "exists": false,
+        "details": "No general seventh-day premium requirement."
+      },
+      "other_rules": [],
+      "mvp_rule": {
+        "engine": "weekly_flsa",
+        "params": {
+          "weekly_threshold_hours": 40,
+          "multiplier": 1.5
+        },
+        "optional_modules": [],
+        "logic": "Weekly only: overtime hours = max(0, total hours worked in the fixed 7-day workweek - 40); overtime pay = overtime hours x regular hourly rate x 1.5. No daily overtime, no double time, no weekend/holiday premium."
+      },
+      "seo": {
+        "page_title": "Missouri Overtime Calculator (2026) - Overtime Pay Rules",
+        "h1": "Missouri Overtime Calculator",
+        "primary_keyword": "missouri overtime calculator",
+        "secondary_keywords": [
+          "missouri overtime laws",
+          "missouri overtime pay rules 2026",
+          "how is overtime calculated in missouri",
+          "missouri overtime pay calculator"
+        ],
+        "unique_rule_sentence": "Missouri's overtime law requires 1.5x pay after 40 hours a week, but seasonal amusement and recreation businesses use a 52-hour threshold and the FLSA governs most employers.",
+        "url_path": "/overtime-calculator/missouri"
+      }
+    },
+    {
+      "state": "Montana",
+      "abbr": "MT",
+      "slug": "montana",
+      "law_category": "state_weekly_40_rule_no_general_daily_ot",
+      "governing_law": "State law and federal FLSA both use 40 hours/week at 1.5x for the typical covered nonexempt employee; the more protective applies.",
+      "general_rule": {
+        "summary": ">40 hrs/workweek (state law)",
+        "weekly_threshold_hours": 40,
+        "overtime_multiplier": 1.5,
+        "applies_to": "Typical nonexempt private-sector employee; exempt status, public-sector, CBA and special-industry rules are not assumed."
+      },
+      "daily_rule": {
+        "exists": false,
+        "details": "No general daily overtime rule.",
+        "applies_generally": false
+      },
+      "weekly_rule": {
+        "exists": true,
+        "threshold_hours": 40,
+        "multiplier": 1.5,
+        "details": "1.5x the regular rate for hours over 40 in the workweek (state law; same threshold as FLSA).",
+        "table_text": ">40 hrs"
+      },
+      "double_time_rule": {
+        "exists": false,
+        "details": "No general double-time requirement."
+      },
+      "seventh_day_rule": {
+        "exists": false,
+        "details": "No general seventh-day premium requirement."
+      },
+      "other_rules": [],
+      "mvp_rule": {
+        "engine": "weekly_flsa",
+        "params": {
+          "weekly_threshold_hours": 40,
+          "multiplier": 1.5
+        },
+        "optional_modules": [],
+        "logic": "Weekly only: overtime hours = max(0, total hours worked in the fixed 7-day workweek - 40); overtime pay = overtime hours x regular hourly rate x 1.5. No daily overtime, no double time, no weekend/holiday premium."
+      },
+      "seo": {
+        "page_title": "Montana Overtime Calculator (2026) - Overtime Pay Rules",
+        "h1": "Montana Overtime Calculator",
+        "primary_keyword": "montana overtime calculator",
+        "secondary_keywords": [
+          "montana overtime laws",
+          "montana overtime pay rules 2026",
+          "how is overtime calculated in montana",
+          "montana overtime pay calculator"
+        ],
+        "unique_rule_sentence": "Montana requires 1.5x pay after 40 hours a week.",
+        "url_path": "/overtime-calculator/montana"
+      }
+    },
+    {
+      "state": "Nebraska",
+      "abbr": "NE",
+      "slug": "nebraska",
+      "law_category": "flsa_baseline_no_independent_state_ot_rule",
+      "governing_law": "Federal FLSA governs; no state overtime statute identified.",
+      "general_rule": {
+        "summary": ">40 hrs/workweek (FLSA; no state OT law)",
+        "weekly_threshold_hours": 40,
+        "overtime_multiplier": 1.5,
+        "applies_to": "Typical nonexempt private-sector employee; exempt status, public-sector, CBA and special-industry rules are not assumed."
+      },
+      "daily_rule": {
+        "exists": false,
+        "details": "No state or federal daily overtime rule.",
+        "applies_generally": false
+      },
+      "weekly_rule": {
+        "exists": true,
+        "threshold_hours": 40,
+        "multiplier": 1.5,
+        "details": "Federal FLSA weekly rule: 1.5x the regular rate for hours over 40 in the fixed 7-day workweek.",
+        "table_text": ">40 hrs"
+      },
+      "double_time_rule": {
+        "exists": false,
+        "details": "No state or federal double-time requirement."
+      },
+      "seventh_day_rule": {
+        "exists": false,
+        "details": "No seventh-day premium requirement."
+      },
+      "other_rules": [],
+      "mvp_rule": {
+        "engine": "weekly_flsa",
+        "params": {
+          "weekly_threshold_hours": 40,
+          "multiplier": 1.5
+        },
+        "optional_modules": [],
+        "logic": "Weekly only: overtime hours = max(0, total hours worked in the fixed 7-day workweek - 40); overtime pay = overtime hours x regular hourly rate x 1.5. No daily overtime, no double time, no weekend/holiday premium."
+      },
+      "seo": {
+        "page_title": "Nebraska Overtime Calculator (2026) - Overtime Pay Rules",
+        "h1": "Nebraska Overtime Calculator",
+        "primary_keyword": "nebraska overtime calculator",
+        "secondary_keywords": [
+          "nebraska overtime laws",
+          "nebraska overtime pay rules 2026",
+          "how is overtime calculated in nebraska",
+          "nebraska overtime pay calculator"
+        ],
+        "unique_rule_sentence": "Nebraska has no state overtime law, so the federal FLSA rule (1.5x pay after 40 hours in a workweek) applies to covered nonexempt workers.",
+        "url_path": "/overtime-calculator/nebraska"
+      }
+    },
+    {
+      "state": "Nevada",
+      "abbr": "NV",
+      "slug": "nevada",
+      "law_category": "state_daily_or_unusual_general_rules",
+      "governing_law": "State law governs for employees paid under 1.5x minimum wage (adds daily trigger); FLSA weekly rule applies to all covered employees.",
+      "general_rule": {
+        "summary": ">40 hrs/week for all; PLUS >8 hrs in a workday if regular rate < $18.00/hr (1.5x the $12.00 minimum wage)",
+        "weekly_threshold_hours": 40,
+        "overtime_multiplier": 1.5,
+        "applies_to": "Typical nonexempt private-sector employee; exempt status, public-sector, CBA and special-industry rules are not assumed."
+      },
+      "daily_rule": {
+        "exists": true,
+        "applies_generally": false,
+        "conditional_on": "regular rate below 1.5x the state minimum wage ($18.00/hr while minimum wage is $12.00)",
+        "details": "Employees paid less than 1.5x the state minimum wage ($18.00/hour while the minimum is $12.00) receive 1.5x for hours over 8 in a workday, unless by mutual agreement they work a scheduled 10 hours per day for 4 calendar days in a scheduled week (NRS 608.018(1)(b))."
+      },
+      "weekly_rule": {
+        "exists": true,
+        "threshold_hours": 40,
+        "multiplier": 1.5,
+        "details": "1.5x the regular rate for hours over 40 in the workweek (in addition to the daily rules above).",
+        "table_text": ">40 hrs/week at 1.5x (all rates)"
+      },
+      "double_time_rule": {
+        "exists": false,
+        "details": "No double-time requirement."
+      },
+      "seventh_day_rule": {
+        "exists": false,
+        "details": "No seventh-day premium requirement."
+      },
+      "other_rules": [
+        "Workday = 24 consecutive hours beginning when the employee begins work (NRS 608.0126); it need not be a calendar day. Labor Commissioner Advisory Opinion 2025-07 addresses rolling vs. overlapping workdays (holding not fully reviewed).",
+        "Labor Commissioner Advisory Opinion 2025-05 (June 25, 2025; advisory, fact-specific): where both daily and weekly overtime could apply, pay whichever yields more overtime hours - daily and weekly overtime are not stacked (e.g., 10 daily OT hours vs 4 weekly OT hours = 10 OT hours; 2 daily vs 4 weekly = 4 OT hours).",
+        "Minimum wage is a single $12.00 rate since July 1, 2024 (two-tier system eliminated); the $18.00 threshold is recalculated whenever the minimum wage changes."
+      ],
+      "mvp_rule": {
+        "engine": "nevada",
+        "params": {
+          "min_wage": 12,
+          "rate_threshold_multiple": 1.5,
+          "rate_threshold": 18,
+          "daily_ot_after_hours": 8,
+          "weekly_ot_after_hours": 40,
+          "multiplier": 1.5,
+          "method": "greater_of_daily_or_weekly_ot_hours",
+          "four_ten_exception": true
+        },
+        "optional_modules": [],
+        "logic": "regular_rate < 18.00 (recompute as 1.5 x current state minimum wage): daily_OT = sum over days of max(0, hours_day - 8); weekly_OT = max(0, total - 40); OT hours = max(daily_OT, weekly_OT) at 1.5x (no stacking, per Labor Commissioner AO 2025-05). regular_rate >= 18.00: weekly_OT only. Treat each entered day as one workday (approximation for overnight/split shifts); ask about a 4x10 agreement only as an optional toggle."
+      },
+      "seo": {
+        "page_title": "Nevada Overtime Calculator (2026) - Overtime Pay Rules",
+        "h1": "Nevada Overtime Calculator",
+        "primary_keyword": "nevada overtime calculator",
+        "secondary_keywords": [
+          "nevada daily overtime calculator",
+          "nevada 8 hour overtime rule",
+          "nevada overtime laws",
+          "nevada overtime pay rules 2026",
+          "how is overtime calculated in nevada"
+        ],
+        "unique_rule_sentence": "Nevada requires 1.5x pay after 8 hours in a workday for employees earning under $18.00 an hour, and after 40 hours a week for everyone.",
+        "url_path": "/overtime-calculator/nevada"
+      }
+    },
+    {
+      "state": "New Hampshire",
+      "abbr": "NH",
+      "slug": "new-hampshire",
+      "law_category": "state_weekly_40_rule_no_general_daily_ot",
+      "governing_law": "State law and federal FLSA both use 40 hours/week at 1.5x for the typical covered nonexempt employee; the more protective applies.",
+      "general_rule": {
+        "summary": ">40 hrs/workweek (state law)",
+        "weekly_threshold_hours": 40,
+        "overtime_multiplier": 1.5,
+        "applies_to": "Typical nonexempt private-sector employee; exempt status, public-sector, CBA and special-industry rules are not assumed."
+      },
+      "daily_rule": {
+        "exists": false,
+        "details": "No general daily overtime rule.",
+        "applies_generally": false
+      },
+      "weekly_rule": {
+        "exists": true,
+        "threshold_hours": 40,
+        "multiplier": 1.5,
+        "details": "1.5x the regular rate for hours over 40 in the workweek (state law; same threshold as FLSA).",
+        "table_text": ">40 hrs"
+      },
+      "double_time_rule": {
+        "exists": false,
+        "details": "No general double-time requirement."
+      },
+      "seventh_day_rule": {
+        "exists": false,
+        "details": "No general seventh-day premium requirement."
+      },
+      "other_rules": [],
+      "mvp_rule": {
+        "engine": "weekly_flsa",
+        "params": {
+          "weekly_threshold_hours": 40,
+          "multiplier": 1.5
+        },
+        "optional_modules": [],
+        "logic": "Weekly only: overtime hours = max(0, total hours worked in the fixed 7-day workweek - 40); overtime pay = overtime hours x regular hourly rate x 1.5. No daily overtime, no double time, no weekend/holiday premium."
+      },
+      "seo": {
+        "page_title": "New Hampshire Overtime Calculator (2026) - Overtime Pay Rules",
+        "h1": "New Hampshire Overtime Calculator",
+        "primary_keyword": "new hampshire overtime calculator",
+        "secondary_keywords": [
+          "new hampshire overtime laws",
+          "new hampshire overtime pay rules 2026",
+          "how is overtime calculated in new hampshire",
+          "new hampshire overtime pay calculator"
+        ],
+        "unique_rule_sentence": "New Hampshire requires 1.5x pay after 40 hours a week.",
+        "url_path": "/overtime-calculator/new-hampshire"
+      }
+    },
+    {
+      "state": "New Jersey",
+      "abbr": "NJ",
+      "slug": "new-jersey",
+      "law_category": "state_weekly_40_rule_no_general_daily_ot",
+      "governing_law": "State law and federal FLSA both use 40 hours/week at 1.5x for the typical covered nonexempt employee; the more protective applies.",
+      "general_rule": {
+        "summary": ">40 hrs/workweek (state law)",
+        "weekly_threshold_hours": 40,
+        "overtime_multiplier": 1.5,
+        "applies_to": "Typical nonexempt private-sector employee; exempt status, public-sector, CBA and special-industry rules are not assumed."
+      },
+      "daily_rule": {
+        "exists": false,
+        "details": "No general daily overtime rule.",
+        "applies_generally": false
+      },
+      "weekly_rule": {
+        "exists": true,
+        "threshold_hours": 40,
+        "multiplier": 1.5,
+        "details": "1.5x the regular rate for hours over 40 in the workweek (state law; same threshold as FLSA).",
+        "table_text": ">40 hrs"
+      },
+      "double_time_rule": {
+        "exists": false,
+        "details": "No general double-time requirement."
+      },
+      "seventh_day_rule": {
+        "exists": false,
+        "details": "No general seventh-day premium requirement."
+      },
+      "other_rules": [],
+      "mvp_rule": {
+        "engine": "weekly_flsa",
+        "params": {
+          "weekly_threshold_hours": 40,
+          "multiplier": 1.5
+        },
+        "optional_modules": [],
+        "logic": "Weekly only: overtime hours = max(0, total hours worked in the fixed 7-day workweek - 40); overtime pay = overtime hours x regular hourly rate x 1.5. No daily overtime, no double time, no weekend/holiday premium."
+      },
+      "seo": {
+        "page_title": "New Jersey Overtime Calculator (2026) - Overtime Pay Rules",
+        "h1": "New Jersey Overtime Calculator",
+        "primary_keyword": "new jersey overtime calculator",
+        "secondary_keywords": [
+          "new jersey overtime laws",
+          "new jersey overtime pay rules 2026",
+          "how is overtime calculated in new jersey",
+          "new jersey overtime pay calculator"
+        ],
+        "unique_rule_sentence": "New Jersey requires 1.5x pay after 40 hours a week.",
+        "url_path": "/overtime-calculator/new-jersey"
+      }
+    },
+    {
+      "state": "New Mexico",
+      "abbr": "NM",
+      "slug": "new-mexico",
+      "law_category": "state_weekly_40_rule_no_general_daily_ot",
+      "governing_law": "State law and federal FLSA both use 40 hours/week at 1.5x for the typical covered nonexempt employee; the more protective applies.",
+      "general_rule": {
+        "summary": ">40 hrs/workweek (state law)",
+        "weekly_threshold_hours": 40,
+        "overtime_multiplier": 1.5,
+        "applies_to": "Typical nonexempt private-sector employee; exempt status, public-sector, CBA and special-industry rules are not assumed."
+      },
+      "daily_rule": {
+        "exists": false,
+        "details": "No general daily overtime rule.",
+        "applies_generally": false
+      },
+      "weekly_rule": {
+        "exists": true,
+        "threshold_hours": 40,
+        "multiplier": 1.5,
+        "details": "1.5x the regular rate for hours over 40 in the workweek (state law; same threshold as FLSA).",
+        "table_text": ">40 hrs"
+      },
+      "double_time_rule": {
+        "exists": false,
+        "details": "No general double-time requirement."
+      },
+      "seventh_day_rule": {
+        "exists": false,
+        "details": "No general seventh-day premium requirement."
+      },
+      "other_rules": [],
+      "mvp_rule": {
+        "engine": "weekly_flsa",
+        "params": {
+          "weekly_threshold_hours": 40,
+          "multiplier": 1.5
+        },
+        "optional_modules": [],
+        "logic": "Weekly only: overtime hours = max(0, total hours worked in the fixed 7-day workweek - 40); overtime pay = overtime hours x regular hourly rate x 1.5. No daily overtime, no double time, no weekend/holiday premium."
+      },
+      "seo": {
+        "page_title": "New Mexico Overtime Calculator (2026) - Overtime Pay Rules",
+        "h1": "New Mexico Overtime Calculator",
+        "primary_keyword": "new mexico overtime calculator",
+        "secondary_keywords": [
+          "new mexico overtime laws",
+          "new mexico overtime pay rules 2026",
+          "how is overtime calculated in new mexico",
+          "new mexico overtime pay calculator"
+        ],
+        "unique_rule_sentence": "New Mexico requires 1.5x pay after 40 hours a week.",
+        "url_path": "/overtime-calculator/new-mexico"
+      }
+    },
+    {
+      "state": "New York",
+      "abbr": "NY",
+      "slug": "new-york",
+      "law_category": "state_weekly_40_rule_no_general_daily_ot",
+      "governing_law": "State and FLSA both use 40 for most nonexempt workers; state law sets different thresholds for residential and farm workers.",
+      "general_rule": {
+        "summary": ">40 hrs/week (most); >44 hrs (residential/live-in employees); farm laborers >52 hrs in 2026",
+        "weekly_threshold_hours": 40,
+        "overtime_multiplier": 1.5,
+        "applies_to": "Typical nonexempt private-sector employee; exempt status, public-sector, CBA and special-industry rules are not assumed."
+      },
+      "daily_rule": {
+        "exists": false,
+        "details": "No daily overtime rule.",
+        "applies_generally": false
+      },
+      "weekly_rule": {
+        "exists": true,
+        "threshold_hours": 40,
+        "multiplier": 1.5,
+        "details": "1.5x the regular rate for hours over 40 in the workweek (state law; same threshold as FLSA).",
+        "table_text": ">40 hrs (44 residential; 52 farm laborers in 2026)"
+      },
+      "double_time_rule": {
+        "exists": false,
+        "details": "No double-time requirement."
+      },
+      "seventh_day_rule": {
+        "exists": false,
+        "details": "No general seventh-day premium (domestic workers and some building/industry employees have rest-day rules - see exceptions)."
+      },
+      "other_rules": [
+        "Spread-of-hours pay (1 extra hour at minimum wage when the workday spread exceeds 10 hours or there is a split shift) is a separate premium, not overtime (DOL table)."
+      ],
+      "mvp_rule": {
+        "engine": "weekly_flsa",
+        "params": {
+          "weekly_threshold_hours": 40,
+          "multiplier": 1.5
+        },
+        "optional_modules": [
+          "ny_residential_44",
+          "ny_farm_threshold_schedule"
+        ],
+        "logic": "Default: weekly FLSA/state rule (OT hrs = max(0, total - 40) x 1.5). Optional toggles: live-in/residential employee -> threshold 44; farm laborer -> threshold from schedule (2026-2027: 52; 2028-2029: 48; 2030-2031: 44; 2032+: 40). No daily overtime."
+      },
+      "seo": {
+        "page_title": "New York Overtime Calculator (2026) - Overtime Pay Rules",
+        "h1": "New York Overtime Calculator",
+        "primary_keyword": "new york overtime calculator",
+        "secondary_keywords": [
+          "new york farm worker overtime",
+          "new york live-in employee overtime 44 hours",
+          "new york overtime laws",
+          "new york overtime pay rules 2026",
+          "how is overtime calculated in new york"
+        ],
+        "unique_rule_sentence": "New York uses 40 hours a week for most workers, 44 for residential (live-in) workers, and a farm-worker overtime threshold that fell to 52 hours in 2026.",
+        "url_path": "/overtime-calculator/new-york"
+      }
+    },
+    {
+      "state": "North Carolina",
+      "abbr": "NC",
+      "slug": "north-carolina",
+      "law_category": "state_weekly_40_rule_no_general_daily_ot",
+      "governing_law": "State law and federal FLSA both use 40 hours/week at 1.5x for the typical covered nonexempt employee; the more protective applies.",
+      "general_rule": {
+        "summary": ">40 hrs/workweek (state law)",
+        "weekly_threshold_hours": 40,
+        "overtime_multiplier": 1.5,
+        "applies_to": "Typical nonexempt private-sector employee; exempt status, public-sector, CBA and special-industry rules are not assumed."
+      },
+      "daily_rule": {
+        "exists": false,
+        "details": "No general daily overtime rule.",
+        "applies_generally": false
+      },
+      "weekly_rule": {
+        "exists": true,
+        "threshold_hours": 40,
+        "multiplier": 1.5,
+        "details": "1.5x the regular rate for hours over 40 in the workweek (state law; same threshold as FLSA).",
+        "table_text": ">40 hrs"
+      },
+      "double_time_rule": {
+        "exists": false,
+        "details": "No general double-time requirement."
+      },
+      "seventh_day_rule": {
+        "exists": false,
+        "details": "No general seventh-day premium requirement."
+      },
+      "other_rules": [],
+      "mvp_rule": {
+        "engine": "weekly_flsa",
+        "params": {
+          "weekly_threshold_hours": 40,
+          "multiplier": 1.5
+        },
+        "optional_modules": [],
+        "logic": "Weekly only: overtime hours = max(0, total hours worked in the fixed 7-day workweek - 40); overtime pay = overtime hours x regular hourly rate x 1.5. No daily overtime, no double time, no weekend/holiday premium."
+      },
+      "seo": {
+        "page_title": "North Carolina Overtime Calculator (2026) - Overtime Pay Rules",
+        "h1": "North Carolina Overtime Calculator",
+        "primary_keyword": "north carolina overtime calculator",
+        "secondary_keywords": [
+          "north carolina overtime laws",
+          "north carolina overtime pay rules 2026",
+          "how is overtime calculated in north carolina",
+          "north carolina overtime pay calculator"
+        ],
+        "unique_rule_sentence": "North Carolina requires 1.5x pay after 40 hours a week; seasonal amusement and recreation businesses use a 45-hour threshold.",
+        "url_path": "/overtime-calculator/north-carolina"
+      }
+    },
+    {
+      "state": "North Dakota",
+      "abbr": "ND",
+      "slug": "north-dakota",
+      "law_category": "state_weekly_40_rule_no_general_daily_ot",
+      "governing_law": "State law and federal FLSA both use 40 hours/week at 1.5x for the typical covered nonexempt employee; the more protective applies.",
+      "general_rule": {
+        "summary": ">40 hrs/workweek (state law)",
+        "weekly_threshold_hours": 40,
+        "overtime_multiplier": 1.5,
+        "applies_to": "Typical nonexempt private-sector employee; exempt status, public-sector, CBA and special-industry rules are not assumed."
+      },
+      "daily_rule": {
+        "exists": false,
+        "details": "No general daily overtime rule.",
+        "applies_generally": false
+      },
+      "weekly_rule": {
+        "exists": true,
+        "threshold_hours": 40,
+        "multiplier": 1.5,
+        "details": "1.5x the regular rate for hours over 40 in the workweek (state law; same threshold as FLSA).",
+        "table_text": ">40 hrs"
+      },
+      "double_time_rule": {
+        "exists": false,
+        "details": "No general double-time requirement."
+      },
+      "seventh_day_rule": {
+        "exists": false,
+        "details": "No general seventh-day premium requirement."
+      },
+      "other_rules": [],
+      "mvp_rule": {
+        "engine": "weekly_flsa",
+        "params": {
+          "weekly_threshold_hours": 40,
+          "multiplier": 1.5
+        },
+        "optional_modules": [],
+        "logic": "Weekly only: overtime hours = max(0, total hours worked in the fixed 7-day workweek - 40); overtime pay = overtime hours x regular hourly rate x 1.5. No daily overtime, no double time, no weekend/holiday premium."
+      },
+      "seo": {
+        "page_title": "North Dakota Overtime Calculator (2026) - Overtime Pay Rules",
+        "h1": "North Dakota Overtime Calculator",
+        "primary_keyword": "north dakota overtime calculator",
+        "secondary_keywords": [
+          "north dakota overtime laws",
+          "north dakota overtime pay rules 2026",
+          "how is overtime calculated in north dakota",
+          "north dakota overtime pay calculator"
+        ],
+        "unique_rule_sentence": "North Dakota requires 1.5x pay after 40 hours a week.",
+        "url_path": "/overtime-calculator/north-dakota"
+      }
+    },
+    {
+      "state": "Ohio",
+      "abbr": "OH",
+      "slug": "ohio",
+      "law_category": "state_weekly_40_rule_no_general_daily_ot",
+      "governing_law": "State law and federal FLSA both use 40 hours/week at 1.5x for the typical covered nonexempt employee; the more protective applies.",
+      "general_rule": {
+        "summary": ">40 hrs/workweek (state law)",
+        "weekly_threshold_hours": 40,
+        "overtime_multiplier": 1.5,
+        "applies_to": "Typical nonexempt private-sector employee; exempt status, public-sector, CBA and special-industry rules are not assumed."
+      },
+      "daily_rule": {
+        "exists": false,
+        "details": "No general daily overtime rule.",
+        "applies_generally": false
+      },
+      "weekly_rule": {
+        "exists": true,
+        "threshold_hours": 40,
+        "multiplier": 1.5,
+        "details": "1.5x the regular rate for hours over 40 in the workweek (state law; same threshold as FLSA).",
+        "table_text": ">40 hrs"
+      },
+      "double_time_rule": {
+        "exists": false,
+        "details": "No general double-time requirement."
+      },
+      "seventh_day_rule": {
+        "exists": false,
+        "details": "No general seventh-day premium requirement."
+      },
+      "other_rules": [],
+      "mvp_rule": {
+        "engine": "weekly_flsa",
+        "params": {
+          "weekly_threshold_hours": 40,
+          "multiplier": 1.5
+        },
+        "optional_modules": [],
+        "logic": "Weekly only: overtime hours = max(0, total hours worked in the fixed 7-day workweek - 40); overtime pay = overtime hours x regular hourly rate x 1.5. No daily overtime, no double time, no weekend/holiday premium."
+      },
+      "seo": {
+        "page_title": "Ohio Overtime Calculator (2026) - Overtime Pay Rules",
+        "h1": "Ohio Overtime Calculator",
+        "primary_keyword": "ohio overtime calculator",
+        "secondary_keywords": [
+          "ohio overtime laws",
+          "ohio overtime pay rules 2026",
+          "how is overtime calculated in ohio",
+          "ohio overtime pay calculator"
+        ],
+        "unique_rule_sentence": "Ohio requires 1.5x pay after 40 hours a week, tracking the federal FLSA.",
+        "url_path": "/overtime-calculator/ohio"
+      }
+    },
+    {
+      "state": "Oklahoma",
+      "abbr": "OK",
+      "slug": "oklahoma",
+      "law_category": "flsa_baseline_no_independent_state_ot_rule",
+      "governing_law": "Federal FLSA governs; no state overtime statute identified.",
+      "general_rule": {
+        "summary": ">40 hrs/workweek (FLSA; no state OT law)",
+        "weekly_threshold_hours": 40,
+        "overtime_multiplier": 1.5,
+        "applies_to": "Typical nonexempt private-sector employee; exempt status, public-sector, CBA and special-industry rules are not assumed."
+      },
+      "daily_rule": {
+        "exists": false,
+        "details": "No state or federal daily overtime rule.",
+        "applies_generally": false
+      },
+      "weekly_rule": {
+        "exists": true,
+        "threshold_hours": 40,
+        "multiplier": 1.5,
+        "details": "Federal FLSA weekly rule: 1.5x the regular rate for hours over 40 in the fixed 7-day workweek.",
+        "table_text": ">40 hrs"
+      },
+      "double_time_rule": {
+        "exists": false,
+        "details": "No state or federal double-time requirement."
+      },
+      "seventh_day_rule": {
+        "exists": false,
+        "details": "No seventh-day premium requirement."
+      },
+      "other_rules": [],
+      "mvp_rule": {
+        "engine": "weekly_flsa",
+        "params": {
+          "weekly_threshold_hours": 40,
+          "multiplier": 1.5
+        },
+        "optional_modules": [],
+        "logic": "Weekly only: overtime hours = max(0, total hours worked in the fixed 7-day workweek - 40); overtime pay = overtime hours x regular hourly rate x 1.5. No daily overtime, no double time, no weekend/holiday premium."
+      },
+      "seo": {
+        "page_title": "Oklahoma Overtime Calculator (2026) - Overtime Pay Rules",
+        "h1": "Oklahoma Overtime Calculator",
+        "primary_keyword": "oklahoma overtime calculator",
+        "secondary_keywords": [
+          "oklahoma overtime laws",
+          "oklahoma overtime pay rules 2026",
+          "how is overtime calculated in oklahoma",
+          "oklahoma overtime pay calculator"
+        ],
+        "unique_rule_sentence": "Oklahoma has no state overtime law, so the federal FLSA rule (1.5x pay after 40 hours in a workweek) applies to covered nonexempt workers.",
+        "url_path": "/overtime-calculator/oklahoma"
+      }
+    },
+    {
+      "state": "Oregon",
+      "abbr": "OR",
+      "slug": "oregon",
+      "law_category": "state_weekly_40_rule_no_general_daily_ot",
+      "governing_law": "State and FLSA both use 40 hours/week for most workers; Oregon adds industry-specific daily and agricultural rules.",
+      "general_rule": {
+        "summary": ">40 hrs/week (most); >10 hrs/day in manufacturing and cannery/dryer/packing plants; farm workers >48 hrs in 2026 (40 from 2027-01-01)",
+        "weekly_threshold_hours": 40,
+        "overtime_multiplier": 1.5,
+        "applies_to": "Typical nonexempt private-sector employee; exempt status, public-sector, CBA and special-industry rules are not assumed."
+      },
+      "daily_rule": {
+        "exists": true,
+        "applies_generally": false,
+        "scope": "manufacturing establishments and non-farm canneries/driers/packing plants only",
+        "details": "Daily overtime after 10 hours applies only to mills, factories and manufacturing establishments (ORS 652.020) and to non-farm canneries, driers and packing plants (ORS 653.265) - not a general daily rule."
+      },
+      "weekly_rule": {
+        "exists": true,
+        "threshold_hours": 40,
+        "multiplier": 1.5,
+        "details": "1.5x the regular rate for hours over 40 in the workweek (state law; same threshold as FLSA).",
+        "table_text": ">40 hrs at 1.5x"
+      },
+      "double_time_rule": {
+        "exists": false,
+        "details": "No double-time requirement."
+      },
+      "seventh_day_rule": {
+        "exists": false,
+        "details": "No seventh-day premium requirement."
+      },
+      "other_rules": [
+        "Manufacturing establishments: BOLI states daily overtime after 10 hours and a 13-hour daily maximum (ORS 652.020(1)(b)); secondary law-firm reports say BOLI revised its guidance so covered manufacturing employees may be owed both daily and weekly overtime rather than the greater of the two - date/details not confirmed in this research."
+      ],
+      "mvp_rule": {
+        "engine": "weekly_flsa",
+        "params": {
+          "weekly_threshold_hours": 40,
+          "multiplier": 1.5
+        },
+        "optional_modules": [
+          "or_manufacturing_daily_10",
+          "or_ag_threshold_schedule"
+        ],
+        "logic": "Default: weekly rule (OT hrs = max(0, total - 40) x 1.5). Optional toggles: (a) manufacturing/cannery/packing-plant worker -> also daily OT after 10 hours (greater-of vs. weekly; flag BOLI guidance change); (b) agricultural worker -> weekly threshold 48 until 2026-12-31, 40 from 2027-01-01."
+      },
+      "seo": {
+        "page_title": "Oregon Overtime Calculator (2026) - Overtime Pay Rules",
+        "h1": "Oregon Overtime Calculator",
+        "primary_keyword": "oregon overtime calculator",
+        "secondary_keywords": [
+          "oregon manufacturing overtime 10 hours",
+          "oregon agricultural overtime 2026",
+          "oregon overtime laws",
+          "oregon overtime pay rules 2026",
+          "how is overtime calculated in oregon"
+        ],
+        "unique_rule_sentence": "Oregon requires 1.5x pay after 40 hours a week, with a 10-hour daily rule for manufacturing and cannery/packing workers and a 48-hour farm-worker threshold in 2026.",
+        "url_path": "/overtime-calculator/oregon"
+      }
+    },
+    {
+      "state": "Pennsylvania",
+      "abbr": "PA",
+      "slug": "pennsylvania",
+      "law_category": "state_weekly_40_rule_no_general_daily_ot",
+      "governing_law": "State law and federal FLSA both use 40 hours/week at 1.5x for the typical covered nonexempt employee; the more protective applies.",
+      "general_rule": {
+        "summary": ">40 hrs/workweek (state law)",
+        "weekly_threshold_hours": 40,
+        "overtime_multiplier": 1.5,
+        "applies_to": "Typical nonexempt private-sector employee; exempt status, public-sector, CBA and special-industry rules are not assumed."
+      },
+      "daily_rule": {
+        "exists": false,
+        "details": "No general daily overtime rule.",
+        "applies_generally": false
+      },
+      "weekly_rule": {
+        "exists": true,
+        "threshold_hours": 40,
+        "multiplier": 1.5,
+        "details": "1.5x the regular rate for hours over 40 in the workweek (state law; same threshold as FLSA).",
+        "table_text": ">40 hrs"
+      },
+      "double_time_rule": {
+        "exists": false,
+        "details": "No general double-time requirement."
+      },
+      "seventh_day_rule": {
+        "exists": false,
+        "details": "No general seventh-day premium requirement."
+      },
+      "other_rules": [],
+      "mvp_rule": {
+        "engine": "weekly_flsa",
+        "params": {
+          "weekly_threshold_hours": 40,
+          "multiplier": 1.5
+        },
+        "optional_modules": [],
+        "logic": "Weekly only: overtime hours = max(0, total hours worked in the fixed 7-day workweek - 40); overtime pay = overtime hours x regular hourly rate x 1.5. No daily overtime, no double time, no weekend/holiday premium."
+      },
+      "seo": {
+        "page_title": "Pennsylvania Overtime Calculator (2026) - Overtime Pay Rules",
+        "h1": "Pennsylvania Overtime Calculator",
+        "primary_keyword": "pennsylvania overtime calculator",
+        "secondary_keywords": [
+          "pennsylvania overtime laws",
+          "pennsylvania overtime pay rules 2026",
+          "how is overtime calculated in pennsylvania",
+          "pennsylvania overtime pay calculator"
+        ],
+        "unique_rule_sentence": "Pennsylvania requires 1.5x pay after 40 hours a week.",
+        "url_path": "/overtime-calculator/pennsylvania"
+      }
+    },
+    {
+      "state": "Rhode Island",
+      "abbr": "RI",
+      "slug": "rhode-island",
+      "law_category": "state_weekly_40_rule_no_general_daily_ot",
+      "governing_law": "State and FLSA both use 40 hours/week; Rhode Island adds separate Sunday/holiday time-and-a-half requirements.",
+      "general_rule": {
+        "summary": ">40 hrs/week; plus Sunday/holiday premium (separate laws)",
+        "weekly_threshold_hours": 40,
+        "overtime_multiplier": 1.5,
+        "applies_to": "Typical nonexempt private-sector employee; exempt status, public-sector, CBA and special-industry rules are not assumed."
+      },
+      "daily_rule": {
+        "exists": false,
+        "details": "No daily overtime rule.",
+        "applies_generally": false
+      },
+      "weekly_rule": {
+        "exists": true,
+        "threshold_hours": 40,
+        "multiplier": 1.5,
+        "details": "1.5x the regular rate for hours over 40 in the workweek (state law; same threshold as FLSA).",
+        "table_text": ">40 hrs at 1.5x"
+      },
+      "double_time_rule": {
+        "exists": false,
+        "details": "No double-time requirement."
+      },
+      "seventh_day_rule": {
+        "exists": false,
+        "details": "No consecutive-day rule; see Sunday/holiday premium."
+      },
+      "other_rules": [
+        "Sunday and certain holiday work: time-and-a-half required under two laws separate from the minimum wage law (DOL table). Non-retail employers pay overtime (over 40) and the Sunday/holiday premium separately (stacking); retail businesses may exclude Sunday/holiday hours paid at 1.5x from the weekly overtime calculation (secondary reports of DLT regulation effective Aug. 17, 2025)."
+      ],
+      "mvp_rule": {
+        "engine": "weekly_flsa",
+        "params": {
+          "weekly_threshold_hours": 40,
+          "multiplier": 1.5
+        },
+        "optional_modules": [
+          "ri_sunday_holiday"
+        ],
+        "logic": "Default: weekly rule (OT hrs = max(0, total - 40) x 1.5). Optional module: ask Sunday/holiday hours and whether the employer is a retail business. Non-retail: Sunday/holiday hours get +0.5x premium AND weekly OT premium is computed on total hours (stacked). Retail: pay Sunday/holiday hours at 1.5x, exclude them from the weekly count, then apply weekly OT to the remaining hours over 40."
+      },
+      "seo": {
+        "page_title": "Rhode Island Overtime Calculator (2026) - Overtime Pay Rules",
+        "h1": "Rhode Island Overtime Calculator",
+        "primary_keyword": "rhode island overtime calculator",
+        "secondary_keywords": [
+          "rhode island sunday holiday pay",
+          "rhode island sunday overtime",
+          "rhode island overtime laws",
+          "rhode island overtime pay rules 2026",
+          "how is overtime calculated in rhode island"
+        ],
+        "unique_rule_sentence": "Rhode Island requires 1.5x pay after 40 hours a week and separate time-and-a-half for Sunday and certain holiday work.",
+        "url_path": "/overtime-calculator/rhode-island"
+      }
+    },
+    {
+      "state": "South Carolina",
+      "abbr": "SC",
+      "slug": "south-carolina",
+      "law_category": "flsa_baseline_no_independent_state_ot_rule",
+      "governing_law": "Federal FLSA governs; no state overtime statute identified.",
+      "general_rule": {
+        "summary": ">40 hrs/workweek (FLSA; no state OT law)",
+        "weekly_threshold_hours": 40,
+        "overtime_multiplier": 1.5,
+        "applies_to": "Typical nonexempt private-sector employee; exempt status, public-sector, CBA and special-industry rules are not assumed."
+      },
+      "daily_rule": {
+        "exists": false,
+        "details": "No state or federal daily overtime rule.",
+        "applies_generally": false
+      },
+      "weekly_rule": {
+        "exists": true,
+        "threshold_hours": 40,
+        "multiplier": 1.5,
+        "details": "Federal FLSA weekly rule: 1.5x the regular rate for hours over 40 in the fixed 7-day workweek.",
+        "table_text": ">40 hrs"
+      },
+      "double_time_rule": {
+        "exists": false,
+        "details": "No state or federal double-time requirement."
+      },
+      "seventh_day_rule": {
+        "exists": false,
+        "details": "No seventh-day premium requirement."
+      },
+      "other_rules": [],
+      "mvp_rule": {
+        "engine": "weekly_flsa",
+        "params": {
+          "weekly_threshold_hours": 40,
+          "multiplier": 1.5
+        },
+        "optional_modules": [],
+        "logic": "Weekly only: overtime hours = max(0, total hours worked in the fixed 7-day workweek - 40); overtime pay = overtime hours x regular hourly rate x 1.5. No daily overtime, no double time, no weekend/holiday premium."
+      },
+      "seo": {
+        "page_title": "South Carolina Overtime Calculator (2026) - Overtime Pay Rules",
+        "h1": "South Carolina Overtime Calculator",
+        "primary_keyword": "south carolina overtime calculator",
+        "secondary_keywords": [
+          "south carolina overtime laws",
+          "south carolina overtime pay rules 2026",
+          "how is overtime calculated in south carolina",
+          "south carolina overtime pay calculator"
+        ],
+        "unique_rule_sentence": "South Carolina has no state overtime law, so the federal FLSA rule (1.5x pay after 40 hours in a workweek) applies to covered nonexempt workers.",
+        "url_path": "/overtime-calculator/south-carolina"
+      }
+    },
+    {
+      "state": "South Dakota",
+      "abbr": "SD",
+      "slug": "south-dakota",
+      "law_category": "flsa_baseline_no_independent_state_ot_rule",
+      "governing_law": "Federal FLSA governs; no state overtime statute identified.",
+      "general_rule": {
+        "summary": ">40 hrs/workweek (FLSA; no state OT law)",
+        "weekly_threshold_hours": 40,
+        "overtime_multiplier": 1.5,
+        "applies_to": "Typical nonexempt private-sector employee; exempt status, public-sector, CBA and special-industry rules are not assumed."
+      },
+      "daily_rule": {
+        "exists": false,
+        "details": "No state or federal daily overtime rule.",
+        "applies_generally": false
+      },
+      "weekly_rule": {
+        "exists": true,
+        "threshold_hours": 40,
+        "multiplier": 1.5,
+        "details": "Federal FLSA weekly rule: 1.5x the regular rate for hours over 40 in the fixed 7-day workweek.",
+        "table_text": ">40 hrs"
+      },
+      "double_time_rule": {
+        "exists": false,
+        "details": "No state or federal double-time requirement."
+      },
+      "seventh_day_rule": {
+        "exists": false,
+        "details": "No seventh-day premium requirement."
+      },
+      "other_rules": [],
+      "mvp_rule": {
+        "engine": "weekly_flsa",
+        "params": {
+          "weekly_threshold_hours": 40,
+          "multiplier": 1.5
+        },
+        "optional_modules": [],
+        "logic": "Weekly only: overtime hours = max(0, total hours worked in the fixed 7-day workweek - 40); overtime pay = overtime hours x regular hourly rate x 1.5. No daily overtime, no double time, no weekend/holiday premium."
+      },
+      "seo": {
+        "page_title": "South Dakota Overtime Calculator (2026) - Overtime Pay Rules",
+        "h1": "South Dakota Overtime Calculator",
+        "primary_keyword": "south dakota overtime calculator",
+        "secondary_keywords": [
+          "south dakota overtime laws",
+          "south dakota overtime pay rules 2026",
+          "how is overtime calculated in south dakota",
+          "south dakota overtime pay calculator"
+        ],
+        "unique_rule_sentence": "South Dakota has no state overtime law, so the federal FLSA rule (1.5x pay after 40 hours in a workweek) applies to covered nonexempt workers.",
+        "url_path": "/overtime-calculator/south-dakota"
+      }
+    },
+    {
+      "state": "Tennessee",
+      "abbr": "TN",
+      "slug": "tennessee",
+      "law_category": "flsa_baseline_no_independent_state_ot_rule",
+      "governing_law": "Federal FLSA governs; no state overtime statute identified.",
+      "general_rule": {
+        "summary": ">40 hrs/workweek (FLSA; no state OT law)",
+        "weekly_threshold_hours": 40,
+        "overtime_multiplier": 1.5,
+        "applies_to": "Typical nonexempt private-sector employee; exempt status, public-sector, CBA and special-industry rules are not assumed."
+      },
+      "daily_rule": {
+        "exists": false,
+        "details": "No state or federal daily overtime rule.",
+        "applies_generally": false
+      },
+      "weekly_rule": {
+        "exists": true,
+        "threshold_hours": 40,
+        "multiplier": 1.5,
+        "details": "Federal FLSA weekly rule: 1.5x the regular rate for hours over 40 in the fixed 7-day workweek.",
+        "table_text": ">40 hrs"
+      },
+      "double_time_rule": {
+        "exists": false,
+        "details": "No state or federal double-time requirement."
+      },
+      "seventh_day_rule": {
+        "exists": false,
+        "details": "No seventh-day premium requirement."
+      },
+      "other_rules": [],
+      "mvp_rule": {
+        "engine": "weekly_flsa",
+        "params": {
+          "weekly_threshold_hours": 40,
+          "multiplier": 1.5
+        },
+        "optional_modules": [],
+        "logic": "Weekly only: overtime hours = max(0, total hours worked in the fixed 7-day workweek - 40); overtime pay = overtime hours x regular hourly rate x 1.5. No daily overtime, no double time, no weekend/holiday premium."
+      },
+      "seo": {
+        "page_title": "Tennessee Overtime Calculator (2026) - Overtime Pay Rules",
+        "h1": "Tennessee Overtime Calculator",
+        "primary_keyword": "tennessee overtime calculator",
+        "secondary_keywords": [
+          "tennessee overtime laws",
+          "tennessee overtime pay rules 2026",
+          "how is overtime calculated in tennessee",
+          "tennessee overtime pay calculator"
+        ],
+        "unique_rule_sentence": "Tennessee has no state overtime law, so the federal FLSA rule (1.5x pay after 40 hours in a workweek) applies to covered nonexempt workers.",
+        "url_path": "/overtime-calculator/tennessee"
+      }
+    },
+    {
+      "state": "Texas",
+      "abbr": "TX",
+      "slug": "texas",
+      "law_category": "flsa_baseline_no_independent_state_ot_rule",
+      "governing_law": "Federal FLSA governs; no state overtime statute identified.",
+      "general_rule": {
+        "summary": ">40 hrs/workweek (FLSA; no state OT law)",
+        "weekly_threshold_hours": 40,
+        "overtime_multiplier": 1.5,
+        "applies_to": "Typical nonexempt private-sector employee; exempt status, public-sector, CBA and special-industry rules are not assumed."
+      },
+      "daily_rule": {
+        "exists": false,
+        "details": "No state or federal daily overtime rule.",
+        "applies_generally": false
+      },
+      "weekly_rule": {
+        "exists": true,
+        "threshold_hours": 40,
+        "multiplier": 1.5,
+        "details": "Federal FLSA weekly rule: 1.5x the regular rate for hours over 40 in the fixed 7-day workweek.",
+        "table_text": ">40 hrs"
+      },
+      "double_time_rule": {
+        "exists": false,
+        "details": "No state or federal double-time requirement."
+      },
+      "seventh_day_rule": {
+        "exists": false,
+        "details": "No seventh-day premium requirement."
+      },
+      "other_rules": [],
+      "mvp_rule": {
+        "engine": "weekly_flsa",
+        "params": {
+          "weekly_threshold_hours": 40,
+          "multiplier": 1.5
+        },
+        "optional_modules": [],
+        "logic": "Weekly only: overtime hours = max(0, total hours worked in the fixed 7-day workweek - 40); overtime pay = overtime hours x regular hourly rate x 1.5. No daily overtime, no double time, no weekend/holiday premium."
+      },
+      "seo": {
+        "page_title": "Texas Overtime Calculator (2026) - Overtime Pay Rules",
+        "h1": "Texas Overtime Calculator",
+        "primary_keyword": "texas overtime calculator",
+        "secondary_keywords": [
+          "texas overtime laws",
+          "texas overtime pay rules 2026",
+          "how is overtime calculated in texas",
+          "texas overtime pay calculator"
+        ],
+        "unique_rule_sentence": "Texas has no state overtime law, so the federal FLSA rule (1.5x pay after 40 hours in a workweek) applies to covered nonexempt workers.",
+        "url_path": "/overtime-calculator/texas"
+      }
+    },
+    {
+      "state": "Utah",
+      "abbr": "UT",
+      "slug": "utah",
+      "law_category": "flsa_baseline_no_independent_state_ot_rule",
+      "governing_law": "Federal FLSA governs; no state overtime statute identified.",
+      "general_rule": {
+        "summary": ">40 hrs/workweek (FLSA; no state OT law)",
+        "weekly_threshold_hours": 40,
+        "overtime_multiplier": 1.5,
+        "applies_to": "Typical nonexempt private-sector employee; exempt status, public-sector, CBA and special-industry rules are not assumed."
+      },
+      "daily_rule": {
+        "exists": false,
+        "details": "No state or federal daily overtime rule.",
+        "applies_generally": false
+      },
+      "weekly_rule": {
+        "exists": true,
+        "threshold_hours": 40,
+        "multiplier": 1.5,
+        "details": "Federal FLSA weekly rule: 1.5x the regular rate for hours over 40 in the fixed 7-day workweek.",
+        "table_text": ">40 hrs"
+      },
+      "double_time_rule": {
+        "exists": false,
+        "details": "No state or federal double-time requirement."
+      },
+      "seventh_day_rule": {
+        "exists": false,
+        "details": "No seventh-day premium requirement."
+      },
+      "other_rules": [],
+      "mvp_rule": {
+        "engine": "weekly_flsa",
+        "params": {
+          "weekly_threshold_hours": 40,
+          "multiplier": 1.5
+        },
+        "optional_modules": [],
+        "logic": "Weekly only: overtime hours = max(0, total hours worked in the fixed 7-day workweek - 40); overtime pay = overtime hours x regular hourly rate x 1.5. No daily overtime, no double time, no weekend/holiday premium."
+      },
+      "seo": {
+        "page_title": "Utah Overtime Calculator (2026) - Overtime Pay Rules",
+        "h1": "Utah Overtime Calculator",
+        "primary_keyword": "utah overtime calculator",
+        "secondary_keywords": [
+          "utah overtime laws",
+          "utah overtime pay rules 2026",
+          "how is overtime calculated in utah",
+          "utah overtime pay calculator"
+        ],
+        "unique_rule_sentence": "Utah has no state overtime law, so the federal FLSA rule (1.5x pay after 40 hours in a workweek) applies to covered nonexempt workers.",
+        "url_path": "/overtime-calculator/utah"
+      }
+    },
+    {
+      "state": "Vermont",
+      "abbr": "VT",
+      "slug": "vermont",
+      "law_category": "state_weekly_40_rule_no_general_daily_ot",
+      "governing_law": "State law and federal FLSA both use 40 hours/week at 1.5x for the typical covered nonexempt employee; the more protective applies.",
+      "general_rule": {
+        "summary": ">40 hrs/workweek (state law)",
+        "weekly_threshold_hours": 40,
+        "overtime_multiplier": 1.5,
+        "applies_to": "Typical nonexempt private-sector employee; exempt status, public-sector, CBA and special-industry rules are not assumed."
+      },
+      "daily_rule": {
+        "exists": false,
+        "details": "No general daily overtime rule.",
+        "applies_generally": false
+      },
+      "weekly_rule": {
+        "exists": true,
+        "threshold_hours": 40,
+        "multiplier": 1.5,
+        "details": "1.5x the regular rate for hours over 40 in the workweek (state law; same threshold as FLSA).",
+        "table_text": ">40 hrs"
+      },
+      "double_time_rule": {
+        "exists": false,
+        "details": "No general double-time requirement."
+      },
+      "seventh_day_rule": {
+        "exists": false,
+        "details": "No general seventh-day premium requirement."
+      },
+      "other_rules": [],
+      "mvp_rule": {
+        "engine": "weekly_flsa",
+        "params": {
+          "weekly_threshold_hours": 40,
+          "multiplier": 1.5
+        },
+        "optional_modules": [],
+        "logic": "Weekly only: overtime hours = max(0, total hours worked in the fixed 7-day workweek - 40); overtime pay = overtime hours x regular hourly rate x 1.5. No daily overtime, no double time, no weekend/holiday premium."
+      },
+      "seo": {
+        "page_title": "Vermont Overtime Calculator (2026) - Overtime Pay Rules",
+        "h1": "Vermont Overtime Calculator",
+        "primary_keyword": "vermont overtime calculator",
+        "secondary_keywords": [
+          "vermont overtime laws",
+          "vermont overtime pay rules 2026",
+          "how is overtime calculated in vermont",
+          "vermont overtime pay calculator"
+        ],
+        "unique_rule_sentence": "Vermont requires 1.5x pay after 40 hours a week for employers with two or more employees.",
+        "url_path": "/overtime-calculator/vermont"
+      }
+    },
+    {
+      "state": "Virginia",
+      "abbr": "VA",
+      "slug": "virginia",
+      "law_category": "flsa_baseline_no_independent_state_ot_rule",
+      "governing_law": "Federal FLSA governs the substantive rule; Virginia's Overtime Wage Act (Va. Code 40.1-29.2) provides a state-law remedy for FLSA overtime violations.",
+      "general_rule": {
+        "summary": ">40 hrs/workweek (FLSA; no state OT law)",
+        "weekly_threshold_hours": 40,
+        "overtime_multiplier": 1.5,
+        "applies_to": "Typical nonexempt private-sector employee; exempt status, public-sector, CBA and special-industry rules are not assumed."
+      },
+      "daily_rule": {
+        "exists": false,
+        "details": "No state or federal daily overtime rule.",
+        "applies_generally": false
+      },
+      "weekly_rule": {
+        "exists": true,
+        "threshold_hours": 40,
+        "multiplier": 1.5,
+        "details": "Federal FLSA weekly rule: 1.5x the regular rate for hours over 40 in the fixed 7-day workweek.",
+        "table_text": ">40 hrs"
+      },
+      "double_time_rule": {
+        "exists": false,
+        "details": "No state or federal double-time requirement."
+      },
+      "seventh_day_rule": {
+        "exists": false,
+        "details": "No seventh-day premium requirement."
+      },
+      "other_rules": [],
+      "mvp_rule": {
+        "engine": "weekly_flsa",
+        "params": {
+          "weekly_threshold_hours": 40,
+          "multiplier": 1.5
+        },
+        "optional_modules": [],
+        "logic": "Weekly only: overtime hours = max(0, total hours worked in the fixed 7-day workweek - 40); overtime pay = overtime hours x regular hourly rate x 1.5. No daily overtime, no double time, no weekend/holiday premium."
+      },
+      "seo": {
+        "page_title": "Virginia Overtime Calculator (2026) - Overtime Pay Rules",
+        "h1": "Virginia Overtime Calculator",
+        "primary_keyword": "virginia overtime calculator",
+        "secondary_keywords": [
+          "virginia overtime laws",
+          "virginia overtime pay rules 2026",
+          "how is overtime calculated in virginia",
+          "virginia overtime pay calculator"
+        ],
+        "unique_rule_sentence": "Virginia follows FLSA standards - 1.5x pay after 40 hours a week - and gives workers a state-law claim for overtime violations.",
+        "url_path": "/overtime-calculator/virginia"
+      }
+    },
+    {
+      "state": "Washington",
+      "abbr": "WA",
+      "slug": "washington",
+      "law_category": "state_weekly_40_rule_no_general_daily_ot",
+      "governing_law": "State law and federal FLSA both use 40 hours/week at 1.5x for the typical covered nonexempt employee; the more protective applies.",
+      "general_rule": {
+        "summary": ">40 hrs/workweek (state law)",
+        "weekly_threshold_hours": 40,
+        "overtime_multiplier": 1.5,
+        "applies_to": "Typical nonexempt private-sector employee; exempt status, public-sector, CBA and special-industry rules are not assumed."
+      },
+      "daily_rule": {
+        "exists": false,
+        "details": "No general daily overtime rule.",
+        "applies_generally": false
+      },
+      "weekly_rule": {
+        "exists": true,
+        "threshold_hours": 40,
+        "multiplier": 1.5,
+        "details": "1.5x the regular rate for hours over 40 in the workweek (state law; same threshold as FLSA).",
+        "table_text": ">40 hrs"
+      },
+      "double_time_rule": {
+        "exists": false,
+        "details": "No general double-time requirement."
+      },
+      "seventh_day_rule": {
+        "exists": false,
+        "details": "No general seventh-day premium requirement."
+      },
+      "other_rules": [],
+      "mvp_rule": {
+        "engine": "weekly_flsa",
+        "params": {
+          "weekly_threshold_hours": 40,
+          "multiplier": 1.5
+        },
+        "optional_modules": [],
+        "logic": "Weekly only: overtime hours = max(0, total hours worked in the fixed 7-day workweek - 40); overtime pay = overtime hours x regular hourly rate x 1.5. No daily overtime, no double time, no weekend/holiday premium."
+      },
+      "seo": {
+        "page_title": "Washington Overtime Calculator (2026) - Overtime Pay Rules",
+        "h1": "Washington Overtime Calculator",
+        "primary_keyword": "washington overtime calculator",
+        "secondary_keywords": [
+          "washington overtime laws",
+          "washington overtime pay rules 2026",
+          "how is overtime calculated in washington",
+          "washington overtime pay calculator"
+        ],
+        "unique_rule_sentence": "Washington requires 1.5x pay after 40 hours a week for most workers, including farm workers since 2024.",
+        "url_path": "/overtime-calculator/washington"
+      }
+    },
+    {
+      "state": "West Virginia",
+      "abbr": "WV",
+      "slug": "west-virginia",
+      "law_category": "state_weekly_40_rule_no_general_daily_ot",
+      "governing_law": "State law and federal FLSA both use 40 hours/week at 1.5x for the typical covered nonexempt employee; the more protective applies.",
+      "general_rule": {
+        "summary": ">40 hrs/workweek (state law)",
+        "weekly_threshold_hours": 40,
+        "overtime_multiplier": 1.5,
+        "applies_to": "Typical nonexempt private-sector employee; exempt status, public-sector, CBA and special-industry rules are not assumed."
+      },
+      "daily_rule": {
+        "exists": false,
+        "details": "No general daily overtime rule.",
+        "applies_generally": false
+      },
+      "weekly_rule": {
+        "exists": true,
+        "threshold_hours": 40,
+        "multiplier": 1.5,
+        "details": "1.5x the regular rate for hours over 40 in the workweek (state law; same threshold as FLSA).",
+        "table_text": ">40 hrs"
+      },
+      "double_time_rule": {
+        "exists": false,
+        "details": "No general double-time requirement."
+      },
+      "seventh_day_rule": {
+        "exists": false,
+        "details": "No general seventh-day premium requirement."
+      },
+      "other_rules": [],
+      "mvp_rule": {
+        "engine": "weekly_flsa",
+        "params": {
+          "weekly_threshold_hours": 40,
+          "multiplier": 1.5
+        },
+        "optional_modules": [],
+        "logic": "Weekly only: overtime hours = max(0, total hours worked in the fixed 7-day workweek - 40); overtime pay = overtime hours x regular hourly rate x 1.5. No daily overtime, no double time, no weekend/holiday premium."
+      },
+      "seo": {
+        "page_title": "West Virginia Overtime Calculator (2026) - Overtime Pay Rules",
+        "h1": "West Virginia Overtime Calculator",
+        "primary_keyword": "west virginia overtime calculator",
+        "secondary_keywords": [
+          "west virginia overtime laws",
+          "west virginia overtime pay rules 2026",
+          "how is overtime calculated in west virginia",
+          "west virginia overtime pay calculator"
+        ],
+        "unique_rule_sentence": "West Virginia requires 1.5x pay after 40 hours a week for employers with six or more employees at one location.",
+        "url_path": "/overtime-calculator/west-virginia"
+      }
+    },
+    {
+      "state": "Wisconsin",
+      "abbr": "WI",
+      "slug": "wisconsin",
+      "law_category": "state_weekly_40_rule_no_general_daily_ot",
+      "governing_law": "State law and federal FLSA both use 40 hours/week at 1.5x for the typical covered nonexempt employee; the more protective applies.",
+      "general_rule": {
+        "summary": ">40 hrs/workweek (state law)",
+        "weekly_threshold_hours": 40,
+        "overtime_multiplier": 1.5,
+        "applies_to": "Typical nonexempt private-sector employee; exempt status, public-sector, CBA and special-industry rules are not assumed."
+      },
+      "daily_rule": {
+        "exists": false,
+        "details": "No general daily overtime rule.",
+        "applies_generally": false
+      },
+      "weekly_rule": {
+        "exists": true,
+        "threshold_hours": 40,
+        "multiplier": 1.5,
+        "details": "1.5x the regular rate for hours over 40 in the workweek (state law; same threshold as FLSA).",
+        "table_text": ">40 hrs"
+      },
+      "double_time_rule": {
+        "exists": false,
+        "details": "No general double-time requirement."
+      },
+      "seventh_day_rule": {
+        "exists": false,
+        "details": "No general seventh-day premium requirement."
+      },
+      "other_rules": [],
+      "mvp_rule": {
+        "engine": "weekly_flsa",
+        "params": {
+          "weekly_threshold_hours": 40,
+          "multiplier": 1.5
+        },
+        "optional_modules": [],
+        "logic": "Weekly only: overtime hours = max(0, total hours worked in the fixed 7-day workweek - 40); overtime pay = overtime hours x regular hourly rate x 1.5. No daily overtime, no double time, no weekend/holiday premium."
+      },
+      "seo": {
+        "page_title": "Wisconsin Overtime Calculator (2026) - Overtime Pay Rules",
+        "h1": "Wisconsin Overtime Calculator",
+        "primary_keyword": "wisconsin overtime calculator",
+        "secondary_keywords": [
+          "wisconsin overtime laws",
+          "wisconsin overtime pay rules 2026",
+          "how is overtime calculated in wisconsin",
+          "wisconsin overtime pay calculator"
+        ],
+        "unique_rule_sentence": "Wisconsin requires 1.5x pay after 40 hours a week and has no daily overtime rule.",
+        "url_path": "/overtime-calculator/wisconsin"
+      }
+    },
+    {
+      "state": "Wyoming",
+      "abbr": "WY",
+      "slug": "wyoming",
+      "law_category": "flsa_baseline_no_independent_state_ot_rule",
+      "governing_law": "Federal FLSA governs; no state overtime statute identified.",
+      "general_rule": {
+        "summary": ">40 hrs/workweek (FLSA; no state OT law)",
+        "weekly_threshold_hours": 40,
+        "overtime_multiplier": 1.5,
+        "applies_to": "Typical nonexempt private-sector employee; exempt status, public-sector, CBA and special-industry rules are not assumed."
+      },
+      "daily_rule": {
+        "exists": false,
+        "details": "No state or federal daily overtime rule.",
+        "applies_generally": false
+      },
+      "weekly_rule": {
+        "exists": true,
+        "threshold_hours": 40,
+        "multiplier": 1.5,
+        "details": "Federal FLSA weekly rule: 1.5x the regular rate for hours over 40 in the fixed 7-day workweek.",
+        "table_text": ">40 hrs"
+      },
+      "double_time_rule": {
+        "exists": false,
+        "details": "No state or federal double-time requirement."
+      },
+      "seventh_day_rule": {
+        "exists": false,
+        "details": "No seventh-day premium requirement."
+      },
+      "other_rules": [],
+      "mvp_rule": {
+        "engine": "weekly_flsa",
+        "params": {
+          "weekly_threshold_hours": 40,
+          "multiplier": 1.5
+        },
+        "optional_modules": [],
+        "logic": "Weekly only: overtime hours = max(0, total hours worked in the fixed 7-day workweek - 40); overtime pay = overtime hours x regular hourly rate x 1.5. No daily overtime, no double time, no weekend/holiday premium."
+      },
+      "seo": {
+        "page_title": "Wyoming Overtime Calculator (2026) - Overtime Pay Rules",
+        "h1": "Wyoming Overtime Calculator",
+        "primary_keyword": "wyoming overtime calculator",
+        "secondary_keywords": [
+          "wyoming overtime laws",
+          "wyoming overtime pay rules 2026",
+          "how is overtime calculated in wyoming",
+          "wyoming overtime pay calculator"
+        ],
+        "unique_rule_sentence": "Wyoming has no state overtime law, so the federal FLSA rule (1.5x pay after 40 hours in a workweek) applies to covered nonexempt workers.",
+        "url_path": "/overtime-calculator/wyoming"
+      }
+    }
+  ]
+}

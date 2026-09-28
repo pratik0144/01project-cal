@@ -1,0 +1,70 @@
+---
+// Minimal header — logo + tagline + dark mode toggle
+---
+<header class="sticky top-0 z-50 h-14 flex items-center" style="background-color: var(--color-g-canvas); border-bottom: 1px solid var(--color-g-hairline); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);">
+  <div class="section-container flex items-center justify-between w-full">
+    <a href="/" class="flex items-center gap-1.5 font-semibold text-base" style="color: var(--color-g-ink);">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--color-g-link)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="shrink-0">
+        <circle cx="12" cy="12" r="10"/>
+        <polyline points="12 6 12 12 16 14"/>
+      </svg>
+      Online<span style="color: var(--color-g-link);">OT</span>Calculator
+    </a>
+    <div class="flex items-center gap-3">
+      <p class="hidden sm:block text-xs" style="color: var(--color-g-mute); font-family: var(--font-mono);">
+        All 50 U.S. States • 2026 Rules
+      </p>
+      <!-- Dark mode toggle -->
+      <button id="theme-toggle" type="button" aria-label="Toggle dark mode" class="theme-toggle">
+        <!-- Sun (visible in dark) -->
+        <svg id="icon-sun" class="theme-icon hidden" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+        </svg>
+        <!-- Moon (visible in light) -->
+        <svg id="icon-moon" class="theme-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<style>
+  .theme-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1px solid var(--color-g-hairline);
+    background: var(--color-g-elevated);
+    color: var(--color-g-mute);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .theme-toggle:hover {
+    color: var(--color-g-ink);
+    border-color: var(--color-g-mute);
+  }
+</style>
+
+<script>
+  const btn = document.getElementById('theme-toggle')!;
+  const sun = document.getElementById('icon-sun')!;
+  const moon = document.getElementById('icon-moon')!;
+
+  function applyIcons() {
+    const isDark = document.documentElement.classList.contains('dark');
+    sun.classList.toggle('hidden', !isDark);
+    moon.classList.toggle('hidden', isDark);
+  }
+
+  btn.addEventListener('click', () => {
+    const isDark = document.documentElement.classList.toggle('dark');
+    localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    applyIcons();
+  });
+
+  applyIcons();
+</script>

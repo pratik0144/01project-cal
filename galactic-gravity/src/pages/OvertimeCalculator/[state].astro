@@ -1,0 +1,43 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Navbar from '../../components/Navbar.astro';
+import Calculator from '../../components/Calculator.astro';
+import Footer from '../../components/Footer.astro';
+import overtimeData from '../../data/overtime-rules.json';
+
+export function getStaticPaths() {
+  return overtimeData.states.map((s: any) => ({
+    params: { state: s.slug },
+    props: {
+      stateName: s.state,
+      abbr: s.abbr,
+      slug: s.slug,
+      pageTitle: s.seo?.page_title || `${s.state} Overtime Calculator (2026)`,
+      h1: s.seo?.h1 || `${s.state} Overtime Calculator`,
+      uniqueRule: s.seo?.unique_rule_sentence || s.governing_law || '',
+      keywords: s.seo?.secondary_keywords || [],
+    },
+  }));
+}
+
+const { stateName, abbr, slug, pageTitle, h1, uniqueRule, keywords } = Astro.props;
+const description = `Free ${stateName} overtime calculator. ${uniqueRule} Calculate your OT pay instantly with ${abbr} state-specific rules for 2026.`;
+---
+
+<Layout title={pageTitle} description={description}>
+  <Navbar />
+  <main class="flex-1">
+    <!-- State-specific heading -->
+    <div class="section-container pt-6 sm:pt-8 text-center">
+      <p class="mono-eyebrow mb-2">{abbr} OVERTIME RULES · 2026</p>
+      <h1 class="text-2xl sm:text-3xl lg:text-4xl">{h1}</h1>
+      {uniqueRule && (
+        <p class="mt-2 text-sm sm:text-base max-w-2xl mx-auto" style="color: var(--color-g-body);">
+          {uniqueRule}
+        </p>
+      )}
+    </div>
+    <Calculator defaultState={slug} hideTitle={true} />
+  </main>
+  <Footer />
+</Layout>

@@ -1,0 +1,1165 @@
+---
+/**
+ * Calculator.astro — Overtime calculator microtool
+ * Props: defaultState (slug) to pre-select a state
+ */
+import overtimeData from '../data/overtime-rules.json';
+const states = overtimeData.states;
+
+interface Props {
+  defaultState?: string;
+  hideTitle?: boolean;
+}
+const { defaultState = 'california', hideTitle = false } = Astro.props;
+---
+
+<section id="calculator" class="py-6 sm:py-8 lg:py-10 flex-1" data-default-state={defaultState}>
+  <div class="section-container">
+    {!hideTitle && (
+      <div class="text-center mb-6">
+        <h1 class="text-2xl sm:text-3xl lg:text-4xl">Overtime & Pay Calculator</h1>
+        <p class="mt-2 text-sm sm:text-base max-w-lg mx-auto" style="color: var(--color-g-body);">
+          Select your state, enter hours, and see your pay breakdown instantly.
+        </p>
+      </div>
+    )}
+
+    <div class="card-lg max-w-5xl mx-auto">
+      <!-- Controls Row -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-6">
+        <!-- State (searchable combobox) -->
+        <div>
+          <label class="calc-label">Overtime Jurisdiction</label>
+          <!-- Hidden real select for data -->
+          <select id="state-select" class="hidden" aria-hidden="true">
+            {states.map((s: any) => (
+              <option
+                value={s.slug}
+                data-engine={s.mvp_rule.engine}
+                data-params={JSON.stringify(s.mvp_rule.params)}
+                data-has-dt={s.double_time_rule?.exists ? 'true' : 'false'}
+                data-rule-text={s.seo?.unique_rule_sentence || s.governing_law || ''}
+                data-state-name={s.state}
+                data-abbr={s.abbr}
+              >
+                {s.state} ({s.abbr})
+              </option>
+            ))}
+          </select>
+          <!-- Visible searchable input -->
+          <div class="combobox-wrap" id="combobox-wrap">
+            <input
+              type="text"
+              id="state-input"
+              class="calc-input combobox-input"
+              placeholder="Search state…"
+              autocomplete="off"
+              role="combobox"
+              aria-expanded="false"
+              aria-autocomplete="list"
+            />
+            <svg class="combobox-chevron" width="12" height="8" viewBox="0 0 12 8" aria-hidden="true">
+              <path d="M1 1l5 5 5-5" stroke="var(--color-g-mute)" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <ul id="state-list" class="combobox-list hidden" role="listbox">
+              {states.map((s: any) => (
+                <li
+                  class="combobox-option"
+                  data-slug={s.slug}
+                  data-name={s.state}
+                  data-abbr={s.abbr}
+                  role="option"
+                >
+                  <span class="font-mono text-xs" style="color: var(--color-g-mute); min-width: 28px;">{s.abbr}</span>
+                  <span>{s.state}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+        <!-- Rate -->
+        <div>
+          <label for="hourly-rate" class="calc-label">Base Hourly Rate</label>
+          <div class="flex items-center gap-3">
+            <div class="relative flex-1">
+              <span class="absolute left-3 top-1/2 -translate-y-1/2" style="color: var(--color-g-mute); font-family: var(--font-mono); font-size: 13px; font-weight: 500;">$</span>
+              <input type="number" id="hourly-rate" min="1" max="500" step="0.25" value="25.00" class="calc-input" style="padding-left: 28px;" />
+            </div>
+            <input
+              type="range"
+              id="rate-slider"
+              min="7.25"
+              max="150"
+              step="0.25"
+              value="25"
+              class="calc-slider flex-1 cursor-pointer hidden sm:block"
+              aria-label="Base hourly rate slider"
+            />
+          </div>
+        </div>
+      </div>
+
+      <!-- Rule Badge -->
+      <div class="flex items-center gap-2 mb-5 flex-wrap">
+        <span class="mono-eyebrow">ACTIVE RULE</span>
+        <span id="rule-badge" class="rule-badge">Federal (FLSA 40h Weekly)</span>
+      </div>
+
+      <!-- Presets -->
+      <div class="mb-5">
+        <p class="mono-eyebrow mb-2">QUICK PRESETS</p>
+        <div class="flex flex-wrap gap-1.5">
+          <button data-preset="standard" class="preset-btn preset-active">Standard 5×8</button>
+          <button data-preset="extended" class="preset-btn">5×10h</button>
+          <button data-preset="compressed" class="preset-btn">CA Double 3×14</button>
+          <button data-preset="streak" class="preset-btn">7-Day (10h)</button>
+          <button data-preset="clear" class="preset-btn">Clear</button>
+        </div>
+      </div>
+
+      <!-- Weekly Hours Grid -->
+      <div class="mb-6">
+        <div class="grid grid-cols-7 gap-[6px] sm:gap-3" id="hours-grid">
+          {['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'].map((day, i) => (
+            <div class="flex flex-col items-center">
+              <span class="day-label">{day}</span>
+              <div class="day-cell">
+                <button class="hour-btn hour-btn-up" data-day={i} data-action="increase" aria-label={`Increase ${day}`}>
+                  <svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" class="pointer-events-none"><path d="M5 1.5v7M1.5 5h7"/></svg>
+                </button>
+                <input
+                  type="number"
+                  class="day-input"
+                  data-day={i}
+                  value={i < 5 ? '8' : '0'}
+                  min="0"
+                  max="24"
+                  step="1"
+                  inputmode="numeric"
+                  aria-label={`${day} hours`}
+                />
+                <button class="hour-btn hour-btn-down" data-day={i} data-action="decrease" aria-label={`Decrease ${day}`}>
+                  <svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" class="pointer-events-none"><path d="M1.5 5h7"/></svg>
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+        <p class="text-center text-xs mt-2" style="color: var(--color-g-mute);">
+          Total: <span id="total-hours" class="font-mono font-semibold" style="color: var(--color-g-ink);">40</span> hrs/week
+        </p>
+      </div>
+
+      <!-- Period Multiplier -->
+      <div class="flex items-center gap-2 mb-5 flex-wrap">
+        <span class="mono-eyebrow">SHOW PAY FOR</span>
+        <div class="flex gap-1" id="period-btns">
+          <button data-period="1" class="period-btn period-active">1 Week</button>
+          <button data-period="2" class="period-btn">2 Weeks</button>
+          <button data-period="4" class="period-btn">Monthly</button>
+          <button data-period="52" class="period-btn">Yearly</button>
+        </div>
+      </div>
+
+      <!-- Pay Cards -->
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3 mb-6" id="pay-cards">
+        <div class="pay-card" style="border: 2px solid color-mix(in srgb, var(--color-g-gross) 30%, transparent); background: color-mix(in srgb, var(--color-g-gross) 8%, var(--color-g-elevated));">
+          <p class="mono-eyebrow mb-0.5" style="color: var(--color-g-gross);">GROSS PAY</p>
+          <p class="pay-amount" id="gross-pay">$1,000.00</p>
+          <p class="pay-sub"><span id="gross-hours" class="font-mono">40</span>h total</p>
+        </div>
+        <div class="pay-card pay-card-border">
+          <p class="mono-eyebrow mb-0.5" style="color: var(--color-g-straight);">STRAIGHT (1×)</p>
+          <p class="pay-amount" id="straight-pay">$1,000.00</p>
+          <p class="pay-sub"><span id="straight-hours" class="font-mono">40</span>h</p>
+        </div>
+        <div class="pay-card pay-card-border">
+          <p class="mono-eyebrow mb-0.5" style="color: var(--color-g-overtime);">OVERTIME (1.5×)</p>
+          <p class="pay-amount" id="overtime-pay">$0.00</p>
+          <p class="pay-sub"><span id="overtime-hours" class="font-mono">0</span>h</p>
+        </div>
+        <div class="pay-card pay-card-border relative" id="dt-card">
+          <p class="mono-eyebrow mb-0.5" style="color: var(--color-g-doubletime);">DOUBLE (2×)</p>
+          <p class="pay-amount" id="double-pay">$0.00</p>
+          <p class="pay-sub"><span id="double-hours" class="font-mono">0</span>h</p>
+          <!-- DT info badge with tooltip -->
+          <div id="dt-info-wrap" class="hidden">
+            <button id="dt-info-btn" type="button" aria-label="Why is double time not applicable?" class="dt-info-btn">
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+                <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5"/>
+                <path d="M8 7v4M8 5.5v.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+            </button>
+            <div id="dt-popover" class="dt-popover hidden">
+              <p class="text-[11px] font-medium mb-1" style="color: var(--color-g-ink);">No Double Time</p>
+              <p id="dt-explain" class="text-[11px] leading-relaxed" style="color: var(--color-g-body);">
+                This state doesn't have a double-time rule. All overtime is calculated at 1.5× your regular rate.
+              </p>
+              <button id="dt-popover-close" type="button" class="dt-popover-close">&times;</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chart -->
+      <div class="chart-wrap">
+        <div class="flex items-center justify-between mb-3 flex-wrap gap-2">
+          <h3 class="text-sm font-semibold" style="color: var(--color-g-ink);">Daily Earnings</h3>
+          <span id="period-label" class="mono-eyebrow">Per Week</span>
+        </div>
+        <div class="relative" style="height: 180px;">
+          <canvas id="earnings-chart" class="w-full h-full"></canvas>
+          <div id="chart-tooltip" class="chart-tooltip hidden"></div>
+        </div>
+        <div class="flex items-center justify-center gap-4 sm:gap-6 mt-3 flex-wrap">
+          <div class="flex items-center gap-1.5">
+            <span class="w-2.5 h-2.5 rounded-full" style="background: var(--color-g-straight);"></span>
+            <span class="legend-text">Straight (1×)</span>
+          </div>
+          <div class="flex items-center gap-1.5">
+            <span class="w-2.5 h-2.5 rounded-full" style="background: var(--color-g-overtime);"></span>
+            <span class="legend-text">Overtime (1.5×)</span>
+          </div>
+          <div class="flex items-center gap-1.5" id="dt-legend">
+            <span class="w-2.5 h-2.5 rounded-full" style="background: var(--color-g-doubletime);"></span>
+            <span class="legend-text">Double (2×)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p class="text-center text-[11px] mt-4 max-w-lg mx-auto italic" style="color: var(--color-g-faint);">
+      Estimates for typical nonexempt employees. Not legal, tax, or payroll advice.
+    </p>
+  </div>
+</section>
+
+<style>
+  /* ── Form controls ── */
+  .calc-label {
+    display: block;
+    font-size: 12px;
+    font-weight: 500;
+    margin-bottom: 6px;
+    color: var(--color-g-ink);
+  }
+  .calc-select,
+  .calc-input {
+    width: 100%;
+    height: 40px;
+    padding: 0 12px;
+    font-size: 14px;
+    color: var(--color-g-ink);
+    background: var(--color-g-elevated);
+    border: 1px solid var(--color-g-hairline);
+    border-radius: var(--radius-sm);
+    transition: border-color 0.15s;
+  }
+  .calc-select {
+    cursor: pointer;
+    appearance: none;
+    background-image: url('data:image/svg+xml;charset=utf-8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2212%22 height=%228%22 viewBox=%220 0 12 8%22%3E%3Cpath d=%22M1 1l5 5 5-5%22 stroke=%22%238f8f8f%22 stroke-width=%221.5%22 fill=%22none%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22/%3E%3C/svg%3E');
+    background-position: right 12px center;
+    background-repeat: no-repeat;
+    padding-right: 36px;
+  }
+  .calc-select:focus,
+  .calc-input:focus {
+    outline: none;
+    border-color: var(--color-g-link);
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--color-g-link) 20%, transparent);
+  }
+
+  /* ── Rate Slider ── */
+  .calc-slider {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 6px;
+    border-radius: 9999px;
+    background: color-mix(in srgb, var(--color-g-ink) 20%, var(--color-g-hairline));
+    outline: none;
+    cursor: pointer;
+    margin: 0;
+    transition: background 0.1s ease;
+  }
+  .calc-slider:focus-visible {
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--color-g-link) 35%, transparent);
+  }
+  .calc-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--color-g-elevated);
+    border: 2px solid var(--color-g-link);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
+    cursor: pointer;
+    transition: transform 0.1s ease, background-color 0.15s ease;
+  }
+  .calc-slider::-webkit-slider-thumb:hover {
+    transform: scale(1.2);
+    background: var(--color-g-link);
+  }
+  .calc-slider::-webkit-slider-thumb:active {
+    transform: scale(1.05);
+  }
+  .calc-slider::-moz-range-thumb {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--color-g-elevated);
+    border: 2px solid var(--color-g-link);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
+    cursor: pointer;
+    transition: transform 0.1s ease, background-color 0.15s ease;
+  }
+  .calc-slider::-moz-range-thumb:hover {
+    transform: scale(1.2);
+    background: var(--color-g-link);
+  }
+  .calc-slider::-moz-range-track {
+    height: 6px;
+    border-radius: 9999px;
+    background: transparent;
+    border: none;
+  }
+
+  /* ── Combobox ── */
+  .combobox-wrap {
+    position: relative;
+  }
+  .combobox-input {
+    padding-right: 32px !important;
+    cursor: text;
+  }
+  .combobox-chevron {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+  }
+  .combobox-list {
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    right: 0;
+    max-height: 240px;
+    overflow-y: auto;
+    background: var(--color-g-elevated);
+    border: 1px solid var(--color-g-hairline);
+    border-radius: var(--radius-md);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+    z-index: 30;
+    padding: 4px;
+    list-style: none;
+    margin: 0;
+  }
+  .combobox-option {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 10px;
+    font-size: 13px;
+    color: var(--color-g-ink);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: background 0.1s;
+  }
+  .combobox-option:hover,
+  .combobox-option.active {
+    background: var(--color-g-canvas);
+  }
+  .combobox-option.selected {
+    background: color-mix(in srgb, var(--color-g-link) 8%, transparent);
+    font-weight: 500;
+  }
+  .combobox-option.hidden-opt {
+    display: none;
+  }
+
+  .rule-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px 10px;
+    font-size: 11px;
+    font-weight: 500;
+    font-family: var(--font-mono);
+    border-radius: 100px;
+    background: color-mix(in srgb, var(--color-g-link) 10%, transparent);
+    color: var(--color-g-link);
+  }
+
+  /* ── Day cells ── */
+  .day-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    margin-bottom: 4px;
+    color: var(--color-g-mute);
+    font-family: var(--font-mono);
+  }
+  @media (min-width: 640px) {
+    .day-label { font-size: 11px; }
+  }
+  .day-cell {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    width: 100%;
+    padding: 6px 2px;
+    background: var(--color-g-canvas);
+    border: 1px solid var(--color-g-hairline);
+    border-radius: 16px;
+  }
+  @media (min-width: 640px) {
+    .day-cell {
+      padding: 10px 4px;
+      gap: 6px;
+    }
+  }
+  .day-input {
+    width: 100%;
+    max-width: 48px;
+    text-align: center;
+    font-size: 20px;
+    font-weight: 600;
+    font-family: var(--font-mono);
+    color: var(--color-g-ink);
+    background: transparent;
+    border: none;
+    outline: none;
+    padding: 2px 0;
+    -moz-appearance: textfield;
+  }
+  .day-input::-webkit-outer-spin-button,
+  .day-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  .day-input:focus {
+    background: var(--color-g-elevated);
+    border-radius: 4px;
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--color-g-link) 25%, transparent);
+  }
+  @media (min-width: 640px) {
+    .day-input { font-size: 24px; max-width: 56px; }
+  }
+  .hour-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    color: var(--color-g-mute);
+    background: var(--color-g-elevated);
+    border: 1px solid var(--color-g-hairline);
+    cursor: pointer;
+    transition: all 0.15s ease;
+    touch-action: manipulation;
+    user-select: none;
+    -webkit-user-select: none;
+    flex-shrink: 0;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    position: relative;
+  }
+  .hour-btn::after {
+    content: '';
+    position: absolute;
+    inset: -6px;
+    border-radius: 50%;
+  }
+  @media (min-width: 640px) {
+    .hour-btn {
+      width: 28px;
+      height: 28px;
+    }
+  }
+  .hour-btn:hover {
+    color: var(--color-g-link);
+    border-color: var(--color-g-link);
+    background: color-mix(in srgb, var(--color-g-link) 8%, var(--color-g-elevated));
+    transform: scale(1.08);
+  }
+  .hour-btn:active {
+    transform: scale(0.92);
+  }
+
+  /* ── Presets ── */
+  .preset-btn {
+    padding: 5px 12px;
+    font-size: 12px;
+    font-weight: 500;
+    border-radius: var(--radius-pill-cat);
+    border: 1px solid var(--color-g-hairline);
+    background: var(--color-g-elevated);
+    color: var(--color-g-ink);
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+  .preset-btn:hover { border-color: var(--color-g-mute); }
+  .preset-active {
+    background: var(--color-g-ink);
+    color: var(--color-g-on-primary);
+    border-color: var(--color-g-ink);
+  }
+  .preset-active:hover { opacity: 0.85; }
+
+  /* ── Period buttons ── */
+  .period-btn {
+    padding: 3px 10px;
+    font-size: 11px;
+    font-weight: 500;
+    font-family: var(--font-mono);
+    border-radius: var(--radius-pill-cat);
+    border: 1px solid var(--color-g-hairline);
+    background: var(--color-g-elevated);
+    color: var(--color-g-body);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .period-btn:hover { border-color: var(--color-g-mute); }
+  .period-active {
+    background: var(--color-g-ink);
+    color: var(--color-g-on-primary);
+    border-color: var(--color-g-ink);
+  }
+
+  /* ── Pay cards ── */
+  .pay-card {
+    padding: 12px;
+    border-radius: var(--radius-md);
+  }
+  @media (min-width: 640px) { .pay-card { padding: 16px; } }
+  .pay-card-border {
+    border: 1px solid var(--color-g-hairline);
+    background: var(--color-g-elevated);
+  }
+  .pay-amount {
+    font-size: 20px;
+    font-weight: 700;
+    font-family: var(--font-mono);
+    color: var(--color-g-ink);
+  }
+  @media (min-width: 640px) { .pay-amount { font-size: 24px; } }
+  .pay-sub {
+    font-size: 11px;
+    margin-top: 2px;
+    color: var(--color-g-mute);
+  }
+
+  /* ── Chart ── */
+  .chart-wrap {
+    padding: 16px;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--color-g-hairline);
+    background: var(--color-g-elevated);
+  }
+  @media (min-width: 640px) { .chart-wrap { padding: 20px; } }
+  .chart-tooltip {
+    position: absolute;
+    padding: 8px 12px;
+    background: var(--color-g-ink);
+    color: var(--color-g-on-primary);
+    font-size: 11px;
+    font-family: var(--font-mono);
+    border-radius: 8px;
+    pointer-events: none;
+    z-index: 10;
+    white-space: nowrap;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    transform: translateX(-50%);
+    line-height: 1.5;
+  }
+  .legend-text { font-size: 11px; color: var(--color-g-body); }
+
+  /* ── DT info tooltip ── */
+  .dt-info-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    border: none;
+    background: color-mix(in srgb, var(--color-g-doubletime) 12%, transparent);
+    color: var(--color-g-doubletime);
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .dt-info-btn:hover {
+    background: color-mix(in srgb, var(--color-g-doubletime) 22%, transparent);
+  }
+  .dt-popover {
+    position: absolute;
+    bottom: calc(100% + 8px);
+    right: 0;
+    width: 240px;
+    padding: 12px;
+    background: var(--color-g-elevated);
+    border: 1px solid var(--color-g-hairline);
+    border-radius: var(--radius-md);
+    box-shadow: 0 4px 24px rgba(0,0,0,0.1);
+    z-index: 20;
+  }
+  @media (max-width: 640px) {
+    .dt-popover {
+      position: fixed;
+      bottom: auto;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: calc(100vw - 48px);
+      max-width: 300px;
+    }
+  }
+  .dt-popover-close {
+    position: absolute;
+    top: 6px;
+    right: 8px;
+    background: none;
+    border: none;
+    font-size: 16px;
+    color: var(--color-g-mute);
+    cursor: pointer;
+    line-height: 1;
+  }
+</style>
+
+<script>
+  // ── Engines ──
+  interface D { day: string; hours: number }
+  interface DB { day: string; hours: number; straight: number; overtime: number; doubleTime: number; straightPay: number; overtimePay: number; doubleTimePay: number; totalPay: number }
+  interface R { totalHours: number; straightHours: number; overtimeHours: number; doubleTimeHours: number; straightPay: number; overtimePay: number; doubleTimePay: number; grossPay: number; dailyBreakdown: DB[]; engine: string; stateRule: string }
+
+  function weekly(days: D[], rate: number, th = 40, m = 1.5): R {
+    const tot = days.reduce((s, d) => s + d.hours, 0);
+    const ot = Math.max(0, tot - th), str = tot - ot;
+    let rem = str;
+    const db: DB[] = days.map(d => {
+      const ds = Math.min(d.hours, rem), dot = d.hours - ds; rem -= ds;
+      return { day: d.day, hours: d.hours, straight: ds, overtime: dot, doubleTime: 0,
+        straightPay: ds * rate, overtimePay: dot * rate * m, doubleTimePay: 0, totalPay: ds * rate + dot * rate * m };
+    });
+    return { totalHours: tot, straightHours: str, overtimeHours: ot, doubleTimeHours: 0,
+      straightPay: str * rate, overtimePay: ot * rate * m, doubleTimePay: 0,
+      grossPay: str * rate + ot * rate * m, dailyBreakdown: db, engine: 'weekly_flsa', stateRule: `1.5× after ${th}h/week` };
+  }
+
+  function california(days: D[], rate: number): R {
+    const db: DB[] = []; let tS = 0, tO = 0, tD = 0;
+    const all7 = days.length === 7 && days.every(d => d.hours > 0);
+    for (let i = 0; i < days.length; i++) {
+      const d = days[i]; let s = 0, o = 0, dt = 0;
+      if (all7 && i === 6) { o = Math.min(d.hours, 8); dt = Math.max(0, d.hours - 8); }
+      else { s = Math.min(d.hours, 8); o = Math.min(Math.max(0, d.hours - 8), 4); dt = Math.max(0, d.hours - 12); }
+      tS += s; tO += o; tD += dt;
+      db.push({ day: d.day, hours: d.hours, straight: s, overtime: o, doubleTime: dt,
+        straightPay: s * rate, overtimePay: o * rate * 1.5, doubleTimePay: dt * rate * 2,
+        totalPay: s * rate + o * rate * 1.5 + dt * rate * 2 });
+    }
+    const wOT = Math.max(0, tS - 40);
+    if (wOT > 0) { let r = wOT;
+      for (let i = db.length - 1; i >= 0 && r > 0; i--) {
+        const m = Math.min(db[i].straight, r); db[i].straight -= m; db[i].overtime += m;
+        db[i].straightPay = db[i].straight * rate; db[i].overtimePay = db[i].overtime * rate * 1.5;
+        db[i].totalPay = db[i].straightPay + db[i].overtimePay + db[i].doubleTimePay; r -= m;
+      } tS -= wOT; tO += wOT; }
+    return { totalHours: days.reduce((s, d) => s + d.hours, 0), straightHours: tS, overtimeHours: tO,
+      doubleTimeHours: tD, straightPay: tS * rate, overtimePay: tO * rate * 1.5,
+      doubleTimePay: tD * rate * 2, grossPay: tS * rate + tO * rate * 1.5 + tD * rate * 2,
+      dailyBreakdown: db, engine: 'california', stateRule: 'CA: Daily 8h/12h + Weekly 40h + 7th Day' };
+  }
+
+  function colorado(days: D[], rate: number): R {
+    const tot = days.reduce((s, d) => s + d.hours, 0);
+    const wOT = Math.max(0, tot - 40), dOT = days.reduce((s, d) => s + Math.max(0, d.hours - 12), 0);
+    const useD = dOT > wOT, ot = Math.max(wOT, dOT), str = tot - ot;
+    const db: DB[] = [];
+    if (useD) { days.forEach(d => { const s = Math.min(d.hours, 12), o = Math.max(0, d.hours - 12);
+      db.push({ day: d.day, hours: d.hours, straight: s, overtime: o, doubleTime: 0,
+        straightPay: s * rate, overtimePay: o * rate * 1.5, doubleTimePay: 0, totalPay: s * rate + o * rate * 1.5 }); });
+    } else { let rem = str; days.forEach(d => { const ds = Math.min(d.hours, rem), dot = d.hours - ds; rem -= ds;
+      db.push({ day: d.day, hours: d.hours, straight: ds, overtime: dot, doubleTime: 0,
+        straightPay: ds * rate, overtimePay: dot * rate * 1.5, doubleTimePay: 0, totalPay: ds * rate + dot * rate * 1.5 }); }); }
+    return { totalHours: tot, straightHours: str, overtimeHours: ot, doubleTimeHours: 0,
+      straightPay: str * rate, overtimePay: ot * rate * 1.5, doubleTimePay: 0,
+      grossPay: str * rate + ot * rate * 1.5, dailyBreakdown: db, engine: 'colorado', stateRule: 'CO: Greater-of Weekly >40h / Daily >12h' };
+  }
+
+  function alaska(days: D[], rate: number): R {
+    const db: DB[] = []; let tDO = 0, tR = 0;
+    days.forEach(d => { const s = Math.min(d.hours, 8), o = Math.max(0, d.hours - 8); tDO += o; tR += s;
+      db.push({ day: d.day, hours: d.hours, straight: s, overtime: o, doubleTime: 0,
+        straightPay: s * rate, overtimePay: o * rate * 1.5, doubleTimePay: 0, totalPay: s * rate + o * rate * 1.5 }); });
+    const wOT = Math.max(0, tR - 40);
+    if (wOT > 0) { let r = wOT;
+      for (let i = db.length - 1; i >= 0 && r > 0; i--) {
+        const m = Math.min(db[i].straight, r); db[i].straight -= m; db[i].overtime += m;
+        db[i].straightPay = db[i].straight * rate; db[i].overtimePay = db[i].overtime * rate * 1.5;
+        db[i].totalPay = db[i].straightPay + db[i].overtimePay; r -= m; }
+      tR -= wOT; tDO += wOT; }
+    return { totalHours: days.reduce((s, d) => s + d.hours, 0), straightHours: tR, overtimeHours: tDO,
+      doubleTimeHours: 0, straightPay: tR * rate, overtimePay: tDO * rate * 1.5, doubleTimePay: 0,
+      grossPay: tR * rate + tDO * rate * 1.5, dailyBreakdown: db, engine: 'alaska', stateRule: 'AK: Daily >8h + Weekly >40h (no stacking)' };
+  }
+
+  function nevada(days: D[], rate: number): R {
+    if (rate >= 18) { const r = weekly(days, rate); r.engine = 'nevada'; r.stateRule = 'NV: Weekly >40h (rate ≥ $18/hr)'; return r; }
+    const tot = days.reduce((s, d) => s + d.hours, 0);
+    const wOT = Math.max(0, tot - 40), dOT = days.reduce((s, d) => s + Math.max(0, d.hours - 8), 0);
+    const useD = dOT > wOT, ot = Math.max(wOT, dOT), str = tot - ot;
+    const db: DB[] = [];
+    if (useD) { days.forEach(d => { const s = Math.min(d.hours, 8), o = Math.max(0, d.hours - 8);
+      db.push({ day: d.day, hours: d.hours, straight: s, overtime: o, doubleTime: 0,
+        straightPay: s * rate, overtimePay: o * rate * 1.5, doubleTimePay: 0, totalPay: s * rate + o * rate * 1.5 }); });
+    } else { let rem = str; days.forEach(d => { const ds = Math.min(d.hours, rem), dot = d.hours - ds; rem -= ds;
+      db.push({ day: d.day, hours: d.hours, straight: ds, overtime: dot, doubleTime: 0,
+        straightPay: ds * rate, overtimePay: dot * rate * 1.5, doubleTimePay: 0, totalPay: ds * rate + dot * rate * 1.5 }); }); }
+    return { totalHours: tot, straightHours: str, overtimeHours: ot, doubleTimeHours: 0,
+      straightPay: str * rate, overtimePay: ot * rate * 1.5, doubleTimePay: 0,
+      grossPay: str * rate + ot * rate * 1.5, dailyBreakdown: db, engine: 'nevada',
+      stateRule: 'NV: Greater-of Daily >8h / Weekly >40h (rate < $18/hr)' };
+  }
+
+  function calc(engine: string, days: D[], rate: number, params?: any): R {
+    switch (engine) {
+      case 'california': return california(days, rate);
+      case 'colorado': return colorado(days, rate);
+      case 'alaska': return alaska(days, rate);
+      case 'nevada': return nevada(days, rate);
+      default: return weekly(days, rate, params?.weekly_threshold_hours ?? 40, params?.multiplier ?? 1.5);
+    }
+  }
+
+  const $ = (id: string) => document.getElementById(id)!;
+  const fmt = (n: number) => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 2 }).format(n);
+
+  // ── State ──
+  const dayNames = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'];
+  let hours = [8, 8, 8, 8, 8, 0, 0];
+  let period = 1;
+  const presets: Record<string, number[]> = {
+    standard: [8, 8, 8, 8, 8, 0, 0],
+    extended: [10, 10, 10, 10, 10, 0, 0],
+    compressed: [14, 14, 14, 0, 0, 0, 0],
+    streak: [8, 8, 8, 8, 8, 8, 10],
+    clear: [0, 0, 0, 0, 0, 0, 0],
+  };
+
+  // ── DOM ──
+  const sel = $('state-select') as HTMLSelectElement;
+  const rateIn = $('hourly-rate') as HTMLInputElement;
+  const slider = $('rate-slider') as HTMLInputElement;
+  const dayInputs = document.querySelectorAll('.day-input') as NodeListOf<HTMLInputElement>;
+  const canvas = $('earnings-chart') as HTMLCanvasElement;
+
+  function getEngine() {
+    const o = sel.options[sel.selectedIndex];
+    return {
+      engine: o.dataset.engine || 'weekly_flsa',
+      params: JSON.parse(o.dataset.params || '{}'),
+      hasDT: o.dataset.hasDt === 'true',
+      ruleText: o.dataset.ruleText || '',
+      stateName: o.dataset.stateName || '',
+    };
+  }
+
+  function update() {
+    const rate = parseFloat(rateIn.value) || 25;
+    const { engine, params, hasDT, stateName } = getEngine();
+    const days: D[] = dayNames.map((n, i) => ({ day: n, hours: hours[i] }));
+    const r = calc(engine, days, rate, params);
+    const p = period;
+    const periodLabels: Record<number, string> = { 1: 'Per Week', 2: 'Per 2 Weeks', 4: 'Per Month (4 wks)', 52: 'Per Year' };
+
+    // Sync inputs
+    dayInputs.forEach((el, i) => { el.value = String(hours[i]); });
+    $('total-hours').textContent = String(r.totalHours);
+    $('rule-badge').textContent = r.stateRule;
+    $('period-label').textContent = periodLabels[p] || `Per ${p} Weeks`;
+
+    // Pay cards (multiplied by period)
+    $('gross-pay').textContent = fmt(r.grossPay * p);
+    $('gross-hours').textContent = String(r.totalHours * p);
+    $('straight-pay').textContent = fmt(r.straightPay * p);
+    $('straight-hours').textContent = String(r.straightHours * p);
+    $('overtime-pay').textContent = fmt(r.overtimePay * p);
+    $('overtime-hours').textContent = String(r.overtimeHours * p);
+    $('double-pay').textContent = fmt(r.doubleTimePay * p);
+    $('double-hours').textContent = String(r.doubleTimeHours * p);
+
+    // DT card + info tooltip
+    const dtCard = $('dt-card');
+    const dtInfoWrap = $('dt-info-wrap');
+    const dtLegend = $('dt-legend');
+    const dtExplain = $('dt-explain');
+    const dtPopover = $('dt-popover');
+    if (engine === 'california') {
+      dtCard.style.opacity = '1';
+      dtInfoWrap.classList.add('hidden');
+      dtLegend.style.display = '';
+    } else {
+      dtCard.style.opacity = '0.55';
+      dtInfoWrap.classList.remove('hidden');
+      dtLegend.style.display = 'none';
+      // Build explanation
+      const explanations: Record<string, string> = {
+        weekly_flsa: `${stateName} follows the federal FLSA rule — overtime is 1.5× your rate for hours over 40/week. There is no double-time provision.`,
+        alaska: `Alaska has daily (>8h) and weekly (>40h) overtime at 1.5×, but no double-time rate. Daily OT hours are excluded from the weekly count.`,
+        colorado: `Colorado uses the greater-of daily (>12h) or weekly (>40h) overtime at 1.5×. There is no separate double-time rate.`,
+        nevada: `Nevada uses ${parseFloat(rateIn.value) >= 18 ? 'weekly >40h' : 'greater-of daily >8h / weekly >40h'} overtime at 1.5×. No double-time provision exists.`,
+      };
+      dtExplain.textContent = explanations[engine] || `${stateName} calculates all overtime at 1.5× your regular rate. No double-time rule applies.`;
+      dtPopover.classList.add('hidden');
+    }
+
+    drawChart(r);
+  }
+
+  // ── Chart ──
+  const tooltip = $('chart-tooltip');
+  interface BarSeg { x: number; yTop: number; yBot: number; type: string; pay: number; hours: number; day: string }
+  let barSegs: BarSeg[] = [];
+
+  function drawChart(r: R) {
+    const p = period;
+    const dpr = window.devicePixelRatio || 1;
+    const rect = canvas.getBoundingClientRect();
+    canvas.width = rect.width * dpr;
+    canvas.height = rect.height * dpr;
+    const ctx = canvas.getContext('2d')!;
+    ctx.scale(dpr, dpr);
+    ctx.clearRect(0, 0, rect.width, rect.height);
+
+    const db = r.dailyBreakdown;
+    const maxPay = Math.max(...db.map(d => d.totalPay * p), 1);
+    const pad = { top: 12, bottom: 22, left: 44, right: 6 };
+    const cW = rect.width - pad.left - pad.right;
+    const cH = rect.height - pad.top - pad.bottom;
+    const barW = Math.min(cW / 7 * 0.55, 38);
+    const gap = (cW - barW * 7) / 8;
+    const segGap = 3;
+    const rs = getComputedStyle(document.documentElement);
+    const hColor = rs.getPropertyValue('--color-g-hairline').trim() || '#ebebeb';
+    const mColor = rs.getPropertyValue('--color-g-mute').trim() || '#8f8f8f';
+    const colors = {
+      s: rs.getPropertyValue('--color-g-straight').trim() || '#9DD3FF',
+      o: rs.getPropertyValue('--color-g-overtime').trim() || '#96A6D6',
+      d: rs.getPropertyValue('--color-g-doubletime').trim() || '#FFA6D7',
+    };
+    const radius = 6;
+
+    // Grid lines
+    ctx.strokeStyle = hColor; ctx.lineWidth = 1;
+    ctx.font = '10px ui-monospace, Menlo, monospace';
+    ctx.fillStyle = mColor; ctx.textAlign = 'right';
+    for (let i = 0; i <= 4; i++) {
+      const y = pad.top + cH - (cH * i / 4);
+      ctx.beginPath(); ctx.moveTo(pad.left, y); ctx.lineTo(rect.width - pad.right, y); ctx.stroke();
+      const val = maxPay * i / 4;
+      ctx.fillText(val >= 1000 ? `$${(val/1000).toFixed(1)}k` : `$${Math.round(val)}`, pad.left - 4, y + 3);
+    }
+
+    // Bars
+    barSegs = [];
+    ctx.textAlign = 'center';
+    db.forEach((d, i) => {
+      const x = pad.left + gap + i * (barW + gap);
+      const sP = d.straightPay * p, oP = d.overtimePay * p, dP = d.doubleTimePay * p;
+      const sH = (sP / maxPay) * cH;
+      const oH = (oP / maxPay) * cH;
+      const dH = (dP / maxPay) * cH;
+      let y = pad.top + cH;
+
+      // Straight
+      if (sH > 0) {
+        const top = y - sH;
+        ctx.fillStyle = colors.s;
+        ctx.beginPath(); ctx.roundRect(x, top, barW, sH, radius); ctx.fill();
+        barSegs.push({ x, yTop: top, yBot: y, type: 'Straight (1×)', pay: sP, hours: d.straight * p, day: d.day });
+        y = top - segGap;
+      }
+      // Overtime
+      if (oH > 0) {
+        const top = y - oH;
+        ctx.fillStyle = colors.o;
+        ctx.beginPath(); ctx.roundRect(x, top, barW, oH, radius); ctx.fill();
+        barSegs.push({ x, yTop: top, yBot: y, type: 'Overtime (1.5×)', pay: oP, hours: d.overtime * p, day: d.day });
+        y = top - segGap;
+      }
+      // Double
+      if (dH > 0) {
+        const top = y - dH;
+        ctx.fillStyle = colors.d;
+        ctx.beginPath(); ctx.roundRect(x, top, barW, dH, radius); ctx.fill();
+        barSegs.push({ x, yTop: top, yBot: y, type: 'Double (2×)', pay: dP, hours: d.doubleTime * p, day: d.day });
+      }
+
+      // Day label
+      ctx.fillStyle = mColor; ctx.font = '10px ui-monospace, Menlo, monospace';
+      ctx.fillText(d.day, x + barW / 2, pad.top + cH + 14);
+    });
+  }
+
+  // Hover tooltip (desktop mouse + mobile touch)
+  function handleChartPointer(clientX: number, clientY: number) {
+    const rect = canvas.getBoundingClientRect();
+    const mx = clientX - rect.left;
+    const my = clientY - rect.top;
+    let hit: BarSeg | null = null;
+    const barW = Math.min((rect.width - 50) / 7 * 0.55, 38);
+    for (const seg of barSegs) {
+      if (mx >= seg.x && mx <= seg.x + barW && my >= seg.yTop && my <= seg.yBot) {
+        hit = seg; break;
+      }
+    }
+    if (hit) {
+      tooltip.classList.remove('hidden');
+      tooltip.innerHTML = `<strong>${hit.day}</strong> · ${hit.type}<br>${fmt(hit.pay)} · ${hit.hours}h`;
+      tooltip.style.left = `${hit.x + barW / 2}px`;
+      tooltip.style.top = `${Math.max(10, hit.yTop - 12)}px`;
+    } else {
+      tooltip.classList.add('hidden');
+    }
+  }
+
+  canvas.addEventListener('mousemove', (e) => {
+    handleChartPointer(e.clientX, e.clientY);
+  });
+  canvas.addEventListener('mouseleave', () => { tooltip.classList.add('hidden'); });
+  canvas.addEventListener('touchstart', (e) => {
+    if (e.touches && e.touches.length > 0) {
+      handleChartPointer(e.touches[0].clientX, e.touches[0].clientY);
+    }
+  }, { passive: true });
+
+  // ── Combobox ──
+  const stateInput = $('state-input') as HTMLInputElement;
+  const stateList = $('state-list')!;
+  const stateOpts = document.querySelectorAll('.combobox-option') as NodeListOf<HTMLLIElement>;
+
+  function syncComboboxDisplay() {
+    const o = sel.options[sel.selectedIndex];
+    stateInput.value = o ? `${o.dataset.stateName} (${o.dataset.abbr})` : '';
+    stateOpts.forEach(li => {
+      li.classList.toggle('selected', li.dataset.slug === sel.value);
+    });
+  }
+
+  function selectState(slug: string) {
+    for (let i = 0; i < sel.options.length; i++) {
+      if (sel.options[i].value === slug) { sel.selectedIndex = i; break; }
+    }
+    syncComboboxDisplay();
+    stateList.classList.add('hidden');
+    stateInput.setAttribute('aria-expanded', 'false');
+    update();
+    // Navigate to state page
+    const newUrl = `/OvertimeCalculator/${slug}`;
+    if (window.location.pathname !== newUrl && window.location.pathname !== '/') {
+      window.location.href = newUrl;
+    }
+  }
+
+  stateInput.addEventListener('focus', () => {
+    stateInput.select();
+    stateList.classList.remove('hidden');
+    stateInput.setAttribute('aria-expanded', 'true');
+  });
+
+  stateInput.addEventListener('input', () => {
+    const q = stateInput.value.toLowerCase().trim();
+    stateList.classList.remove('hidden');
+    stateInput.setAttribute('aria-expanded', 'true');
+    let visible = 0;
+    stateOpts.forEach(li => {
+      const name = (li.dataset.name || '').toLowerCase();
+      const abbr = (li.dataset.abbr || '').toLowerCase();
+      const match = !q || name.includes(q) || abbr === q || abbr.startsWith(q);
+      li.classList.toggle('hidden-opt', !match);
+      if (match) visible++;
+    });
+  });
+
+  stateOpts.forEach(li => {
+    li.addEventListener('click', () => {
+      selectState(li.dataset.slug || '');
+    });
+  });
+
+  // Close on outside click
+  document.addEventListener('click', (e) => {
+    if (!(e.target as HTMLElement).closest('#combobox-wrap')) {
+      stateList.classList.add('hidden');
+      stateInput.setAttribute('aria-expanded', 'false');
+      syncComboboxDisplay(); // reset text if user typed but didn't pick
+    }
+  });
+
+  // Keyboard nav
+  stateInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      stateList.classList.add('hidden');
+      stateInput.blur();
+      syncComboboxDisplay();
+    }
+    if (e.key === 'Enter') {
+      const firstVisible = stateList.querySelector('.combobox-option:not(.hidden-opt)') as HTMLLIElement;
+      if (firstVisible) selectState(firstVisible.dataset.slug || '');
+    }
+  });
+
+  // ── Events ──
+  // +/- buttons
+  document.querySelectorAll('.hour-btn').forEach(btn => {
+    (btn as HTMLButtonElement).addEventListener('click', () => {
+      const d = parseInt((btn as HTMLElement).dataset.day!);
+      if ((btn as HTMLElement).dataset.action === 'increase' && hours[d] < 24) hours[d]++;
+      if ((btn as HTMLElement).dataset.action === 'decrease' && hours[d] > 0) hours[d]--;
+      highlightPreset(); update();
+    });
+  });
+
+  // Direct input typing
+  dayInputs.forEach((inp, i) => {
+    inp.addEventListener('input', () => {
+      let v = parseInt(inp.value);
+      if (isNaN(v)) v = 0;
+      hours[i] = Math.max(0, Math.min(24, v));
+      highlightPreset(); update();
+    });
+    inp.addEventListener('blur', () => { inp.value = String(hours[i]); });
+  });
+
+  // Presets
+  document.querySelectorAll('.preset-btn').forEach(btn => {
+    (btn as HTMLButtonElement).addEventListener('click', () => {
+      const p = (btn as HTMLElement).dataset.preset!;
+      if (presets[p]) { hours = [...presets[p]];
+        document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('preset-active'));
+        btn.classList.add('preset-active'); update();
+      }
+    });
+  });
+
+  function highlightPreset() {
+    document.querySelectorAll('.preset-btn').forEach(btn => {
+      const p = (btn as HTMLElement).dataset.preset!;
+      if (presets[p] && JSON.stringify(hours) === JSON.stringify(presets[p])) btn.classList.add('preset-active');
+      else btn.classList.remove('preset-active');
+    });
+  }
+
+  // Period multiplier
+  document.querySelectorAll('.period-btn').forEach(btn => {
+    (btn as HTMLButtonElement).addEventListener('click', () => {
+      period = parseInt((btn as HTMLElement).dataset.period!);
+      document.querySelectorAll('.period-btn').forEach(b => b.classList.remove('period-active'));
+      btn.classList.add('period-active'); update();
+    });
+  });
+
+  // Rate & Slider
+  function syncSlider() {
+    const val = parseFloat(slider.value) || 25;
+    const min = parseFloat(slider.min) || 7.25;
+    const max = parseFloat(slider.max) || 150;
+    const pct = Math.max(0, Math.min(100, ((val - min) / (max - min)) * 100));
+    slider.style.background = `linear-gradient(to right, var(--color-g-link) ${pct}%, color-mix(in srgb, var(--color-g-ink) 20%, var(--color-g-hairline)) ${pct}%)`;
+  }
+
+  rateIn.addEventListener('input', () => {
+    slider.value = rateIn.value;
+    syncSlider();
+    update();
+  });
+  slider.addEventListener('input', () => {
+    rateIn.value = parseFloat(slider.value).toFixed(2);
+    syncSlider();
+    update();
+  });
+
+
+
+  // DT info tooltip toggle
+  const dtInfoBtn = $('dt-info-btn');
+  const dtPopoverEl = $('dt-popover');
+  const dtPopoverClose = $('dt-popover-close');
+  dtInfoBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    dtPopoverEl.classList.toggle('hidden');
+  });
+  dtPopoverClose.addEventListener('click', () => { dtPopoverEl.classList.add('hidden'); });
+  document.addEventListener('click', (e) => {
+    if (!dtPopoverEl.classList.contains('hidden') && !(e.target as HTMLElement).closest('#dt-card')) {
+      dtPopoverEl.classList.add('hidden');
+    }
+  });
+
+  // Resize
+  let rt: ReturnType<typeof setTimeout>;
+  window.addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(update, 100); });
+
+  // Init — read default state from data attribute
+  const section = document.getElementById('calculator')!;
+  const defaultState = section.dataset.defaultState || 'california';
+
+  function setStateAndUpdate(slug: string) {
+    for (let i = 0; i < sel.options.length; i++) {
+      if (sel.options[i].value === slug) { sel.selectedIndex = i; break; }
+    }
+    syncComboboxDisplay();
+    update();
+  }
+
+  if (defaultState === 'auto') {
+    setStateAndUpdate('california');
+
+    if ('geolocation' in navigator) {
+      navigator.geolocation.getCurrentPosition(
+        async (pos) => {
+          try {
+            const { latitude, longitude } = pos.coords;
+            const resp = await fetch(
+              `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json&addressdetails=1&zoom=5`,
+              { headers: { 'Accept-Language': 'en' } }
+            );
+            const data = await resp.json();
+            const code = (data.address?.state_code || data.address?.['ISO3166-2-lvl4']?.split('-')[1] || '').toUpperCase();
+            if (code) {
+              for (let i = 0; i < sel.options.length; i++) {
+                if ((sel.options[i].dataset.abbr || '').toUpperCase() === code) {
+                  sel.selectedIndex = i;
+                  syncComboboxDisplay();
+                  update();
+                  break;
+                }
+              }
+            }
+          } catch { /* silent fail */ }
+        },
+        () => { /* denied — keep current */ },
+        { timeout: 6000, maximumAge: 300000 }
+      );
+    }
+  } else {
+    setStateAndUpdate(defaultState);
+  }
+
+  // Initial slider sync & observe theme changes
+  syncSlider();
+  const themeObserver = new MutationObserver(() => {
+    syncSlider();
+    update();
+  });
+  themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+</script>

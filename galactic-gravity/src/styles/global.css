@@ -1,0 +1,118 @@
+@import "tailwindcss";
+
+/* ── Design Tokens ── */
+@theme {
+  --color-g-ink: #171717;
+  --color-g-on-primary: #ffffff;
+  --color-g-body: #4d4d4d;
+  --color-g-mute: #8f8f8f;
+  --color-g-faint: #a1a1a1;
+  --color-g-hairline: #ebebeb;
+  --color-g-hairline-soft: #f2f2f2;
+  --color-g-canvas: #fafafa;
+  --color-g-elevated: #ffffff;
+  --color-g-link: #0070f3;
+  --color-g-link-deep: #0761d1;
+
+  --color-g-straight: #9DD3FF;
+  --color-g-overtime: #96A6D6;
+  --color-g-doubletime: #FFA6D7;
+  --color-g-gross: #00dfd8;
+
+  --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-pill: 100px;
+  --radius-pill-cat: 64px;
+}
+
+/* ── Dark Mode Overrides ── */
+html.dark {
+  --color-g-ink: #e5e5e5;
+  --color-g-on-primary: #141414;
+  --color-g-body: #a1a1a1;
+  --color-g-mute: #666666;
+  --color-g-faint: #555555;
+  --color-g-hairline: #2a2a2a;
+  --color-g-hairline-soft: #1f1f1f;
+  --color-g-canvas: #141414;
+  --color-g-elevated: #1C1C1C;
+  --color-g-link: #3b9eff;
+  --color-g-link-deep: #5bb0ff;
+  --color-g-gross: #00dfd8;
+  color-scheme: dark;
+}
+
+/* ── Base ── */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    transition: background-color 0.2s, color 0.2s;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    color: var(--color-g-body);
+    background-color: var(--color-g-canvas);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    color: var(--color-g-ink);
+    font-weight: 600;
+  }
+
+  h1 { font-size: 48px; line-height: 48px; letter-spacing: -2.4px; }
+  h2 { font-size: 32px; line-height: 40px; letter-spacing: -1.28px; }
+  h3 { font-size: 20px; line-height: 28px; letter-spacing: -0.4px; }
+
+  @media (max-width: 640px) {
+    h1 { font-size: 28px; line-height: 32px; letter-spacing: -1.4px; }
+    h2 { font-size: 22px; line-height: 28px; letter-spacing: -0.88px; }
+  }
+}
+
+/* ── Components ── */
+@layer components {
+  .section-container {
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+  @media (max-width: 640px) {
+    .section-container { padding-left: 16px; padding-right: 16px; }
+  }
+
+  .mono-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    line-height: 16px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-g-mute);
+  }
+
+  .card {
+    background-color: var(--color-g-elevated);
+    border: 1px solid var(--color-g-hairline);
+    border-radius: var(--radius-md);
+    padding: 24px;
+  }
+
+  .card-lg {
+    background-color: var(--color-g-elevated);
+    border: 1px solid var(--color-g-hairline);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+  }
+  @media (min-width: 640px) {
+    .card-lg { padding: 32px; }
+  }
+}

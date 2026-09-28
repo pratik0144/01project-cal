@@ -1,0 +1,17 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/Navbar.astro';
+import Calculator from '../components/Calculator.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<Layout
+  title="Online Overtime Calculator — Calculate OT Pay for All 50 States (2026)"
+  description="Free overtime calculator for all 50 U.S. states. Calculate straight time, overtime (1.5×), and double time (2×) with state-specific rules. Updated for 2026."
+>
+  <Navbar />
+  <main class="flex-1">
+    <Calculator defaultState="auto" />
+  </main>
+  <Footer />
+</Layout>
