@@ -40,7 +40,7 @@ export interface DailyBreakdown {
 }
 
 /**
- * Weekly FLSA engine — used by 46 states
+ * Weekly FLSA engine: used by 46 states
  * OT = max(0, total - threshold) at multiplier
  */
 function calculateWeeklyFLSA(
@@ -98,7 +98,7 @@ function calculateWeeklyFLSA(
  * Daily: >8 hrs = 1.5×, >12 hrs = 2×
  * 7th consecutive day: first 8 hrs = 1.5×, >8 hrs = 2×
  * Weekly: >40 hrs at 1.5× (only regular hours, not those already paid as daily OT/DT)
- * No pyramiding — each hour at highest single applicable rate
+ * No pyramiding: each hour at highest single applicable rate
  */
 function calculateCalifornia(days: DayHours[], rate: number): OvertimeResult {
   const dailyBreakdown: DailyBreakdown[] = [];
@@ -365,7 +365,7 @@ function calculateNevada(days: DayHours[], rate: number): OvertimeResult {
 }
 
 /**
- * Main calculation function — routes to the correct engine based on state
+ * Main calculation function: routes to the correct engine based on state
  */
 export function calculateOvertime(
   engine: string,

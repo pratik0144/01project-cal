@@ -7,7 +7,11 @@ import sitemap from '@astrojs/sitemap';
 export default defineConfig({
   site: 'https://onlineovertimecalculator.com',
   redirects: {
-    '/': '/OvertimeCalculator/select-state/'
+    '/': '/OvertimeCalculator/select-state/',
+    '/privacy': '/privacy-policy/',
+    '/terms': '/terms-and-conditions/',
+    '/about': '/about-us/',
+    '/contact': '/contact-us/',
   },
   integrations: [sitemap()],
   vite: {

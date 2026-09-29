@@ -6,6 +6,8 @@ import Footer from '../../components/Footer.astro';
 import FAQ from '../../components/FAQ.astro';
 import SeoContent from '../../components/SeoContent.astro';
 import overtimeData from '../../data/overtime-rules.json';
+import { stateSeoContent } from '../../data/state-seo-content';
+import type { StateContent } from '../../data/state-seo-content';
 
 export function getStaticPaths() {
   const paths = overtimeData.states.map((s: any) => ({
@@ -48,6 +50,9 @@ const description = isLanding
 const stateKeywords = isLanding
   ? ''
   : `${stateName} overtime calculator, ${abbr} overtime calculator, overtime pay ${stateName}, ${stateName} OT rules 2026, calculate overtime ${stateName}, ${keywords.join(', ')}`;
+
+// Unique state SEO content from state-seo-content.ts
+const stateData: StateContent | undefined = !isLanding && abbr ? stateSeoContent[abbr.toLowerCase()] : undefined;
 ---
 
 <Layout
@@ -70,21 +75,76 @@ const stateKeywords = isLanding
       )}
     </div>
 
-    <!-- Calculator -->
+    <!-- Calculator Component -->
     <Calculator defaultState={slug} hideTitle={true} />
 
     <div class="section-container">
       <hr class="my-8 sm:my-12" style="border-color: var(--color-g-hairline);" />
     </div>
 
-    <!-- Full Existing SEO content, with 1-2 small state sections inserted for specific state -->
-    <SeoContent stateName={stateName} abbr={abbr} slug={slug} />
+    {isLanding ? (
+      <SeoContent />
+    ) : stateData ? (
+      <article class="section-container pb-12 sm:pb-16">
+        <div class="max-w-3xl mx-auto">
+          <h2 class="text-xl sm:text-2xl font-semibold mb-4" style="color: var(--color-g-ink);">
+            {stateData.heading}
+          </h2>
+          <p class="text-sm sm:text-base leading-relaxed mb-6" style="color: var(--color-g-body);">
+            {stateData.intro}
+          </p>
+
+          {stateData.sections.map((section) => (
+            <div class="mb-6">
+              <h3 class="text-lg sm:text-xl font-semibold mb-3" style="color: var(--color-g-ink);">
+                {section.title}
+              </h3>
+              <p class="text-sm sm:text-base leading-relaxed" style="color: var(--color-g-body);">
+                {section.content}
+              </p>
+            </div>
+          ))}
+
+          <!-- Key Facts Callout Card -->
+          <div class="mt-8 p-5 rounded-xl" style="background: var(--color-g-elevated); border: 1px solid var(--color-g-hairline);">
+            <h3 class="text-base font-semibold mb-3" style="color: var(--color-g-ink);">
+              Key Facts: {stateName} Overtime Rules
+            </h3>
+            <ul class="space-y-2">
+              {stateData.keyFacts.map((fact) => (
+                <li class="flex items-start gap-2 text-sm leading-relaxed" style="color: var(--color-g-body);">
+                  <span class="mt-1.5 w-1.5 h-1.5 rounded-full flex-shrink-0" style="background: var(--color-g-link);"></span>
+                  <span>{fact}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <!-- Small Helpful Quick-Calculation & Hub Navigation Note -->
+          <div class="mt-6 p-5 rounded-xl" style="background: var(--color-g-canvas); border: 1px solid var(--color-g-hairline);">
+            <h4 class="text-sm font-semibold mb-2" style="color: var(--color-g-ink);">
+              Using the {stateName} Calculator Above
+            </h4>
+            <p class="text-xs sm:text-sm leading-relaxed mb-2" style="color: var(--color-g-body);">
+              This calculator automatically incorporates {stateName}'s overtime laws. Simply enter your hourly rate and adjust your daily hours to see your exact gross pay and premium overtime breakdown.
+            </p>
+            <p class="text-xs" style="color: var(--color-g-mute);">
+              Need to check rules for another state or review standard federal FLSA guidelines? Visit our <a href="/OvertimeCalculator/select-state/" class="underline" style="color: var(--color-g-link);">main overtime calculator</a> to compare all 50 states.
+            </p>
+          </div>
+
+          <p class="text-xs mt-6 italic" style="color: var(--color-g-faint);">
+            {stateData.disclaimer}
+          </p>
+        </div>
+      </article>
+    ) : null}
 
     <div class="section-container">
       <hr class="my-8 sm:my-12" style="border-color: var(--color-g-hairline);" />
     </div>
 
-    <!-- FAQ Section on EVERY page -->
+    <!-- FAQ Section with Schema on All Pages -->
     <FAQ />
   </main>
   <Footer />

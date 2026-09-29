@@ -1,13 +1,78 @@
 ---
-// Minimal footer for microtool
+// Site footer with navigation, legal links, and contact info
 ---
-<footer class="py-4 border-t" style="border-color: var(--color-g-hairline); background-color: var(--color-g-canvas);">
-  <div class="section-container flex flex-col sm:flex-row justify-between items-center gap-2">
-    <p class="text-[11px]" style="color: var(--color-g-mute);">
-      © 2026 OnlineOvertimeCalculator.com
-    </p>
-    <p class="text-[11px] italic" style="color: var(--color-g-faint);">
-      Estimator only. Not legal, tax, or payroll advice.
-    </p>
+<footer class="mt-auto border-t" style="border-color: var(--color-g-hairline); background-color: var(--color-g-canvas);">
+  <div class="section-container py-10">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 pb-8" style="border-bottom: 1px solid var(--color-g-hairline);">
+      <!-- Brand & Summary -->
+      <div class="lg:col-span-2 space-y-3">
+        <a href="/OvertimeCalculator/select-state/" class="flex items-center gap-2 font-semibold text-base" style="color: var(--color-g-ink);">
+          <svg width="22" height="22" viewBox="0 0 488 488" fill="none" class="shrink-0 rounded-[5px]" aria-label="Online Overtime Calculator Logo">
+            <rect width="488" height="488" rx="122" fill="#1C1C1C"/>
+            <circle cx="244" cy="244" r="166.67" stroke="#3C9EFF" stroke-width="32.17" stroke-linecap="round" stroke-linejoin="round"/>
+            <polyline points="244 144 244 244 310.67 277.33" stroke="#3C9EFF" stroke-width="32.17" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span>Online<span style="color: var(--color-g-link);">OT</span>Calculator</span>
+        </a>
+        <p class="text-xs sm:text-sm max-w-sm leading-relaxed" style="color: var(--color-g-body);">
+          Fast, accurate overtime pay estimations customized for all 50 U.S. states and FLSA guidelines. Free, privacy-friendly, and updated for 2026.
+        </p>
+      </div>
+
+      <!-- Navigation -->
+      <div>
+        <h3 class="mono-eyebrow mb-3">Explore</h3>
+        <ul class="space-y-2 text-xs sm:text-sm">
+          <li>
+            <a href="/OvertimeCalculator/select-state/" class="hover:underline transition-colors" style="color: var(--color-g-body);">
+              Overtime Calculator
+            </a>
+          </li>
+          <li>
+            <a href="/about-us/" class="hover:underline transition-colors" style="color: var(--color-g-body);">
+              About Us
+            </a>
+          </li>
+          <li>
+            <a href="/contact-us/" class="hover:underline transition-colors" style="color: var(--color-g-body);">
+              Contact Us
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Legal & Contact -->
+      <div>
+        <h3 class="mono-eyebrow mb-3">Legal & Support</h3>
+        <ul class="space-y-2 text-xs sm:text-sm">
+          <li>
+            <a href="/privacy-policy/" class="hover:underline transition-colors" style="color: var(--color-g-body);">
+              Privacy Policy
+            </a>
+          </li>
+          <li>
+            <a href="/terms-and-conditions/" class="hover:underline transition-colors" style="color: var(--color-g-body);">
+              Terms & Conditions
+            </a>
+          </li>
+          <li class="pt-2">
+            <span class="text-[11px] block mono-eyebrow mb-1">Direct Contact</span>
+            <a href="mailto:hello@OTcalculator.com" class="font-mono text-xs sm:text-sm hover:underline font-medium" style="color: var(--color-g-link);">
+              hello@OTcalculator.com
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Bottom Bar -->
+    <div class="pt-6 flex flex-col sm:flex-row justify-between items-center gap-3">
+      <p class="text-[11px]" style="color: var(--color-g-mute);">
+        © 2026 OnlineOvertimeCalculator.com • All rights reserved.
+      </p>
+      <p class="text-[11px] italic" style="color: var(--color-g-faint);">
+        Estimator only. Not legal, tax, or payroll advice.
+      </p>
+    </div>
   </div>
 </footer>

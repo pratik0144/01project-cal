@@ -1,6 +1,6 @@
 ---
 /**
- * Calculator.astro — Overtime calculator microtool
+ * Calculator.astro: Overtime calculator microtool
  * Props: defaultState (slug) to pre-select a state
  */
 import overtimeData from '../data/overtime-rules.json';
@@ -211,12 +211,13 @@ const { defaultState = 'california', hideTitle = false } = Astro.props;
                 <path d="M8 7v4M8 5.5v.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
               </svg>
             </button>
-            <div id="dt-popover" class="dt-popover hidden">
-              <p class="text-[11px] font-medium mb-1" style="color: var(--color-g-ink);">No Double Time</p>
-              <p id="dt-explain" class="text-[11px] leading-relaxed" style="color: var(--color-g-body);">
+            <div id="dt-backdrop" class="dt-backdrop hidden" aria-hidden="true"></div>
+            <div id="dt-popover" class="dt-popover hidden" role="dialog" aria-modal="true" aria-labelledby="dt-popover-title">
+              <p id="dt-popover-title" class="text-xs font-semibold mb-1" style="color: var(--color-g-ink);">No Double Time</p>
+              <p id="dt-explain" class="text-xs leading-relaxed" style="color: var(--color-g-body);">
                 This state doesn't have a double-time rule. All overtime is calculated at 1.5× your regular rate.
               </p>
-              <button id="dt-popover-close" type="button" class="dt-popover-close">&times;</button>
+              <button id="dt-popover-close" type="button" class="dt-popover-close" aria-label="Close dialog">&times;</button>
             </div>
           </div>
         </div>
@@ -619,17 +620,33 @@ const { defaultState = 'california', hideTitle = false } = Astro.props;
   .dt-info-btn:hover {
     background: color-mix(in srgb, var(--color-g-doubletime) 22%, transparent);
   }
+  #dt-card.dt-dimmed > p {
+    opacity: 0.45;
+  }
+  #dt-card.dt-popover-open {
+    z-index: 60;
+  }
+  .dt-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+    z-index: 55;
+  }
   .dt-popover {
     position: absolute;
     bottom: calc(100% + 8px);
     right: 0;
-    width: 240px;
-    padding: 12px;
-    background: var(--color-g-elevated);
+    width: 270px;
+    padding: 14px 16px;
+    background: var(--color-g-elevated) !important;
+    background-color: var(--color-g-elevated) !important;
     border: 1px solid var(--color-g-hairline);
     border-radius: var(--radius-md);
-    box-shadow: 0 4px 24px rgba(0,0,0,0.1);
-    z-index: 20;
+    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.28), 0 3px 10px rgba(0, 0, 0, 0.12);
+    z-index: 60;
+    opacity: 1 !important;
   }
   @media (max-width: 640px) {
     .dt-popover {
@@ -639,19 +656,26 @@ const { defaultState = 'california', hideTitle = false } = Astro.props;
       left: 50%;
       transform: translate(-50%, -50%);
       width: calc(100vw - 48px);
-      max-width: 300px;
+      max-width: 320px;
+      z-index: 60;
     }
   }
   .dt-popover-close {
     position: absolute;
-    top: 6px;
-    right: 8px;
+    top: 8px;
+    right: 10px;
     background: none;
     border: none;
-    font-size: 16px;
+    font-size: 18px;
     color: var(--color-g-mute);
     cursor: pointer;
     line-height: 1;
+    padding: 2px 4px;
+    border-radius: 4px;
+    transition: color 0.15s;
+  }
+  .dt-popover-close:hover {
+    color: var(--color-g-ink);
   }
 </style>
 
@@ -776,12 +800,42 @@ const { defaultState = 'california', hideTitle = false } = Astro.props;
     clear: [0, 0, 0, 0, 0, 0, 0],
   };
 
-  // ── DOM ──
+  // -- DOM --
   const sel = $('state-select') as HTMLSelectElement;
   const rateIn = $('hourly-rate') as HTMLInputElement;
   const slider = $('rate-slider') as HTMLInputElement;
   const dayInputs = document.querySelectorAll('.day-input') as NodeListOf<HTMLInputElement>;
   const canvas = $('earnings-chart') as HTMLCanvasElement;
+
+  // DT popover elements & controls
+  const dtCard = $('dt-card');
+  const dtInfoWrap = $('dt-info-wrap');
+  const dtInfoBtn = $('dt-info-btn');
+  const dtBackdrop = $('dt-backdrop');
+  const dtPopover = $('dt-popover');
+  const dtPopoverClose = $('dt-popover-close');
+  const dtLegend = $('dt-legend');
+  const dtExplain = $('dt-explain');
+
+  function openDtPopover() {
+    dtCard.classList.add('dt-popover-open');
+    dtPopover.classList.remove('hidden');
+    dtBackdrop.classList.remove('hidden');
+  }
+
+  function closeDtPopover() {
+    dtCard.classList.remove('dt-popover-open');
+    dtPopover.classList.add('hidden');
+    dtBackdrop.classList.add('hidden');
+  }
+
+  function toggleDtPopover() {
+    if (dtPopover.classList.contains('hidden')) {
+      openDtPopover();
+    } else {
+      closeDtPopover();
+    }
+  }
 
   function getEngine() {
     const o = sel.options[sel.selectedIndex];
@@ -823,17 +877,13 @@ const { defaultState = 'california', hideTitle = false } = Astro.props;
     $('double-hours').textContent = String(r.doubleTimeHours * p);
 
     // DT card + info tooltip
-    const dtCard = $('dt-card');
-    const dtInfoWrap = $('dt-info-wrap');
-    const dtLegend = $('dt-legend');
-    const dtExplain = $('dt-explain');
-    const dtPopover = $('dt-popover');
     if (engine === 'california') {
-      dtCard.style.opacity = '1';
+      dtCard.classList.remove('dt-dimmed');
       dtInfoWrap.classList.add('hidden');
       dtLegend.style.display = '';
+      closeDtPopover();
     } else {
-      dtCard.style.opacity = '0.55';
+      dtCard.classList.add('dt-dimmed');
       dtInfoWrap.classList.remove('hidden');
       dtLegend.style.display = 'none';
       if (sel.value === 'select-state') {
@@ -848,7 +898,7 @@ const { defaultState = 'california', hideTitle = false } = Astro.props;
         };
         dtExplain.textContent = explanations[engine] || `${stateName} calculates all overtime at 1.5× your regular rate. No double-time rule applies.`;
       }
-      dtPopover.classList.add('hidden');
+      closeDtPopover();
     }
 
     drawChart(r);
@@ -1125,18 +1175,53 @@ const { defaultState = 'california', hideTitle = false } = Astro.props;
 
 
 
-  // DT info tooltip toggle
-  const dtInfoBtn = $('dt-info-btn');
-  const dtPopoverEl = $('dt-popover');
-  const dtPopoverClose = $('dt-popover-close');
+  // DT info popover controls & dismiss listeners
   dtInfoBtn.addEventListener('click', (e) => {
     e.stopPropagation();
-    dtPopoverEl.classList.toggle('hidden');
+    toggleDtPopover();
   });
-  dtPopoverClose.addEventListener('click', () => { dtPopoverEl.classList.add('hidden'); });
+
+  dtPopoverClose.addEventListener('click', (e) => {
+    e.stopPropagation();
+    closeDtPopover();
+  });
+
+  dtBackdrop.addEventListener('click', (e) => {
+    e.stopPropagation();
+    closeDtPopover();
+  });
+
+  // Touch outside: close when touching anywhere outside popover and info button
+  document.addEventListener('touchstart', (e) => {
+    if (!dtPopover.classList.contains('hidden')) {
+      const target = e.target as HTMLElement;
+      if (!target.closest('#dt-popover') && !target.closest('#dt-info-btn')) {
+        closeDtPopover();
+      }
+    }
+  }, { passive: true });
+
+  // Click outside: close when clicking anywhere outside popover and info button
   document.addEventListener('click', (e) => {
-    if (!dtPopoverEl.classList.contains('hidden') && !(e.target as HTMLElement).closest('#dt-card')) {
-      dtPopoverEl.classList.add('hidden');
+    if (!dtPopover.classList.contains('hidden')) {
+      const target = e.target as HTMLElement;
+      if (!target.closest('#dt-popover') && !target.closest('#dt-info-btn')) {
+        closeDtPopover();
+      }
+    }
+  });
+
+  // Scroll: close popover automatically on any scroll (window or container)
+  window.addEventListener('scroll', () => {
+    if (!dtPopover.classList.contains('hidden')) {
+      closeDtPopover();
+    }
+  }, { passive: true, capture: true });
+
+  // Escape key: close popover
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !dtPopover.classList.contains('hidden')) {
+      closeDtPopover();
     }
   });
 
@@ -1144,7 +1229,7 @@ const { defaultState = 'california', hideTitle = false } = Astro.props;
   let rt: ReturnType<typeof setTimeout>;
   window.addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(update, 100); });
 
-  // Init — read default state from data attribute
+  // Init - read default state from data attribute
   const section = document.getElementById('calculator')!;
   const defaultState = section.dataset.defaultState || 'select-state';
 
@@ -1183,7 +1268,7 @@ const { defaultState = 'california', hideTitle = false } = Astro.props;
             }
           } catch { /* keep placeholder if lookup fails */ }
         },
-        () => { /* denied — keep placeholder until user selects manually */ },
+        () => { /* denied: keep placeholder until user selects manually */ },
         { timeout: 6000, maximumAge: 300000 }
       );
     }

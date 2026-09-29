@@ -1,0 +1,106 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+
+const pageTitle = "Contact Us - Online Overtime Calculator";
+const pageDescription = "Get in touch with Online Overtime Calculator. Contact us at hello@OTcalculator.com for questions, state rule updates, or feedback.";
+---
+
+<Layout
+  title={pageTitle}
+  description={pageDescription}
+>
+  <Navbar />
+  <main class="flex-1 flex flex-col justify-center items-center py-16 sm:py-24">
+    <div class="section-container text-center max-w-lg mx-auto w-full space-y-6">
+      
+      <div>
+        <p class="mono-eyebrow mb-2">GET IN TOUCH</p>
+        <h1 class="text-3xl sm:text-4xl font-semibold tracking-tight" style="color: var(--color-g-ink);">
+          Contact Us
+        </h1>
+        <p class="mt-2 text-sm sm:text-base leading-relaxed" style="color: var(--color-g-body);">
+          Have a question about overtime calculations, noticed a state rule change, or want to share feedback? We'd love to hear from you.
+        </p>
+      </div>
+
+      <!-- Minimal Contact Card -->
+      <div class="p-6 sm:p-8 rounded-xl text-center space-y-4" style="background-color: var(--color-g-elevated); border: 1px solid var(--color-g-hairline);">
+        <span class="mono-eyebrow block">Direct Email</span>
+        <a
+          href="mailto:hello@OTcalculator.com"
+          class="inline-block font-mono text-xl sm:text-2xl font-semibold hover:underline"
+          style="color: var(--color-g-link);"
+        >
+          hello@OTcalculator.com
+        </a>
+
+        <div class="flex items-center justify-center gap-3 pt-2">
+          <a
+            href="mailto:hello@OTcalculator.com"
+            class="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg text-sm font-semibold transition-all shadow-sm"
+            style="background-color: var(--color-g-ink); color: var(--color-g-on-primary);"
+          >
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+              <polyline points="22,6 12,13 2,6"/>
+            </svg>
+            <span>Open Email</span>
+          </a>
+
+          <button
+            id="copy-email-btn"
+            type="button"
+            class="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium transition-colors cursor-pointer"
+            style="border: 1px solid var(--color-g-hairline); background-color: var(--color-g-canvas); color: var(--color-g-ink);"
+            title="Copy email to clipboard"
+          >
+            <svg id="copy-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+            </svg>
+            <span id="copy-label">Copy</span>
+          </button>
+        </div>
+
+        <p class="text-xs pt-1" style="color: var(--color-g-mute);">
+          We typically respond within 24–48 business hours.
+        </p>
+      </div>
+
+      <!-- Quick back link -->
+      <div class="pt-2">
+        <a
+          href="/OvertimeCalculator/select-state/"
+          class="inline-flex items-center gap-1.5 text-xs font-medium hover:underline"
+          style="color: var(--color-g-mute);"
+        >
+          <span>← Back to Overtime Calculator</span>
+        </a>
+      </div>
+
+    </div>
+  </main>
+  <Footer />
+</Layout>
+
+<script>
+  const copyBtn = document.getElementById('copy-email-btn');
+  const copyLabel = document.getElementById('copy-label');
+
+  if (copyBtn && copyLabel) {
+    copyBtn.addEventListener('click', async () => {
+      const email = 'hello@OTcalculator.com';
+      try {
+        await navigator.clipboard.writeText(email);
+        copyLabel.textContent = 'Copied!';
+        setTimeout(() => {
+          copyLabel.textContent = 'Copy';
+        }, 2000);
+      } catch {
+        window.prompt('Copy email address:', email);
+      }
+    });
+  }
+</script>

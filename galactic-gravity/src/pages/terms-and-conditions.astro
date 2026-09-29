@@ -1,0 +1,130 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+
+const pageTitle = "Terms & Conditions - Online Overtime Calculator";
+const pageDescription = "Read the Terms & Conditions for Online Overtime Calculator. Learn about calculation disclaimers, acceptable use, limitation of liability, and estimator guidelines.";
+const pageKeywords = "overtime calculator terms, terms and conditions, payroll calculator terms, overtime disclaimer";
+---
+
+<Layout
+  title={pageTitle}
+  description={pageDescription}
+  keywords={pageKeywords}
+>
+  <Navbar />
+  <main class="flex-1">
+    <!-- Header -->
+    <div class="section-container pt-8 sm:pt-12 pb-6 text-center">
+      <p class="mono-eyebrow mb-2">LEGAL TERMS • UPDATED 2026</p>
+      <h1 class="text-3xl sm:text-4xl lg:text-5xl font-semibold mb-4" style="color: var(--color-g-ink);">Terms & Conditions</h1>
+      <p class="text-sm sm:text-base max-w-2xl mx-auto leading-relaxed" style="color: var(--color-g-body);">
+        Please review these terms carefully prior to utilizing the calculations, reference materials, and tools provided on this website.
+      </p>
+    </div>
+
+    <!-- Main Content -->
+    <article class="section-container pb-16">
+      <div class="max-w-3xl mx-auto space-y-8">
+        <!-- Prominent Disclaimer Box -->
+        <div class="p-6 rounded-xl" style="background-color: var(--color-g-elevated); border: 1px solid var(--color-g-hairline);">
+          <div class="flex items-center gap-2 mb-2">
+            <span class="inline-block w-2.5 h-2.5 rounded-full" style="background-color: var(--color-g-link);"></span>
+            <h2 class="text-base font-semibold" style="color: var(--color-g-ink);">Important Estimator Disclaimer</h2>
+          </div>
+          <p class="text-sm leading-relaxed" style="color: var(--color-g-body);">
+            Online Overtime Calculator is an independent, automated math utility provided solely for general informational and educational estimates. <strong>It does not provide legal, tax, payroll, or accounting advice.</strong> Overtime compensation can be affected by employment agreements, industry-specific exemptions, collective bargaining agreements (CBAs), non-discretionary bonuses, or municipal wage ordinances. Consult your human resources department, a certified payroll professional, or a labor attorney for official wage determinations.
+          </p>
+        </div>
+
+        <section class="space-y-3">
+          <h2 class="text-xl sm:text-2xl font-semibold" style="color: var(--color-g-ink);">1. Acceptance of Terms</h2>
+          <p class="text-sm sm:text-base leading-relaxed" style="color: var(--color-g-body);">
+            By accessing or using Online Overtime Calculator (<span class="font-mono text-xs sm:text-sm">onlineovertimecalculator.com</span>), you agree to be bound by these Terms & Conditions and all applicable laws and regulations. If you do not agree with any part of these terms, you are prohibited from using or accessing this site.
+          </p>
+        </section>
+
+        <section class="space-y-3">
+          <h2 class="text-xl sm:text-2xl font-semibold" style="color: var(--color-g-ink);">2. Description of Service</h2>
+          <p class="text-sm sm:text-base leading-relaxed" style="color: var(--color-g-body);">
+            Online Overtime Calculator provides a free web-based calculation tool allowing users to estimate straight-time pay, overtime pay (typically 1.5× regular hourly wage), and double-time pay (2×) across federal Fair Labor Standards Act (FLSA) guidelines and state-specific statutory thresholds (such as California, Colorado, Alaska, Nevada, etc.).
+          </p>
+          <p class="text-sm sm:text-base leading-relaxed" style="color: var(--color-g-body);">
+            All calculations are executed in real time within your browser. The site is free to use without requiring user account registration or financial subscription.
+          </p>
+        </section>
+
+        <section class="space-y-3">
+          <h2 class="text-xl sm:text-2xl font-semibold" style="color: var(--color-g-ink);">3. Calculation Methodology & Accuracy</h2>
+          <p class="text-sm sm:text-base leading-relaxed" style="color: var(--color-g-body);">
+            While we dedicate substantial effort to maintain formulas reflecting 2026 federal and state labor statutes:
+          </p>
+          <ul class="list-disc pl-5 space-y-2 text-sm sm:text-base" style="color: var(--color-g-body);">
+            <li><strong>No Guarantee of Accuracy:</strong> We do not warrant that calculations are free of mathematical or legal discrepancies, or that they reflect every municipal ordinance or unique employer schedule.</li>
+            <li><strong>Complex Pay Structures:</strong> The calculator assumes a single base hourly rate. It does not automatically compute weighted regular rates under FLSA 29 CFR § 778 for workers earning multiple rates within the same workweek, nor does it factor in commission or piece-rate adjustments.</li>
+            <li><strong>Exemptions:</strong> Certain professions (e.g., executive, administrative, professional, outside sales, computer employees, agricultural, or specific transportation workers) may be legally exempt from overtime protections.</li>
+          </ul>
+        </section>
+
+        <section class="space-y-3">
+          <h2 class="text-xl sm:text-2xl font-semibold" style="color: var(--color-g-ink);">4. Intellectual Property Rights</h2>
+          <p class="text-sm sm:text-base leading-relaxed" style="color: var(--color-g-body);">
+            The design, layout, graphics, interface elements, calculation algorithms, and textual content on this website are the intellectual property of Online Overtime Calculator and are protected by applicable copyright, trademark, and trade dress laws.
+          </p>
+          <p class="text-sm sm:text-base leading-relaxed" style="color: var(--color-g-body);">
+            You may use the tool for personal, non-commercial purposes or internal business wage estimation. You may not republish, scrape, mirror, or repackage the calculator or its code without prior written consent.
+          </p>
+        </section>
+
+        <section class="space-y-3">
+          <h2 class="text-xl sm:text-2xl font-semibold" style="color: var(--color-g-ink);">5. Acceptable Use Policy</h2>
+          <p class="text-sm sm:text-base leading-relaxed" style="color: var(--color-g-body);">
+            When using our platform, you agree not to:
+          </p>
+          <ul class="list-disc pl-5 space-y-2 text-sm sm:text-base" style="color: var(--color-g-body);">
+            <li>Engage in automated scraping, data mining, or programmatic denial-of-service against the site's servers or CDN.</li>
+            <li>Attempt to reverse-engineer, decompile, or tamper with the underlying software.</li>
+            <li>Use the website in any manner that violates local, state, federal, or international labor or consumer protection laws.</li>
+          </ul>
+        </section>
+
+        <section class="space-y-3">
+          <h2 class="text-xl sm:text-2xl font-semibold" style="color: var(--color-g-ink);">6. Disclaimer of Warranties</h2>
+          <p class="text-sm sm:text-base leading-relaxed" style="color: var(--color-g-body);">
+            The materials and tools on Online Overtime Calculator are provided on an "AS IS" and "AS AVAILABLE" basis. We make no warranties, expressed or implied, and hereby disclaim all other warranties, including without limitation, implied warranties of merchantability, fitness for a particular purpose, non-infringement, or title.
+          </p>
+        </section>
+
+        <section class="space-y-3">
+          <h2 class="text-xl sm:text-2xl font-semibold" style="color: var(--color-g-ink);">7. Limitation of Liability</h2>
+          <p class="text-sm sm:text-base leading-relaxed" style="color: var(--color-g-body);">
+            In no event shall Online Overtime Calculator, its founders, contributors, or service providers be liable for any direct, indirect, incidental, special, consequential, or punitive damages—including, without limitation, lost wages, payroll disputes, statutory penalties, back pay awards, or lost profits—arising out of the use or inability to use this calculator, even if advised of the possibility of such damages.
+          </p>
+        </section>
+
+        <section class="space-y-3">
+          <h2 class="text-xl sm:text-2xl font-semibold" style="color: var(--color-g-ink);">8. Modifications to Terms</h2>
+          <p class="text-sm sm:text-base leading-relaxed" style="color: var(--color-g-body);">
+            We reserve the right to revise or update these Terms & Conditions at any time without advance notice. By continuing to use Online Overtime Calculator, you agree to be bound by the current version of these terms.
+          </p>
+        </section>
+
+        <!-- Contact Section -->
+        <section class="p-6 rounded-xl" style="background-color: var(--color-g-elevated); border: 1px solid var(--color-g-hairline);">
+          <h2 class="text-lg font-semibold mb-2" style="color: var(--color-g-ink);">9. Inquiries & Contact</h2>
+          <p class="text-sm leading-relaxed mb-4" style="color: var(--color-g-body);">
+            For legal inquiries, questions about these Terms, or to report an issue with the calculator, please contact us:
+          </p>
+          <div class="flex items-center gap-3">
+            <span class="text-xs mono-eyebrow">Email:</span>
+            <a href="mailto:hello@OTcalculator.com" class="font-mono text-sm sm:text-base font-medium underline" style="color: var(--color-g-link);">
+              hello@OTcalculator.com
+            </a>
+          </div>
+        </section>
+      </div>
+    </article>
+  </main>
+  <Footer />
+</Layout>

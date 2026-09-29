@@ -1,0 +1,89 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+
+const pageTitle = "500 - Server Error | Online Overtime Calculator";
+const pageDescription = "An unexpected error occurred while processing this request. Please refresh or return to the Online Overtime Calculator.";
+---
+
+<Layout
+  title={pageTitle}
+  description={pageDescription}
+  noindex={true}
+>
+  <Navbar />
+  <main class="flex-1 flex flex-col justify-center items-center py-12 sm:py-20">
+    <div class="section-container text-center max-w-2xl mx-auto space-y-8">
+      
+      <!-- Status Badge -->
+      <div>
+        <span class="mono-eyebrow inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs" style="background-color: var(--color-g-elevated); border: 1px solid var(--color-g-hairline);">
+          <span class="w-1.5 h-1.5 rounded-full" style="background-color: #f59e0b;"></span>
+          ERROR 500 • INTERNAL SERVER ERROR
+        </span>
+      </div>
+
+      <!-- Large 500 Display -->
+      <div class="space-y-3">
+        <h1 class="text-7xl sm:text-9xl font-mono font-bold tracking-tight" style="color: var(--color-g-ink); letter-spacing: -0.05em;">
+          500
+        </h1>
+        <h2 class="text-2xl sm:text-3xl font-semibold" style="color: var(--color-g-ink);">
+          Unexpected overtime on the server.
+        </h2>
+        <p class="text-sm sm:text-base leading-relaxed max-w-md mx-auto" style="color: var(--color-g-body);">
+          Something went wrong on our end while processing this page. Your browser calculations and local preferences remain intact.
+        </p>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex flex-wrap items-center justify-center gap-3 pt-2">
+        <button
+          type="button"
+          id="reload-btn"
+          class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg text-sm font-semibold transition-all shadow-sm cursor-pointer"
+          style="background-color: var(--color-g-ink); color: var(--color-g-on-primary);"
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="23 4 23 10 17 10"/>
+            <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
+          </svg>
+          <span>Reload Page</span>
+        </button>
+        <a
+          href="/OvertimeCalculator/select-state/"
+          class="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-lg text-sm font-medium transition-colors"
+          style="border: 1px solid var(--color-g-hairline); background-color: var(--color-g-elevated); color: var(--color-g-ink);"
+        >
+          <span>Return to Calculator</span>
+        </a>
+      </div>
+
+      <!-- Support Card -->
+      <div class="p-6 rounded-xl text-left mt-8" style="background-color: var(--color-g-elevated); border: 1px solid var(--color-g-hairline);">
+        <h3 class="text-sm font-semibold mb-2" style="color: var(--color-g-ink);">Need Technical Assistance?</h3>
+        <p class="text-xs sm:text-sm leading-relaxed mb-4" style="color: var(--color-g-body);">
+          If this issue continues after refreshing, our team can investigate right away. Please drop us an email with the approximate time and the page you were attempting to access.
+        </p>
+        <div class="flex items-center gap-3">
+          <span class="text-xs mono-eyebrow">Support Email:</span>
+          <a href="mailto:hello@OTcalculator.com" class="font-mono text-xs sm:text-sm font-medium underline" style="color: var(--color-g-link);">
+            hello@OTcalculator.com
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </main>
+  <Footer />
+</Layout>
+
+<script>
+  const reloadBtn = document.getElementById('reload-btn');
+  if (reloadBtn) {
+    reloadBtn.addEventListener('click', () => {
+      window.location.reload();
+    });
+  }
+</script>

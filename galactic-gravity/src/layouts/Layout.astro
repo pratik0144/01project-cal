@@ -8,6 +8,7 @@ interface Props {
   ogType?: string;
   keywords?: string;
   article?: boolean;
+  noindex?: boolean;
 }
 
 const defaultKeywords = "overtime calculator, overtime calculator online, double overtime calculator, california overtime calculator, overtime calculator in hours, overtime calculator usa, daily overtime calculator, weighted overtime calculator, paycheck overtime calculator, qualified overtime calculator, overtime calculator for taxes, overtime calculator bi weekly, no tax overtime calculator, hourly overtime calculator, pay and overtime calculator, salary overtime calculator, work overtime calculator, 1.5 x overtime calculator, yearly overtime calculator";
@@ -18,7 +19,8 @@ const {
   ogImage = "https://onlineovertimecalculator.com/og-image.png",
   ogType = "website",
   keywords = '',
-  article = false
+  article = false,
+  noindex = false
 } = Astro.props;
 
 const finalKeywords = keywords && keywords.trim() && keywords !== defaultKeywords
@@ -62,7 +64,7 @@ const jsonLd = {
     <meta name="description" content={description} />
     <meta name="keywords" content={finalKeywords} />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+    <meta name="robots" content={noindex ? "noindex, nofollow" : "index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"} />
     <meta name="author" content="OnlineOvertimeCalculator.com" />
     
     <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
@@ -72,6 +74,7 @@ const jsonLd = {
     <meta name="apple-mobile-web-app-title" content="OvertimeCalculator" />
     <link rel="manifest" href="/site.webmanifest" />
     <link rel="canonical" href={Astro.url.href} />
+    <link rel="sitemap" href="/sitemap-index.xml" />
 
     <!-- Open Graph -->
     <meta property="og:title" content={title} />

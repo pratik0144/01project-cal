@@ -1,0 +1,105 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+
+const pageTitle = "404 - Page Not Found | Online Overtime Calculator";
+const pageDescription = "The page you are looking for does not exist on Online Overtime Calculator. Return to our overtime calculator or choose your state.";
+
+const popularStates = [
+  { name: 'California', slug: 'california', tag: 'Daily & Double OT' },
+  { name: 'Texas', slug: 'texas', tag: 'Standard FLSA' },
+  { name: 'New York', slug: 'new-york', tag: 'Weekly OT' },
+  { name: 'Florida', slug: 'florida', tag: 'Standard FLSA' },
+  { name: 'Colorado', slug: 'colorado', tag: '12h Daily OT' },
+  { name: 'Illinois', slug: 'illinois', tag: 'Weekly OT' },
+  { name: 'Pennsylvania', slug: 'pennsylvania', tag: 'Weekly OT' },
+  { name: 'Washington', slug: 'washington', tag: 'Weekly OT' },
+];
+---
+
+<Layout
+  title={pageTitle}
+  description={pageDescription}
+  noindex={true}
+>
+  <Navbar />
+  <main class="flex-1 flex flex-col justify-center items-center py-12 sm:py-20">
+    <div class="section-container text-center max-w-2xl mx-auto space-y-8">
+      
+      <!-- Status Badge -->
+      <div>
+        <span class="mono-eyebrow inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs" style="background-color: var(--color-g-elevated); border: 1px solid var(--color-g-hairline);">
+          <span class="w-1.5 h-1.5 rounded-full" style="background-color: #ef4444;"></span>
+          ERROR 404 • PAGE NOT FOUND
+        </span>
+      </div>
+
+      <!-- Large 404 Display -->
+      <div class="space-y-3">
+        <h1 class="text-7xl sm:text-9xl font-mono font-bold tracking-tight" style="color: var(--color-g-ink); letter-spacing: -0.05em;">
+          404
+        </h1>
+        <h2 class="text-2xl sm:text-3xl font-semibold" style="color: var(--color-g-ink);">
+          This page has clocked out.
+        </h2>
+        <p class="text-sm sm:text-base leading-relaxed max-w-md mx-auto" style="color: var(--color-g-body);">
+          The URL or calculation sheet you're looking for doesn't exist, was moved, or has an expired link.
+        </p>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex flex-wrap items-center justify-center gap-3 pt-2">
+        <a
+          href="/OvertimeCalculator/select-state/"
+          class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg text-sm font-semibold transition-all shadow-sm"
+          style="background-color: var(--color-g-ink); color: var(--color-g-on-primary);"
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="15 18 9 12 15 6"/>
+          </svg>
+          <span>Back to Overtime Calculator</span>
+        </a>
+        <a
+          href="/contact-us/"
+          class="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-lg text-sm font-medium transition-colors"
+          style="border: 1px solid var(--color-g-hairline); background-color: var(--color-g-elevated); color: var(--color-g-ink);"
+        >
+          <span>Contact Support</span>
+        </a>
+      </div>
+
+      <!-- Quick Navigation Card -->
+      <div class="p-6 rounded-xl text-left mt-8" style="background-color: var(--color-g-elevated); border: 1px solid var(--color-g-hairline);">
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="text-sm font-semibold" style="color: var(--color-g-ink);">Popular Overtime Calculators</h3>
+          <a href="/OvertimeCalculator/select-state/" class="text-xs font-medium underline" style="color: var(--color-g-link);">
+            All 50 States →
+          </a>
+        </div>
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+          {popularStates.map((st) => (
+            <a
+              href={`/OvertimeCalculator/${st.slug}/`}
+              class="p-2.5 rounded-lg text-xs transition-colors hover:border-[var(--color-g-link)] flex flex-col gap-0.5"
+              style="background-color: var(--color-g-canvas); border: 1px solid var(--color-g-hairline);"
+            >
+              <span class="font-medium" style="color: var(--color-g-ink);">{st.name}</span>
+              <span class="text-[10px]" style="color: var(--color-g-mute);">{st.tag}</span>
+            </a>
+          ))}
+        </div>
+      </div>
+
+      <!-- Need Help Note -->
+      <p class="text-xs" style="color: var(--color-g-mute);">
+        Think this is a broken link on our site? Let us know at{' '}
+        <a href="mailto:hello@OTcalculator.com" class="font-mono underline" style="color: var(--color-g-link);">
+          hello@OTcalculator.com
+        </a>
+      </p>
+
+    </div>
+  </main>
+  <Footer />
+</Layout>
