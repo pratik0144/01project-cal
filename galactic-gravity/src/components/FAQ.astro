@@ -1,0 +1,215 @@
+---
+/**
+ * FAQ.astro — SEO-friendly FAQ section with JSON-LD structured data
+ * Renders an interactive accordion and injects FAQPage schema markup
+ */
+
+const faqs = [
+  {
+    question: "How do I calculate my overtime?",
+    answer: "To calculate your overtime, multiply your regular hourly rate by 1.5 (time and a half) for every hour worked beyond 40 hours in a workweek. For example, if your hourly rate is $20 and you worked 45 hours, your overtime pay would be: 5 hours × $20 × 1.5 = $150. Our free overtime calculator handles this automatically — just enter your state, hourly rate, and daily hours, and it instantly shows your straight time, overtime, and total gross pay."
+  },
+  {
+    question: "How do I calculate my OT rate?",
+    answer: "Your OT (overtime) rate is typically 1.5 times your regular hourly rate of pay under the federal Fair Labor Standards Act (FLSA). Simply multiply your base hourly wage by 1.5. For instance, if you earn $25/hour, your OT rate is $37.50/hour. In California, hours worked beyond 12 in a single day are paid at double time (2× your regular rate). Use our calculator above to compute your exact OT rate based on your state's rules."
+  },
+  {
+    question: "What is the new overtime rule for 2026?",
+    answer: "For 2026, the Department of Labor's overtime rules continue to evolve. The salary threshold for overtime exemption has been updated, meaning more salaried workers may now qualify for overtime pay. Under the current rule, employees earning below the exemption threshold must be paid overtime for hours over 40 per week, regardless of job title. The specific salary threshold is adjusted periodically — check with the DOL or use our overtime calculator, which stays updated with the latest 2026 rules for all 50 states."
+  },
+  {
+    question: "What are the new OT rules?",
+    answer: "The new OT rules primarily affect who qualifies as an exempt employee. The key changes include an increased salary threshold for the executive, administrative, and professional exemptions, meaning employers must pay overtime to more workers. Additionally, some states like California, Alaska, Nevada, and Colorado have their own daily overtime rules that go beyond the federal 40-hour weekly standard. Our calculator automatically applies the correct state-specific overtime rules when you select your jurisdiction."
+  },
+  {
+    question: "What is the best overtime calculator for payroll?",
+    answer: "The best overtime calculator for payroll is one that accounts for state-specific rules — not just the federal 40-hour weekly threshold. Our Online Overtime Calculator covers all 50 U.S. states including complex rules like California's daily overtime (>8 hours) and double time (>12 hours), Alaska's daily + weekly calculation, Colorado's greater-of daily/weekly rule, and Nevada's rate-based threshold. It provides instant breakdowns of straight time, overtime (1.5×), and double time (2×) pay, making it ideal for payroll verification."
+  },
+  {
+    question: "How does no tax on overtime work calculator?",
+    answer: "Currently, there is no federal law that exempts overtime pay from income taxes in the United States. All overtime wages are treated as regular earned income and are subject to federal income tax, state income tax (where applicable), Social Security tax, and Medicare tax. Any 'no tax on overtime' proposals are legislative discussions that have not been enacted into law as of 2026. Our overtime calculator computes your gross overtime pay — for net (after-tax) estimates, you would need to apply your specific tax bracket and withholding rates."
+  },
+  {
+    question: "How much overtime will be tax free calculator?",
+    answer: "As of 2026, no overtime is tax-free under current U.S. federal law. Overtime pay is taxed as ordinary income at your applicable marginal tax rate. While there have been political proposals to make overtime pay tax-exempt, none have been signed into law. Our calculator focuses on calculating your gross overtime earnings accurately based on your state's labor laws. To estimate your take-home pay after taxes, you would subtract your federal and state tax withholding from the gross pay our calculator provides."
+  },
+  {
+    question: "How much tax on overtime calculator?",
+    answer: "Overtime pay is taxed at the same rate as your regular income — it does not get taxed at a higher rate. However, because overtime increases your total pay for that pay period, your employer may withhold taxes at a higher rate on that specific paycheck (this is just withholding, not your actual tax rate). For example, if you're in the 22% federal tax bracket, your overtime earnings are taxed at 22% as well. Our calculator shows your gross overtime pay; for exact tax calculations, consult a tax professional or use a paycheck tax calculator alongside our tool."
+  },
+  {
+    question: "Is overtime worth it calculator?",
+    answer: "Whether overtime is worth it depends on your hourly rate, the number of extra hours, and your tax situation. At 1.5× your regular rate, overtime can significantly boost your earnings. For instance, working 10 hours of overtime at $25/hour earns you $375 extra ($25 × 1.5 × 10). Use our overtime calculator to see exactly how much additional pay you'll earn for specific hours. While higher withholding on overtime paychecks can make it seem less valuable, the actual tax rate on overtime is the same as regular income — so overtime is almost always financially worthwhile."
+  },
+  {
+    question: "How to calculate OT with basic salary?",
+    answer: "To calculate overtime from a basic salary, first convert your salary to an hourly rate. Divide your annual salary by 52 (weeks) and then by 40 (hours) to get your regular hourly rate. For example: $52,000 ÷ 52 ÷ 40 = $25/hour. Then multiply your hourly rate by 1.5 for each overtime hour. If you work 5 OT hours: 5 × $25 × 1.5 = $187.50. Enter your calculated hourly rate into our overtime calculator and input your daily work hours to get an instant, accurate breakdown."
+  },
+  {
+    question: "Is it possible for salaried employees to get overtime?",
+    answer: "Yes, many salaried employees are entitled to overtime pay. Under the FLSA, only employees who meet specific exemption criteria (executive, administrative, professional, or highly compensated) AND earn above the salary threshold are exempt from overtime. If you're a salaried worker earning below the threshold or your duties don't meet exemption requirements, your employer must pay you overtime for hours over 40 per week. The 2026 salary threshold has been updated — check with the Department of Labor for the latest figures."
+  },
+  {
+    question: "How to calculate overtime for monthly salary employees?",
+    answer: "For monthly salary employees, calculate your regular hourly rate by dividing your monthly salary by the total regular hours in the month. A common method: multiply weekly hours (40) by 52 weeks, then divide by 12 months = 173.33 hours/month. So if your monthly salary is $5,000: $5,000 ÷ 173.33 = $28.85/hour. Your OT rate is $28.85 × 1.5 = $43.27/hour. Enter this hourly rate in our calculator along with your daily hours to see your complete pay breakdown including overtime."
+  },
+  {
+    question: "How do I calculate my pay if I work overtime?",
+    answer: "To calculate your total pay with overtime: (1) Count your regular hours (up to 40/week for federal, or 8/day in California), (2) Count your overtime hours (anything over the threshold), (3) Multiply regular hours by your hourly rate, (4) Multiply overtime hours by your hourly rate × 1.5. Add both amounts for your gross pay. Example: 45 hours at $20/hr = (40 × $20) + (5 × $20 × 1.5) = $800 + $150 = $950 gross pay. Our calculator does all this math instantly and accounts for state-specific rules like daily overtime and double time."
+  },
+  {
+    question: "How much overtime is allowed in the USA?",
+    answer: "Under federal law, there is no cap on how much overtime an employer can require. The FLSA does not limit the number of hours an adult employee can work in a week — it only requires that overtime (hours over 40/week) be compensated at 1.5× the regular rate. However, some states, industries, and union contracts may impose limits. For example, certain healthcare workers and truck drivers have industry-specific regulations. While employers can mandate overtime, employees must be properly compensated for all overtime hours worked."
+  }
+];
+
+// Build JSON-LD for FAQPage
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": faqs.map(faq => ({
+    "@type": "Question",
+    "name": faq.question,
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": faq.answer
+    }
+  }))
+};
+---
+
+<!-- FAQ JSON-LD -->
+<script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
+
+<section class="py-12 sm:py-16" id="faq">
+  <div class="section-container">
+    <div class="max-w-3xl mx-auto">
+      <div class="text-center mb-8">
+        <p class="mono-eyebrow mb-2">FREQUENTLY ASKED QUESTIONS</p>
+        <h2 class="text-xl sm:text-2xl font-semibold" style="color: var(--color-g-ink);">
+          Overtime Calculator FAQ
+        </h2>
+        <p class="mt-2 text-sm sm:text-base" style="color: var(--color-g-body);">
+          Get answers to the most common questions about overtime pay, tax implications, and how our calculator works.
+        </p>
+      </div>
+
+      <div class="faq-list" id="faq-list">
+        {faqs.map((faq, i) => (
+          <details class="faq-item" name="faq">
+            <summary class="faq-question">
+              <span class="faq-q-text">{faq.question}</span>
+              <svg class="faq-chevron" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </summary>
+            <div class="faq-answer">
+              <p>{faq.answer}</p>
+            </div>
+          </details>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .faq-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .faq-item {
+    border: 1px solid var(--color-g-hairline);
+    border-radius: var(--radius-md);
+    background: var(--color-g-elevated);
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+
+  .faq-item:hover {
+    border-color: var(--color-g-mute);
+  }
+
+  .faq-item[open] {
+    border-color: color-mix(in srgb, var(--color-g-link) 40%, var(--color-g-hairline));
+  }
+
+  .faq-question {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 16px 20px;
+    cursor: pointer;
+    list-style: none;
+    user-select: none;
+    -webkit-user-select: none;
+    transition: background 0.15s;
+  }
+
+  .faq-question::-webkit-details-marker {
+    display: none;
+  }
+
+  .faq-question::marker {
+    content: '';
+  }
+
+  .faq-question:hover {
+    background: color-mix(in srgb, var(--color-g-link) 4%, transparent);
+  }
+
+  .faq-q-text {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--color-g-ink);
+    line-height: 1.5;
+  }
+
+  @media (min-width: 640px) {
+    .faq-q-text {
+      font-size: 15px;
+    }
+  }
+
+  .faq-chevron {
+    flex-shrink: 0;
+    color: var(--color-g-mute);
+    transition: transform 0.2s ease;
+  }
+
+  .faq-item[open] .faq-chevron {
+    transform: rotate(180deg);
+    color: var(--color-g-link);
+  }
+
+  .faq-answer {
+    padding: 0 20px 16px;
+    animation: faq-fade-in 0.2s ease;
+  }
+
+  .faq-answer p {
+    font-size: 13px;
+    line-height: 1.7;
+    color: var(--color-g-body);
+  }
+
+  @media (min-width: 640px) {
+    .faq-answer p {
+      font-size: 14px;
+    }
+    .faq-question {
+      padding: 18px 24px;
+    }
+    .faq-answer {
+      padding: 0 24px 20px;
+    }
+  }
+
+  @keyframes faq-fade-in {
+    from { opacity: 0; transform: translateY(-4px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>

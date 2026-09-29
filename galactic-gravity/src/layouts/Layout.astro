@@ -4,12 +4,51 @@ import '../styles/global.css';
 interface Props {
   title?: string;
   description?: string;
+  ogImage?: string;
+  ogType?: string;
+  keywords?: string;
+  article?: boolean;
 }
+
+const defaultKeywords = "overtime calculator, overtime calculator online, double overtime calculator, california overtime calculator, overtime calculator in hours, overtime calculator usa, daily overtime calculator, weighted overtime calculator, paycheck overtime calculator, qualified overtime calculator, overtime calculator for taxes, overtime calculator bi weekly, no tax overtime calculator, hourly overtime calculator, pay and overtime calculator, salary overtime calculator, work overtime calculator, 1.5 x overtime calculator, yearly overtime calculator";
 
 const {
   title = "Online Overtime Calculator — Calculate OT Pay for All 50 States (2026)",
-  description = "Free overtime calculator for all 50 U.S. states. Calculate straight time, overtime (1.5×), and double time (2×) pay with state-specific rules. Updated for 2026."
+  description = "Free overtime calculator for all 50 U.S. states. Calculate straight time, overtime (1.5×), and double time (2×) pay with state-specific rules. Updated for 2026.",
+  ogImage = "https://onlineovertimecalculator.com/og-image.png",
+  ogType = "website",
+  keywords = defaultKeywords,
+  article = false
 } = Astro.props;
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      "name": "Online Overtime Calculator",
+      "description": description,
+      "url": "https://onlineovertimecalculator.com",
+      "applicationCategory": "FinanceApplication",
+      "operatingSystem": "All",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      }
+    },
+    {
+      "@type": "WebSite",
+      "url": "https://onlineovertimecalculator.com",
+      "name": "Online Overtime Calculator",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://onlineovertimecalculator.com/?q={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    }
+  ]
+};
 ---
 
 <!doctype html>
@@ -17,7 +56,11 @@ const {
   <head>
     <meta charset="UTF-8" />
     <meta name="description" content={description} />
+    <meta name="keywords" content={keywords} />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+    <meta name="author" content="OnlineOvertimeCalculator.com" />
+    
     <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="shortcut icon" href="/favicon.ico" />
@@ -26,6 +69,25 @@ const {
     <link rel="manifest" href="/site.webmanifest" />
     <link rel="canonical" href={Astro.url.href} />
 
+    <!-- Open Graph -->
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:url" content={Astro.url.href} />
+    <meta property="og:site_name" content="OnlineOvertimeCalculator.com" />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Online Overtime Calculator - Calculate OT Pay for All 50 US States" />
+    <meta property="og:locale" content="en_US" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+    <meta name="twitter:image:alt" content="Online Overtime Calculator - Calculate OT Pay for All 50 US States" />
+
     <!-- Fonts: swap for perf -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -33,6 +95,9 @@ const {
 
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
+
+    <!-- JSON-LD -->
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
 
     <!-- Dark mode: apply before paint to prevent flash -->
     <script is:inline>
