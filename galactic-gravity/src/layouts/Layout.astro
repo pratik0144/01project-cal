@@ -13,13 +13,17 @@ interface Props {
 const defaultKeywords = "overtime calculator, overtime calculator online, double overtime calculator, california overtime calculator, overtime calculator in hours, overtime calculator usa, daily overtime calculator, weighted overtime calculator, paycheck overtime calculator, qualified overtime calculator, overtime calculator for taxes, overtime calculator bi weekly, no tax overtime calculator, hourly overtime calculator, pay and overtime calculator, salary overtime calculator, work overtime calculator, 1.5 x overtime calculator, yearly overtime calculator";
 
 const {
-  title = "Online Overtime Calculator — Calculate OT Pay for All 50 States (2026)",
+  title = "Online Overtime Calculator - Calculate OT Pay for All 50 States (2026)",
   description = "Free overtime calculator for all 50 U.S. states. Calculate straight time, overtime (1.5×), and double time (2×) pay with state-specific rules. Updated for 2026.",
   ogImage = "https://onlineovertimecalculator.com/og-image.png",
   ogType = "website",
-  keywords = defaultKeywords,
+  keywords = '',
   article = false
 } = Astro.props;
+
+const finalKeywords = keywords && keywords.trim() && keywords !== defaultKeywords
+  ? `${defaultKeywords}, ${keywords}`
+  : defaultKeywords;
 
 const jsonLd = {
   "@context": "https://schema.org",
@@ -56,7 +60,7 @@ const jsonLd = {
   <head>
     <meta charset="UTF-8" />
     <meta name="description" content={description} />
-    <meta name="keywords" content={keywords} />
+    <meta name="keywords" content={finalKeywords} />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
     <meta name="author" content="OnlineOvertimeCalculator.com" />

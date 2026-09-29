@@ -32,6 +32,17 @@ const { defaultState = 'california', hideTitle = false } = Astro.props;
           <label class="calc-label">Overtime Jurisdiction</label>
           <!-- Hidden real select for data -->
           <select id="state-select" class="hidden" aria-hidden="true">
+            <option
+              value="select-state"
+              data-engine="weekly_flsa"
+              data-params="{}"
+              data-has-dt="false"
+              data-rule-text="Select your state to calculate exact overtime pay with local rules, or compute standard federal overtime (1.5× after 40 hours)."
+              data-state-name="Select State"
+              data-abbr="--"
+            >
+              Select State
+            </option>
             {states.map((s: any) => (
               <option
                 value={s.slug}
@@ -52,7 +63,7 @@ const { defaultState = 'california', hideTitle = false } = Astro.props;
               type="text"
               id="state-input"
               class="calc-input combobox-input"
-              placeholder="Search state…"
+              placeholder="Search or Select State…"
               autocomplete="off"
               role="combobox"
               aria-expanded="false"
@@ -62,6 +73,16 @@ const { defaultState = 'california', hideTitle = false } = Astro.props;
               <path d="M1 1l5 5 5-5" stroke="var(--color-g-mute)" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
             <ul id="state-list" class="combobox-list hidden" role="listbox">
+              <li
+                class="combobox-option"
+                data-slug="select-state"
+                data-name="Select State"
+                data-abbr="--"
+                role="option"
+              >
+                <span class="font-mono text-xs" style="color: var(--color-g-mute); min-width: 28px;">--</span>
+                <span>Select State</span>
+              </li>
               {states.map((s: any) => (
                 <li
                   class="combobox-option"
@@ -784,7 +805,11 @@ const { defaultState = 'california', hideTitle = false } = Astro.props;
     // Sync inputs
     dayInputs.forEach((el, i) => { el.value = String(hours[i]); });
     $('total-hours').textContent = String(r.totalHours);
-    $('rule-badge').textContent = r.stateRule;
+    if (sel.value === 'select-state') {
+      $('rule-badge').textContent = 'Federal Standard (1.5× after 40h)';
+    } else {
+      $('rule-badge').textContent = r.stateRule;
+    }
     $('period-label').textContent = periodLabels[p] || `Per ${p} Weeks`;
 
     // Pay cards (multiplied by period)
@@ -811,14 +836,18 @@ const { defaultState = 'california', hideTitle = false } = Astro.props;
       dtCard.style.opacity = '0.55';
       dtInfoWrap.classList.remove('hidden');
       dtLegend.style.display = 'none';
-      // Build explanation
-      const explanations: Record<string, string> = {
-        weekly_flsa: `${stateName} follows the federal FLSA rule — overtime is 1.5× your rate for hours over 40/week. There is no double-time provision.`,
-        alaska: `Alaska has daily (>8h) and weekly (>40h) overtime at 1.5×, but no double-time rate. Daily OT hours are excluded from the weekly count.`,
-        colorado: `Colorado uses the greater-of daily (>12h) or weekly (>40h) overtime at 1.5×. There is no separate double-time rate.`,
-        nevada: `Nevada uses ${parseFloat(rateIn.value) >= 18 ? 'weekly >40h' : 'greater-of daily >8h / weekly >40h'} overtime at 1.5×. No double-time provision exists.`,
-      };
-      dtExplain.textContent = explanations[engine] || `${stateName} calculates all overtime at 1.5× your regular rate. No double-time rule applies.`;
+      if (sel.value === 'select-state') {
+        dtExplain.textContent = 'Federal standard overtime is 1.5× after 40 hours per week. Double time applies only in certain states like California. Select your state above.';
+      } else {
+        // Build explanation
+        const explanations: Record<string, string> = {
+          weekly_flsa: `${stateName} follows the federal FLSA rule. Overtime is 1.5× your rate for hours over 40/week. There is no double-time provision.`,
+          alaska: `Alaska has daily (>8h) and weekly (>40h) overtime at 1.5×, but no double-time rate. Daily OT hours are excluded from the weekly count.`,
+          colorado: `Colorado uses the greater-of daily (>12h) or weekly (>40h) overtime at 1.5×. There is no separate double-time rate.`,
+          nevada: `Nevada uses ${parseFloat(rateIn.value) >= 18 ? 'weekly >40h' : 'greater-of daily >8h / weekly >40h'} overtime at 1.5×. No double-time provision exists.`,
+        };
+        dtExplain.textContent = explanations[engine] || `${stateName} calculates all overtime at 1.5× your regular rate. No double-time rule applies.`;
+      }
       dtPopover.classList.add('hidden');
     }
 
@@ -949,7 +978,12 @@ const { defaultState = 'california', hideTitle = false } = Astro.props;
 
   function syncComboboxDisplay() {
     const o = sel.options[sel.selectedIndex];
-    stateInput.value = o ? `${o.dataset.stateName} (${o.dataset.abbr})` : '';
+    if (o && o.value !== 'select-state') {
+      stateInput.value = `${o.dataset.stateName} (${o.dataset.abbr})`;
+    } else {
+      stateInput.value = '';
+      stateInput.placeholder = 'Search or Select State…';
+    }
     stateOpts.forEach(li => {
       li.classList.toggle('selected', li.dataset.slug === sel.value);
     });
@@ -963,9 +997,9 @@ const { defaultState = 'california', hideTitle = false } = Astro.props;
     stateList.classList.add('hidden');
     stateInput.setAttribute('aria-expanded', 'false');
     update();
-    // Navigate to state page
-    const newUrl = `/OvertimeCalculator/${slug}`;
-    if (window.location.pathname !== newUrl && window.location.pathname !== '/') {
+    // Navigate to the selected state's page
+    const newUrl = `/OvertimeCalculator/${slug}/`;
+    if (window.location.pathname.replace(/\/$/, '') !== newUrl.replace(/\/$/, '')) {
       window.location.href = newUrl;
     }
   }
@@ -984,7 +1018,8 @@ const { defaultState = 'california', hideTitle = false } = Astro.props;
     stateOpts.forEach(li => {
       const name = (li.dataset.name || '').toLowerCase();
       const abbr = (li.dataset.abbr || '').toLowerCase();
-      const match = !q || name.includes(q) || abbr === q || abbr.startsWith(q);
+      const slug = (li.dataset.slug || '').toLowerCase();
+      const match = !q || name.includes(q) || abbr === q || abbr.startsWith(q) || slug.includes(q);
       li.classList.toggle('hidden-opt', !match);
       if (match) visible++;
     });
@@ -1111,7 +1146,7 @@ const { defaultState = 'california', hideTitle = false } = Astro.props;
 
   // Init — read default state from data attribute
   const section = document.getElementById('calculator')!;
-  const defaultState = section.dataset.defaultState || 'california';
+  const defaultState = section.dataset.defaultState || 'select-state';
 
   function setStateAndUpdate(slug: string) {
     for (let i = 0; i < sel.options.length; i++) {
@@ -1121,8 +1156,8 @@ const { defaultState = 'california', hideTitle = false } = Astro.props;
     update();
   }
 
-  if (defaultState === 'auto') {
-    setStateAndUpdate('california');
+  if (defaultState === 'select-state' || defaultState === 'auto') {
+    setStateAndUpdate('select-state');
 
     if ('geolocation' in navigator) {
       navigator.geolocation.getCurrentPosition(
@@ -1138,16 +1173,17 @@ const { defaultState = 'california', hideTitle = false } = Astro.props;
             if (code) {
               for (let i = 0; i < sel.options.length; i++) {
                 if ((sel.options[i].dataset.abbr || '').toUpperCase() === code) {
-                  sel.selectedIndex = i;
-                  syncComboboxDisplay();
-                  update();
+                  const detectedSlug = sel.options[i].value;
+                  if (detectedSlug && detectedSlug !== 'select-state') {
+                    selectState(detectedSlug);
+                  }
                   break;
                 }
               }
             }
-          } catch { /* silent fail */ }
+          } catch { /* keep placeholder if lookup fails */ }
         },
-        () => { /* denied — keep current */ },
+        () => { /* denied — keep placeholder until user selects manually */ },
         { timeout: 6000, maximumAge: 300000 }
       );
     }

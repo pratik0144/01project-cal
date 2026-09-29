@@ -1,0 +1,159 @@
+---
+/**
+ * SeoContent.astro - Reusable comprehensive SEO content article
+ * Keeps the existing full SEO article on all pages, and seamlessly embeds
+ * 1-2 small state-specific sections when viewing a dedicated state page.
+ */
+import { stateSeoContent } from '../data/state-seo-content';
+import type { StateContent } from '../data/state-seo-content';
+
+interface Props {
+  stateName?: string;
+  abbr?: string;
+  slug?: string;
+}
+
+const { stateName, abbr, slug } = Astro.props;
+const stateData: StateContent | undefined = abbr ? stateSeoContent[abbr.toLowerCase()] : undefined;
+const isSpecificState = !!(stateData && slug && slug !== 'select-state');
+---
+
+<article class="section-container pb-12 sm:pb-16">
+  <div class="max-w-3xl mx-auto">
+    <h2 class="text-xl sm:text-2xl font-semibold mb-4 mt-6" style="color: var(--color-g-ink);">
+      What Is an Overtime Calculator and How Does It Work?
+    </h2>
+    <p class="text-sm sm:text-base leading-relaxed mb-4" style="color: var(--color-g-body);">
+      Understanding exactly how much you earn when you work extra hours can be confusing. That's where an <strong>overtime calculator</strong> comes in handy. Our tool is designed to help employees and employers automatically calculate extra pay without manual math. A standard <strong>overtime calculator online</strong> takes your regular hourly rate and applies the correct multiplier based on federal or state regulations. 
+    </p>
+    <p class="text-sm sm:text-base leading-relaxed mb-4" style="color: var(--color-g-body);">
+      Most commonly, under the Fair Labor Standards Act (FLSA), overtime is paid at 1.5 times the regular rate of pay for any hours worked over 40 in a single workweek. This is why a <strong>1.5 x overtime calculator</strong> is the standard default for most workers in the United States. Additionally, if you are looking for an <strong>hourly overtime calculator</strong> to quickly plug in your wage and hours, our tool accommodates both standard time and half pay. We ensure that whether you are an employer mapping out payroll or an employee verifying your wages, you get accurate results every time. 
+    </p>
+
+    <h2 class="text-xl sm:text-2xl font-semibold mb-4 mt-10" style="color: var(--color-g-ink);">
+      How to Use Our Free Overtime Calculator Online
+    </h2>
+    <p class="text-sm sm:text-base leading-relaxed mb-4" style="color: var(--color-g-body);">
+      Using our <strong>overtime calculator online</strong> is simple and completely free. Start by selecting your state from the dropdown menu, as local labor laws can significantly impact your total pay. Next, enter your regular hourly wage. Finally, input the total number of hours you worked during the week. 
+    </p>
+    <p class="text-sm sm:text-base leading-relaxed mb-4" style="color: var(--color-g-body);">
+      If you need a reliable <strong>work overtime calculator</strong>, simply fill in the regular and overtime hours, and our system does the rest. It functions seamlessly as a <strong>pay and overtime calculator</strong> by automatically splitting your regular straight-time pay from your premium pay. By offering an easy-to-use <strong>overtime calculator in hours</strong>, we ensure you don't have to worry about complicated conversions. 
+    </p>
+
+    <h2 class="text-xl sm:text-2xl font-semibold mb-4 mt-10" style="color: var(--color-g-ink);">
+      Overtime Calculator USA: State-by-State Rules
+    </h2>
+    <p class="text-sm sm:text-base leading-relaxed mb-4" style="color: var(--color-g-body);">
+      When using an <strong>overtime calculator usa</strong>, it is crucial to recognize that federal law sets the minimum standard, but individual states often have stricter guidelines that benefit the employee.
+    </p>
+
+    {isSpecificState && stateData && (
+      <div class="my-6 p-6 rounded-2xl" style="background: var(--color-g-elevated); border: 1px solid var(--color-g-hairline);">
+        <p class="mono-eyebrow mb-2">{abbr} OVERTIME RULES SPOTLIGHT</p>
+        <h3 class="text-lg sm:text-xl font-semibold mb-3" style="color: var(--color-g-ink);">
+          {stateData.heading}
+        </h3>
+        <p class="text-sm sm:text-base leading-relaxed mb-4" style="color: var(--color-g-body);">
+          {stateData.intro}
+        </p>
+
+        {stateData.sections.slice(0, 2).map((sec) => (
+          <div class="mb-4">
+            <h4 class="text-sm sm:text-base font-semibold mb-1" style="color: var(--color-g-ink);">
+              {sec.title}
+            </h4>
+            <p class="text-sm leading-relaxed" style="color: var(--color-g-body);">
+              {sec.content}
+            </p>
+          </div>
+        ))}
+
+        <div class="mt-5 pt-4 border-t" style="border-color: var(--color-g-hairline);">
+          <h4 class="text-sm font-semibold mb-2" style="color: var(--color-g-ink);">
+            Key Facts for {stateName} Workers:
+          </h4>
+          <ul class="space-y-1.5">
+            {stateData.keyFacts.map((fact) => (
+              <li class="flex items-start gap-2 text-xs sm:text-sm leading-relaxed" style="color: var(--color-g-body);">
+                <span class="mt-1.5 w-1.5 h-1.5 rounded-full flex-shrink-0" style="background: var(--color-g-link);"></span>
+                <span>{fact}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <p class="text-xs mt-4 italic" style="color: var(--color-g-faint);">
+          {stateData.disclaimer}
+        </p>
+      </div>
+    )}
+
+    <h3 class="text-lg sm:text-xl font-semibold mb-3 mt-6" style="color: var(--color-g-ink);">
+      California Overtime Calculator
+    </h3>
+    <p class="text-sm sm:text-base leading-relaxed mb-4" style="color: var(--color-g-body);">
+      California has some of the most complex overtime laws in the country. A standard <strong>california overtime calculator</strong> must account for not just weekly hours, but also daily hours. In California, you earn 1.5 times your regular rate of pay for hours worked over 8 in a single workday, which requires a specialized <strong>daily overtime calculator</strong>. 
+    </p>
+    <p class="text-sm sm:text-base leading-relaxed mb-4" style="color: var(--color-g-body);">
+      Furthermore, if you work more than 12 hours in a day, or more than 8 hours on your seventh consecutive day of work in a workweek, you are entitled to double time. This means our tool seamlessly integrates a <strong>double overtime calculator</strong> to ensure your California wages are calculated with 100% precision.
+    </p>
+
+    <h3 class="text-lg sm:text-xl font-semibold mb-3 mt-6" style="color: var(--color-g-ink);">
+      Federal FLSA Overtime Rules
+    </h3>
+    <p class="text-sm sm:text-base leading-relaxed mb-4" style="color: var(--color-g-body);">
+      For states that do not have their own specific overtime laws, the federal FLSA rules apply. The standard rule is simple: any hours worked over 40 in a 168-hour workweek must be paid at time and a half. Our standard <strong>overtime calculator</strong> default settings perfectly align with these federal guidelines.
+    </p>
+
+    <h2 class="text-xl sm:text-2xl font-semibold mb-4 mt-10" style="color: var(--color-g-ink);">
+      Types of Overtime Calculations
+    </h2>
+    
+    <h3 class="text-lg sm:text-xl font-semibold mb-3 mt-6" style="color: var(--color-g-ink);">
+      Bi-Weekly and Yearly Overtime
+    </h3>
+    <p class="text-sm sm:text-base leading-relaxed mb-4" style="color: var(--color-g-body);">
+      Depending on your pay schedule, you might need an <strong>overtime calculator bi weekly</strong> to accurately reflect a two-week pay period. While overtime is legally calculated on a weekly basis, bi-weekly paychecks combine two workweeks. For long-term financial planning, some employees look for a <strong>yearly overtime calculator</strong> to project their total annual earnings, including expected extra shifts.
+    </p>
+
+    <h3 class="text-lg sm:text-xl font-semibold mb-3 mt-6" style="color: var(--color-g-ink);">
+      Salary and Paycheck Overtime
+    </h3>
+    <p class="text-sm sm:text-base leading-relaxed mb-4" style="color: var(--color-g-body);">
+      Not all salaried employees are exempt from overtime. If you earn a salary but fall below the federal exemption threshold, or your job duties do not meet exemption criteria, you still earn overtime. Using a <strong>salary overtime calculator</strong> helps convert your weekly or annual salary into a regular hourly rate to compute the premium pay. Once converted, a <strong>paycheck overtime calculator</strong> gives you an accurate estimate of your gross pay for that specific check.
+    </p>
+
+    <h3 class="text-lg sm:text-xl font-semibold mb-3 mt-6" style="color: var(--color-g-ink);">
+      Weighted and Qualified Overtime
+    </h3>
+    <p class="text-sm sm:text-base leading-relaxed mb-4" style="color: var(--color-g-body);">
+      If you work two different jobs for the same employer at different pay rates, calculating overtime becomes more complex. You need a <strong>weighted overtime calculator</strong> to determine the blended or weighted average regular rate of pay for the week before applying the 1.5 multiplier. Additionally, ensuring you are using a <strong>qualified overtime calculator</strong> means the tool correctly handles these edge cases, bonuses, and shift differentials that must legally be included in your regular rate.
+    </p>
+
+    <h2 class="text-xl sm:text-2xl font-semibold mb-4 mt-10" style="color: var(--color-g-ink);">
+      Overtime Calculator for Taxes
+    </h2>
+    <p class="text-sm sm:text-base leading-relaxed mb-4" style="color: var(--color-g-body);">
+      A common question employees ask is how extra hours affect their tax brackets. When using an <strong>overtime calculator for taxes</strong>, it's important to remember that overtime pay is taxed exactly like regular income. However, because it increases your gross pay for that specific paycheck, your employer might withhold taxes at a higher percentage. 
+    </p>
+    <p class="text-sm sm:text-base leading-relaxed mb-4" style="color: var(--color-g-body);">
+      There is a pervasive myth about a <strong>no tax overtime calculator</strong>. In reality, there is no such thing as tax-free overtime in the United States. All earned wages, whether straight time or premium time, are subject to federal income tax, state income tax (where applicable), Social Security, and Medicare taxes. 
+    </p>
+
+    <h2 class="text-xl sm:text-2xl font-semibold mb-4 mt-10" style="color: var(--color-g-ink);">
+      Why Choose Our Online Overtime Calculator?
+    </h2>
+    <p class="text-sm sm:text-base leading-relaxed mb-4" style="color: var(--color-g-body);">
+      With so many tools available, why use our <strong>overtime calculator usa</strong> platform? 
+    </p>
+    <ul class="list-disc pl-6 mb-4 text-sm sm:text-base leading-relaxed space-y-1" style="color: var(--color-g-body);">
+      <li><strong>Accuracy across all 50 states:</strong> From standard federal rules to complex daily overtime limits in states like California, Nevada, and Alaska, our <strong>overtime calculator online</strong> has you covered.</li>
+      <li><strong>Comprehensive Features:</strong> Whether you need to figure out double time, standard time and a half, or weighted averages for multiple pay rates, we handle the complex math instantly.</li>
+      <li><strong>Privacy and Security:</strong> Your wage data is processed directly in your browser. We do not store your personal financial information.</li>
+      <li><strong>Free and Easy to Use:</strong> No sign-ups or downloads are required. Just enter your hours and rate, and see your exact expected paycheck amount immediately.</li>
+    </ul>
+    <p class="text-sm sm:text-base leading-relaxed mb-4" style="color: var(--color-g-body);">
+      Make sure you are being paid exactly what you are owed. Bookmark our main <strong>overtime calculator</strong> page today and use it every time you work extra hours to ensure your paycheck is completely accurate.
+    </p>
+  </div>
+</article>
