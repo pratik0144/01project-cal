@@ -1,12 +1,16 @@
 ---
-// Site footer with navigation, legal links, and contact info
+// Site footer with navigation, legal links, contact info, and state links
+import overtimeData from '../data/overtime-rules.json';
+const states = overtimeData.states
+  .map((s: any) => ({ name: s.state, slug: s.slug }))
+  .sort((a: any, b: any) => a.name.localeCompare(b.name));
 ---
 <footer class="mt-auto border-t" style="border-color: var(--color-g-hairline); background-color: var(--color-g-canvas);">
   <div class="section-container py-10">
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 pb-8" style="border-bottom: 1px solid var(--color-g-hairline);">
       <!-- Brand & Summary -->
       <div class="lg:col-span-2 space-y-3">
-        <a href="/OvertimeCalculator/select-state/" class="flex items-center gap-2 font-semibold text-base" style="color: var(--color-g-ink);">
+        <a href="/" class="flex items-center gap-2 font-semibold text-base" style="color: var(--color-g-ink);">
           <svg width="22" height="22" viewBox="0 0 488 488" fill="none" class="shrink-0 rounded-[5px]" aria-label="Online Overtime Calculator Logo">
             <rect width="488" height="488" rx="122" fill="#1C1C1C"/>
             <circle cx="244" cy="244" r="166.67" stroke="#3C9EFF" stroke-width="32.17" stroke-linecap="round" stroke-linejoin="round"/>
@@ -24,7 +28,7 @@
         <h3 class="mono-eyebrow mb-3">Explore</h3>
         <ul class="space-y-2 text-xs sm:text-sm">
           <li>
-            <a href="/OvertimeCalculator/select-state/" class="hover:underline transition-colors" style="color: var(--color-g-body);">
+            <a href="/" class="hover:underline transition-colors" style="color: var(--color-g-body);">
               Overtime Calculator
             </a>
           </li>
@@ -63,6 +67,24 @@
           </li>
         </ul>
       </div>
+    </div>
+
+    <!-- State Links -->
+    <div class="py-6" style="border-bottom: 1px solid var(--color-g-hairline);">
+      <h3 class="mono-eyebrow mb-3">Overtime Calculator by State</h3>
+      <ul class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-x-4 gap-y-1">
+        {states.map((st: any) => (
+          <li>
+            <a
+              href={`/overtime-calculator/${st.slug}/`}
+              class="text-xs hover:underline transition-colors"
+              style="color: var(--color-g-mute);"
+            >
+              {st.name}
+            </a>
+          </li>
+        ))}
+      </ul>
     </div>
 
     <!-- Bottom Bar -->

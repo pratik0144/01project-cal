@@ -4,16 +4,14 @@ import Navbar from '../../components/Navbar.astro';
 import Calculator from '../../components/Calculator.astro';
 import Footer from '../../components/Footer.astro';
 import FAQ from '../../components/FAQ.astro';
-import SeoContent from '../../components/SeoContent.astro';
 import overtimeData from '../../data/overtime-rules.json';
 import { stateSeoContent } from '../../data/state-seo-content';
 import type { StateContent } from '../../data/state-seo-content';
 
 export function getStaticPaths() {
-  const paths = overtimeData.states.map((s: any) => ({
+  return overtimeData.states.map((s: any) => ({
     params: { state: s.slug },
     props: {
-      isLanding: false,
       stateName: s.state,
       abbr: s.abbr,
       slug: s.slug,
@@ -23,36 +21,16 @@ export function getStaticPaths() {
       keywords: s.seo?.secondary_keywords || [],
     },
   }));
-
-  paths.push({
-    params: { state: 'select-state' },
-    props: {
-      isLanding: true,
-      stateName: 'Select State',
-      abbr: 'US',
-      slug: 'select-state',
-      pageTitle: 'Online Overtime Calculator - Calculate OT Pay for All 50 States (2026)',
-      h1: 'Overtime & Pay Calculator',
-      uniqueRule: 'Select your state to calculate exact overtime pay with local rules, or compute standard federal overtime (1.5× after 40 hours).',
-      keywords: [],
-    },
-  });
-
-  return paths;
 }
 
-const { isLanding, stateName, abbr, slug, pageTitle, h1, uniqueRule, keywords } = Astro.props;
+const { stateName, abbr, slug, pageTitle, h1, uniqueRule, keywords } = Astro.props;
 
-const description = isLanding
-  ? 'Free overtime calculator for all 50 U.S. states. Calculate straight time, overtime (1.5×), and double time (2×) with state-specific rules. Updated for 2026.'
-  : `Free ${stateName} overtime calculator. ${uniqueRule} Calculate your OT pay instantly with ${abbr} state-specific rules for 2026.`;
+const description = `Free ${stateName} overtime calculator. ${uniqueRule} Calculate your OT pay instantly with ${abbr} state-specific rules for 2026.`;
 
-const stateKeywords = isLanding
-  ? ''
-  : `${stateName} overtime calculator, ${abbr} overtime calculator, overtime pay ${stateName}, ${stateName} OT rules 2026, calculate overtime ${stateName}, ${keywords.join(', ')}`;
+const stateKeywords = `${stateName} overtime calculator, ${abbr} overtime calculator, overtime pay ${stateName}, ${stateName} OT rules 2026, calculate overtime ${stateName}, ${keywords.join(', ')}`;
 
 // Unique state SEO content from state-seo-content.ts
-const stateData: StateContent | undefined = !isLanding && abbr ? stateSeoContent[abbr.toLowerCase()] : undefined;
+const stateData: StateContent | undefined = abbr ? stateSeoContent[abbr.toLowerCase()] : undefined;
 ---
 
 <Layout
@@ -62,10 +40,10 @@ const stateData: StateContent | undefined = !isLanding && abbr ? stateSeoContent
 >
   <Navbar />
   <main class="flex-1">
-    <!-- State-specific heading / Landing heading -->
+    <!-- State-specific heading -->
     <div class="section-container pt-6 sm:pt-8 text-center">
       <p class="mono-eyebrow mb-2">
-        {isLanding ? 'ALL 50 U.S. STATES • 2026 RULES' : `${abbr} OVERTIME RULES • 2026`}
+        {`${abbr} OVERTIME RULES • 2026`}
       </p>
       <h1 class="text-2xl sm:text-3xl lg:text-4xl">{h1}</h1>
       {uniqueRule && (
@@ -82,9 +60,7 @@ const stateData: StateContent | undefined = !isLanding && abbr ? stateSeoContent
       <hr class="my-8 sm:my-12" style="border-color: var(--color-g-hairline);" />
     </div>
 
-    {isLanding ? (
-      <SeoContent />
-    ) : stateData ? (
+    {stateData ? (
       <article class="section-container pb-12 sm:pb-16">
         <div class="max-w-3xl mx-auto">
           <h2 class="text-xl sm:text-2xl font-semibold mb-4" style="color: var(--color-g-ink);">
@@ -129,7 +105,7 @@ const stateData: StateContent | undefined = !isLanding && abbr ? stateSeoContent
               This calculator automatically incorporates {stateName}'s overtime laws. Simply enter your hourly rate and adjust your daily hours to see your exact gross pay and premium overtime breakdown.
             </p>
             <p class="text-xs" style="color: var(--color-g-mute);">
-              Need to check rules for another state or review standard federal FLSA guidelines? Visit our <a href="/OvertimeCalculator/select-state/" class="underline" style="color: var(--color-g-link);">main overtime calculator</a> to compare all 50 states.
+              Need to check rules for another state or review standard federal FLSA guidelines? Visit our <a href="/" class="underline" style="color: var(--color-g-link);">main overtime calculator</a> to compare all 50 states.
             </p>
           </div>
 

@@ -1,3 +1,61 @@
 ---
-return Astro.redirect('/OvertimeCalculator/select-state/', 301);
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/Navbar.astro';
+import Calculator from '../components/Calculator.astro';
+import Footer from '../components/Footer.astro';
+import FAQ from '../components/FAQ.astro';
+import SeoContent from '../components/SeoContent.astro';
+import overtimeData from '../data/overtime-rules.json';
+
+const pageTitle = "Online Overtime Calculator - Calculate OT Pay for All 50 States (2026)";
+const pageDescription = "Free overtime calculator for all 50 U.S. states. Calculate straight time, overtime (1.5×), and double time (2×) pay with state-specific rules. Updated for 2026.";
+
+const states = overtimeData.states.map((s: any) => ({
+  name: s.state,
+  slug: s.slug,
+  abbr: s.abbr,
+  tag: s.seo?.unique_rule_sentence
+    ? (s.mvp_rule.engine === 'california' ? 'Daily & Double OT'
+       : s.mvp_rule.engine === 'colorado' ? '12h Daily OT'
+       : s.mvp_rule.engine === 'alaska' ? '8h Daily OT'
+       : s.mvp_rule.engine === 'nevada' ? 'Daily/Weekly OT'
+       : 'Standard FLSA')
+    : 'Standard FLSA',
+}));
 ---
+
+<Layout
+  title={pageTitle}
+  description={pageDescription}
+>
+  <Navbar />
+  <main class="flex-1">
+    <!-- Hero heading -->
+    <div class="section-container pt-6 sm:pt-8 text-center">
+      <p class="mono-eyebrow mb-2">ALL 50 U.S. STATES • 2026 RULES</p>
+      <h1 class="text-2xl sm:text-3xl lg:text-4xl">Overtime & Pay Calculator</h1>
+      <p class="mt-2 text-sm sm:text-base max-w-2xl mx-auto" style="color: var(--color-g-body);">
+        Select your state to calculate exact overtime pay with local rules, or compute standard federal overtime (1.5× after 40 hours).
+      </p>
+    </div>
+
+    <!-- Calculator Component (federal FLSA default) -->
+    <Calculator defaultState="select-state" hideTitle={true} />
+
+
+    <div class="section-container">
+      <hr class="my-8 sm:my-12" style="border-color: var(--color-g-hairline);" />
+    </div>
+
+    <!-- SEO Content -->
+    <SeoContent />
+
+    <div class="section-container">
+      <hr class="my-8 sm:my-12" style="border-color: var(--color-g-hairline);" />
+    </div>
+
+    <!-- FAQ Section -->
+    <FAQ />
+  </main>
+  <Footer />
+</Layout>

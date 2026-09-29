@@ -51,7 +51,7 @@ const popularStates = [
       <!-- Action Buttons -->
       <div class="flex flex-wrap items-center justify-center gap-3 pt-2">
         <a
-          href="/OvertimeCalculator/select-state/"
+          href="/"
           class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg text-sm font-semibold transition-all shadow-sm"
           style="background-color: var(--color-g-ink); color: var(--color-g-on-primary);"
         >
@@ -73,14 +73,14 @@ const popularStates = [
       <div class="p-6 rounded-xl text-left mt-8" style="background-color: var(--color-g-elevated); border: 1px solid var(--color-g-hairline);">
         <div class="flex items-center justify-between mb-4">
           <h3 class="text-sm font-semibold" style="color: var(--color-g-ink);">Popular Overtime Calculators</h3>
-          <a href="/OvertimeCalculator/select-state/" class="text-xs font-medium underline" style="color: var(--color-g-link);">
+          <a href="/" class="text-xs font-medium underline" style="color: var(--color-g-link);">
             All 50 States →
           </a>
         </div>
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
           {popularStates.map((st) => (
             <a
-              href={`/OvertimeCalculator/${st.slug}/`}
+              href={`/overtime-calculator/${st.slug}/`}
               class="p-2.5 rounded-lg text-xs transition-colors hover:border-[var(--color-g-link)] flex flex-col gap-0.5"
               style="background-color: var(--color-g-canvas); border: 1px solid var(--color-g-hairline);"
             >

@@ -1048,7 +1048,7 @@ const { defaultState = 'california', hideTitle = false } = Astro.props;
     stateInput.setAttribute('aria-expanded', 'false');
     update();
     // Navigate to the selected state's page
-    const newUrl = `/OvertimeCalculator/${slug}/`;
+    const newUrl = slug === 'select-state' ? '/' : `/overtime-calculator/${slug}/`;
     if (window.location.pathname.replace(/\/$/, '') !== newUrl.replace(/\/$/, '')) {
       window.location.href = newUrl;
     }
